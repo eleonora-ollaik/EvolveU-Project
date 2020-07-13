@@ -2,12 +2,27 @@ import functions from './business_logic.js'
 
 
 test('Question Class', () => {
-    const question1 = new functions.Question('k1','world', 'What is the capital of France?' )
-    expect(question1.key).toBe('k1');
-    expect(question1.category).toBe('world')
-    expect(question1.question).toBe('What is the capital of France?')
+    const quizCtrl = new functions.Quiz();
 
-    question1.set_Question('Is it a new question?');
+    let question1 = quizCtrl.getNewQuestion();
+
+    // expect(functions.Question.lastKey).toBe(0);
+    expect(question1.key).toBe('');
+    expect(question1.category).toBe(''); 
+    expect(question1.question).toBe('');
+    question1.key = functions.Question.lastKey;
+    question1.category = 'world';
+    question1.question= 'What is the capital of France?';
+
+    // const question1 = new functions.Question(functions.Question.lastKey,'world', 'What is the capital of France?' )
+    expect(question1.key).toBe(0);
+    expect(question1.category).toBe('world');
+    expect(question1.question).toBe('What is the capital of France?');
+    expect(functions.Question.lastKey).toBe(0);
+    question1.newKey();
+    expect(functions.Question.lastKey).toBe(1);
+
+    question1.set_Question('Is it a new question?' );
     expect(question1.question).toBe('Is it a new question?');
 
     question1.set_Category('New Category');

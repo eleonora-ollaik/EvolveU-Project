@@ -1,8 +1,17 @@
 class Question {
-    constructor(key, category, question) {
-        this.key = key;
-        this.category = category;
-        this.question = question;
+    static lastKey = 0;
+
+    constructor(obj) {
+        const defaults = {key: '', category: '', question: ''};
+        const data = {...defaults, ...obj};
+        this.key = data.key;
+        this.category = data.category;
+        this.question = data.question;
+    }
+
+    newKey() {
+        Question.lastKey++;
+        this.key=Question.lastKey;
     }
 
     set_Question (question) {
@@ -25,12 +34,18 @@ class Question {
 }
 
 class Answer {
+    static lastKey = 0;
+
     constructor(key, correctanswer, answertype) {
         this.key = key;
         this.answertype = answertype;
         this.correctanswer = correctanswer;
     }
 
+    newKey() {
+        Question.lastKey++;
+        this.key=Question.lastKey;
+    }    
 }
 
 class OpenEnded extends Answer {
@@ -50,16 +65,40 @@ class MultipleChoice extends Answer {
     }
 
 }
+
+class QandA {
+    static lastKey = 0;
+
+    constructor (key, questionKey, answerKey) {
+        this.key = key;
+        this.questionKey = questionKey;
+        this.answerKey = answerKey;
+    }
+
+    newKey() {
+        Question.lastKey++;
+        this.key=Question.lastKey;
+    }      
+}
+
 class Quiz {
     constructor(name, theme) {
         this.name = name;
         this.theme = theme;
-        this.quiz  = {};
-        this.counter = this.quiz.length
+        this.lastKey = 0;
+        this.QandAPair  = {};
+        this.questions  = [];
+        this.answers  = {};
+        // this.counter = this.quiz.length
     }
+getNewQuestion() {
+    return new Question({})
+}
+createQuestion(question, category) {
+    let newQ = new Question(key, category, question)
 
-//     createQuestion
-
+}
+    
 // deleteFromQuiz
 
 // searchRandom
