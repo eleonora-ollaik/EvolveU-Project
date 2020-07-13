@@ -1,3 +1,27 @@
+//  quiz: {
+//    name: ''
+//    theme: ''
+//    lastKey: number
+//    QuestionsAndAnswers: {
+//  id1(uuid):
+        {
+    // category: "Entertainment: Comics",
+    // type: "multiple, boolean, open{short answer}",
+    // question: "This Marvel superhero is often called &quot;The man without fear&quot;.",
+    // number_of_correct_entries: 10,
+    // number_of_incorrect_entries: 10,
+    // correct_answers: ["Daredevil",],
+    // incorrect_answers: [
+    // "Thor",
+    // "Wolverine",
+    // "Hulk"
+    // ]
+//  },
+//  id2: {}
+// }
+class Quiz {
+
+}
 class Question {
     static lastKey = 0;
 
@@ -87,21 +111,19 @@ class Quiz {
         this.theme = theme;
         this.lastKey = 0;
         this.QandAPair  = {};
-        this.questions  = [];
-        this.answers  = {};
         // this.counter = this.quiz.length
     }
-getNewQuestion() {
+createQuestion() {
     return new Question({})
 }
-createQuestion(question, category) {
-    let newQ = new Question(key, category, question)
 
+deleteQuestion(uuid){
+    return
 }
     
 // deleteFromQuiz
 
-// searchRandom
+// searchRandom(db)
 
 // startGame
 
