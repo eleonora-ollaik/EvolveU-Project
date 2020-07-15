@@ -119,7 +119,7 @@ class TakeQuiz extends Component {
   }
 
   render() {
-    console.log(this.state.selectedQuiz);
+    // console.log(this.state.selectedQuiz);
     return (
       <div className="quizContainer">
         {this.state.selectedQuiz ? (
