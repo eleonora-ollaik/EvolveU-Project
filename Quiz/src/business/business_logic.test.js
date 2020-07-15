@@ -2,6 +2,7 @@ import functions from './business_logic.js'
 
 
 test('Question Class', () => {
+
     const question1 = new functions.QuestionsAndAnswers();
 
     expect(question1.type).toBe(null);
@@ -88,5 +89,7 @@ test('Quiz Class', () => {
     qandA2.assignCorrectAnsw([])
     expect(qandA2.correct_answers).toEqual([]);
 
+
+  
 
 })
