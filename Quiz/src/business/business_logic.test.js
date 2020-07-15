@@ -2,6 +2,7 @@ import functions from './business_logic.js'
 
 
 test('Question Class', () => {
+
     const question1 = new functions.QuestionsAndAnswers();
 
     expect(question1.type).toBe(null);
@@ -101,5 +102,7 @@ test('Quiz Class', () => {
     qandA2.assignInCorrectAnsw(['Moscow', 'Berlin', 'Beijing'])
     expect(qandA2.incorrect_answers).toEqual(['Moscow', 'Berlin', 'Beijing']);
 
+
+  
 
 })
