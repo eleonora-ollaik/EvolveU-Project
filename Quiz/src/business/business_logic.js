@@ -1,138 +1,133 @@
-//  quiz: {
-//    name: ''
-//    theme: ''
-//    lastKey: number
-//    QuestionsAndAnswers: {
-//  id1(uuid):
-        {
-    // category: "Entertainment: Comics",
-    // type: "multiple, boolean, open{short answer}",
-    // question: "This Marvel superhero is often called &quot;The man without fear&quot;.",
-    // number_of_correct_entries: 10,
-    // number_of_incorrect_entries: 10,
-    // correct_answers: ["Daredevil",],
-    // incorrect_answers: [
-    // "Thor",
-    // "Wolverine",
-    // "Hulk"
-    // ]
-//  },
-//  id2: {}
-// }
-class Quiz {
 
-}
-class Question {
-    static lastKey = 0;
+class QuestionsAndAnswers {
 
-    constructor(obj) {
-        const defaults = {key: '', category: '', question: ''};
-        const data = {...defaults, ...obj};
-        this.key = data.key;
-        this.category = data.category;
-        this.question = data.question;
+    // static lastKey = 0;
+
+    constructor () {
+        this.category = null;
+        this.type = null;
+        this.question = null;
+        this.number_of_correct_entries = 0;
+        this.number_of_incorrect_entries = 0;
+        this.correct_answers = [];
+        this.incorrect_answers = [];        
     }
 
-    newKey() {
-        Question.lastKey++;
-        this.key=Question.lastKey;
+    assignType (type, optionlist) {
+        for (let i = 0; i < optionlist.length; i++){
+            if (type === optionlist[i]) {
+                this.type = type;
+            }
+        }
     }
 
-    set_Question (question) {
-        this.question = question;
+    assignCorrectAnsw (answers) {
+
+        let types = [
+            {'type': 'multiple choice', 'min': 1, 'max': 1,},
+            {'type': 'true or false', 'min': 1, 'max': 1,},
+            {'type': 'open ended question', 'min': 1, 'max': 5,}
+        ]        
+
+        for (let i=0; i < types.length; i++) {
+            if(this.type === types[i].type) {
+                if(types[i].min <= answers.length && answers.length <= types[i].max) {
+                    this.correct_answers = answers;
+                } 
+
+            }
+        }
+    }
+        assignCorrectAnsw (answers) {
+
+            let types = [
+                {'type': 'multiple choice', 'min': 1, 'max': 1,},
+                {'type': 'true or false', 'min': 1, 'max': 1,},
+                {'type': 'open ended question', 'min': 1, 'max': 5,}
+            ]        
+    
+            for (let i=0; i < types.length; i++) {
+                if(this.type === types[i].type) {
+                    if(types[i].min <= answers.length && answers.length <= types[i].max) {
+                        this.correct_answers = answers;
+                    } 
+                    
+                }
+            }
+         
+    
+        // if (this.type === 'multiple choice') {
+        //     if (answers.length === 1) {
+        //         this.correct_answers = answers;
+        //     }
+            
+        // } else if (this.type === 'true or false') {
+        //     if (answers.length === 1) {
+        //         this.correct_answers = answers;
+        //     }
+        // } else if (this.type === 'open ended question') {
+        //     if (answers.length >= 1) {
+        //         this.correct_answers = answers;
+        //     }        
     }
 
-    set_Category (category) {
-        this.category = category;
+    calculate_difficulty() {
+        let total_answers = (this.correct_answers + this.incorrect_answers);        
+        let acurracy = total_answers===0 ? 0: this.correct_answers / total_answers;
+        
+        let comlexityInfo = [
+            {'lowest': 0.76, 'highest': 1, 'level': 'easy'},
+            {'lowest': 0.33, 'highest': 0.76, 'level': 'normal'},
+            {'lowest': 0, 'highest': 0.33, 'level': 'hard'}
+        ]        
+
+        let result = 'Undetermined';
+
+        for (let i=0; i < comlexityInfo.length; i++) {            
+            if (acurracy > comlexityInfo[i].lowest && acurracy <= comlexityInfo[i].highest ) {
+                result = comlexityInfo[i].level;
+            }               
+        }
+        return result;
     }
 
-    get_Question() {
-        return this.question;
-    }
 
-    get_Category() {
-        return this.category;
-    }
-
-
-}
-
-class Answer {
-    static lastKey = 0;
-
-    constructor(key, correctanswer, answertype) {
-        this.key = key;
-        this.answertype = answertype;
-        this.correctanswer = correctanswer;
-    }
-
-    newKey() {
-        Question.lastKey++;
-        this.key=Question.lastKey;
-    }    
-}
-
-class OpenEnded extends Answer {
-    constructor(key, correctanswer, answertype, markedcorrect) {
-        super(key, correctanswer, answertype);
-        this.markedcorrect = markedcorrect;        
-    }
-}
-
-class MultipleChoice extends Answer {
-    constructor(key, correctanswer, answertype, answerA, answerB, answerC, answerD) {
-        super(key, correctanswer, answertype);
-        this.answerA = answerA;
-        this.answerB = answerB;
-        this.answerC = answerC;
-        this.answerD = answerD;
-    }
-
-}
-
-class QandA {
-    static lastKey = 0;
-
-    constructor (key, questionKey, answerKey) {
-        this.key = key;
-        this.questionKey = questionKey;
-        this.answerKey = answerKey;
-    }
-
-    newKey() {
-        Question.lastKey++;
-        this.key=Question.lastKey;
-    }      
+    // Generate new key (UUID) for new questions and answers object
+    // newKey() {
+    //     return ++QuestionsAndAnswers.lastKey;
+    // }    
 }
 
 class Quiz {
+    static lastKey = 0;
+
     constructor(name, theme) {
         this.name = name;
         this.theme = theme;
-        this.lastKey = 0;
-        this.QandAPair  = {};
-        // this.counter = this.quiz.length
+        this.QuestionsAndAnswers = {};
     }
-createQuestion() {
-    return new Question({})
+
+    // Generate new key (UUID) for new questions and answers object
+    newKey() {
+        return ++Quiz.lastKey;
+    }
+
+    addQuestionsAndAnswers () {
+        const key = this.newKey();
+
+        this.QuestionsAndAnswers[key] = new QuestionsAndAnswers();
+
+        return key;
+    }    
+
+    deleteQuestionsAndAnswers (key) {
+        delete this.QuestionsAndAnswers[key];
+    }
+
+    getQuestionAndAnswers (key) {
+        return this.QuestionsAndAnswers[key];
+    }
 }
 
-deleteQuestion(uuid){
-    return
-}
-    
-// deleteFromQuiz
+export default {QuestionsAndAnswers, Quiz}
 
-// searchRandom(db)
-
-// startGame
-
-// setNextQuestion
-
-// showQuestion
-
-// showAnswers
-
-}
-
-export default {Question, Answer, OpenEnded, MultipleChoice, Quiz}
