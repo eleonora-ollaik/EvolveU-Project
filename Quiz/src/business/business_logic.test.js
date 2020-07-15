@@ -80,6 +80,10 @@ test('Quiz Class', () => {
     qandA2.correct_answers = []
     qandA2.assignCorrectAnsw(['Paris', 'Berlin'])
     expect(qandA2.correct_answers).toEqual([]);
+    qandA2.incorrect_answers = []
+    qandA2.assignInCorrectAnsw(['Beijing'])
+    expect(qandA2.incorrect_answers).toEqual(['Beijing']);
+
 
     qandA2.type = 'open ended question';
 
@@ -88,6 +92,15 @@ test('Quiz Class', () => {
     qandA2.correct_answers = []
     qandA2.assignCorrectAnsw([])
     expect(qandA2.correct_answers).toEqual([]);
+    qandA2.incorrect_answers = []
+    qandA2.assignInCorrectAnsw(['Moscow', 'Berlin', 'Beijing'])
+    expect(qandA2.incorrect_answers).toEqual([]);
+
+
+    qandA2.type = 'multiple choice';
+    qandA2.incorrect_answers = []
+    qandA2.assignInCorrectAnsw(['Moscow', 'Berlin', 'Beijing'])
+    expect(qandA2.incorrect_answers).toEqual(['Moscow', 'Berlin', 'Beijing']);
 
 
   

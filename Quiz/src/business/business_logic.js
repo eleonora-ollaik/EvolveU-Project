@@ -38,37 +38,22 @@ class QuestionsAndAnswers {
             }
         }
     }
-        assignCorrectAnsw (answers) {
+        assignInCorrectAnsw (answers) {
 
             let types = [
-                {'type': 'multiple choice', 'min': 1, 'max': 1,},
+                {'type': 'multiple choice', 'min': 3, 'max': 3,},
                 {'type': 'true or false', 'min': 1, 'max': 1,},
-                {'type': 'open ended question', 'min': 1, 'max': 5,}
+                {'type': 'open ended question', 'min': 0, 'max': 0,}
             ]        
     
             for (let i=0; i < types.length; i++) {
                 if(this.type === types[i].type) {
                     if(types[i].min <= answers.length && answers.length <= types[i].max) {
-                        this.correct_answers = answers;
+                        this.incorrect_answers = answers;
                     } 
                     
                 }
-            }
-         
-    
-        // if (this.type === 'multiple choice') {
-        //     if (answers.length === 1) {
-        //         this.correct_answers = answers;
-        //     }
-            
-        // } else if (this.type === 'true or false') {
-        //     if (answers.length === 1) {
-        //         this.correct_answers = answers;
-        //     }
-        // } else if (this.type === 'open ended question') {
-        //     if (answers.length >= 1) {
-        //         this.correct_answers = answers;
-        //     }        
+            }   
     }
 
     calculate_difficulty() {
