@@ -13,70 +13,93 @@ export class CreateQuizForm extends Component {
     };
   }
 
-  onClickEntryHandler = (e) => {
+    onClickEntryHandler = (e) => {
+      this.setState({quizNav: "Create Quiz"});
+    };
+
+    onClickPreviewHandler = (e) => {
+      this.setState({quizNav: "Preview Quiz"});
+    };
+
+    onClickQuizHandler = (e) => {
+      console.log("Save to the server");
+    };
+
+    onClickQuestionHandler = (e) => {
+      const quizObj = new logic.Quiz();
+      quizObj.name = document.getElementById("idQuizName").value;
+      quizObj.theme = document.getElementById("idQuizTheme").value;
+      quizObj.QuestionsAndAnswers = this.state.quizes.QuestionsAndAnswers;
+
+      let key = this.state.quizes.addQuestionsAndAnswers();
+      let qAndAPair = this.state.quizes.getQuestionAndAnswers(key);
+      console.log(qAndAPair);
+      qAndAPair.type = document.getElementById("idQuestionType").value;
+      qAndAPair.question = document.getElementById("idQuestion").value;
+
+      const CAarray = document.querySelectorAll(".CorrectAnswer");
+      for (let i=0; i<CAarray.length; i++) {
+          qAndAPair.correct_answers.push(CAarray[i].value);
+      }
+
+      const WAarray = document.querySelectorAll(".WrongAnswer");
+      for (let i=0; i<WAarray.length; i++) {
+          qAndAPair.incorrect_answers.push(WAarray[i].value);
+      }
+      
+      this.setState({quizes: quizObj})
+      this.clearInputs()
+      console.log(this.state.quizes)
+
+  }
+
+  onChangeQuestionHandler = (e) => {
+
+    let type = document.getElementById("idQuestionType").value;
+    this.setState({questionType: type});
+  }
+
+  clearInputs = () => {
+      document.getElementById("idQuestion").value = '';
+
+      const CAarray = document.querySelectorAll(".CorrectAnswer");
+      for (let i=0; i<CAarray.length; i++) {
+          CAarray[i].value = '';
+      }
+
+      const WAarray = document.querySelectorAll(".WrongAnswer");
+      for (let i=0; i<WAarray.length; i++) {
+          WAarray[i].value = '';
+      }
+  }
+
+  onChangeQuestionHandler = (e) => {
+
+    let type = document.getElementById("idQuestionType").value;
+    this.setState({questionType: type});
+  }
+
+  onClickEdit = (e) => {
+
+    console.log(e.target.getAttribute('uuid'));
+    // back to edit entry display
     this.setState({quizNav: "Create Quiz"});
-  };
+  }  
 
-  onClickPreviewHandler = (e) => {
-    this.setState({quizNav: "Preview Quiz"});
-  };
+  onClickDelete = (e) => {
 
-  onClickQuizHandler = (e) => {
-    console.log("Save to the server");
-  };
-
-  onClickQuestionHandler = (e) => {
-    const quizObj = new logic.Quiz();
-    quizObj.name = document.getElementById("idQuizName").value;
-    quizObj.theme = document.getElementById("idQuizTheme").value;
-    quizObj.QuestionsAndAnswers = this.state.quizes.QuestionsAndAnswers;
-
-    let key = this.state.quizes.addQuestionsAndAnswers();
-    let qAndAPair = this.state.quizes.getQuestionAndAnswers(key);
-    console.log(qAndAPair);
-    qAndAPair.type = document.getElementById("idQuestionType").value;
-    qAndAPair.question = document.getElementById("idQuestion").value;
-
-    const CAarray = document.querySelectorAll(".CorrectAnswer");
-    for (let i=0; i<CAarray.length; i++) {
-        qAndAPair.correct_answers.push(CAarray[i].value);
-    }
-
-    const WAarray = document.querySelectorAll(".WrongAnswer");
-    for (let i=0; i<WAarray.length; i++) {
-        qAndAPair.incorrect_answers.push(WAarray[i].value);
-
-    }
+    const quizObj = this.state.quizes;
+    const key = e.target.getAttribute('uuid');
+    const qAndAPair = quizObj.deleteQuestionsAndAnswers(key);
     
-    this.setState({quizes: quizObj})
-    this.clearInputs()
-    console.log(this.state.quizes)
-
-}
-
-onChangeQuestionHandler = (e) => {
-
-   let type = document.getElementById("idQuestionType").value;
-   this.setState({questionType: type});
-}
-
-clearInputs = () => {
-    document.getElementById("idQuestion").value = '';
-
-    const CAarray = document.querySelectorAll(".CorrectAnswer");
-    for (let i=0; i<CAarray.length; i++) {
-        CAarray[i].value = '';
-    }
-
-    const WAarray = document.querySelectorAll(".WrongAnswer");
-    for (let i=0; i<WAarray.length; i++) {
-        WAarray[i].value = '';
-    }
-}
+    this.setState({quizes: quizObj,
+                   quizNav: "Preview Quiz"
+                  });
+  }  
 
   render() {
     const entry = <QA.QAentry quiz={this.state.quizes} QAtype={this.state.questionType} onClick={this.onClickQuestionHandler} onChange={this.onChangeQuestionHandler}/>;
-    const preview = <QA.QApreview quiz={this.state.quizes} QAtype={this.state.questionType} onClick={this.onClickQuestionHandler} onChange={this.onChangeQuestionHandler}/>;
+    const preview = <QA.QApreview quiz={this.state.quizes} onClickEdit={this.onClickEdit} onClickDelete={this.onClickDelete}/>;
 
     const quizNavPanel = this.state.quizNav === "Create Quiz" ? entry : preview
 

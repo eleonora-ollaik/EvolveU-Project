@@ -50,12 +50,23 @@ export class QAentry extends Component {
 export class QApreview extends Component {
 
   render() {
-    const entries_num = Object.keys(this.props.quiz.QuestionsAndAnswers).length;
+    const QAobject = this.props.quiz.QuestionsAndAnswers;
     let QAentries = [];
-    console.log("this.props.quiz.QuestionsAndAnswers,", this.props.quiz.QuestionsAndAnswers);
-    console.log("entries_num,", entries_num);
-    for (let i=0; i<entries_num; i++ ) {
-      QAentries.push(<QAentry key={i} quiz={this.props.quiz} QAtype={this.props.QAtype} onClick={this.props.onClick} onChange={this.props.onChange}/>);
+
+    for (const [key, QA] of Object.entries(QAobject)) {
+
+      QAentries.push(<div key={`Q${key}`}>{QA.question}</div>);
+
+      for (let i=0; i<QA.correct_answers.length; i++) {
+        QAentries.push(<div key={`CA${key}${i}`}>{QA.correct_answers[i]}</div>);
+      }
+
+      for (let i=0; i<QA.incorrect_answers.length; i++) {
+        QAentries.push(<div key={`IA${key}${i}`}>{QA.incorrect_answers[i]}</div>);
+      }
+            
+      QAentries.push(<button key={`BEdit${key}`} uuid={key} onClick={this.props.onClickEdit}>Edit</button>);
+      QAentries.push(<button key={`BDel${key}`} uuid={key} onClick={this.props.onClickDelete}>Delete</button>);
     }
 
     return (
