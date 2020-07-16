@@ -1,111 +1,127 @@
 import React, { Component } from "react";
 import QA from "./QuestionComp";
 import logic from "../../business/business_logic";
-import QuizNavComp from './QuizNavComp'
+import QuizNavComp from "./QuizNavComp";
 
 export class CreateQuizForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        questionType: "multipleChoice",
-        quizNav: "Create Quiz",
-        quizes: new logic.Quiz()
+      questionType: "multipleChoice",
+      quizNav: "Create Quiz",
+      quizes: new logic.Quiz(),
+      qaID: null
     };
   }
 
-    onClickEntryHandler = (e) => {
-      this.setState({quizNav: "Create Quiz"});
-    };
+  onClickEntryHandler = (e) => {
+    this.setState({ quizNav: "Create Quiz" });
+  };
 
-    onClickPreviewHandler = (e) => {
-      this.setState({quizNav: "Preview Quiz"});
-    };
+  onClickPreviewHandler = (e) => {
+    this.setState({ quizNav: "Preview Quiz" });
+  };
 
-    onClickQuizHandler = (e) => {
-      console.log("Save to the server");
-    };
+  onClickQuizHandler = (e) => {
+    console.log("Save to the server");
+  };
 
-    onClickQuestionHandler = (e) => {
-      const quizObj = new logic.Quiz();
-      quizObj.name = document.getElementById("idQuizName").value;
-      quizObj.theme = document.getElementById("idQuizTheme").value;
-      quizObj.QuestionsAndAnswers = this.state.quizes.QuestionsAndAnswers;
+  onClickQuestionHandler = (e) => {
+    const quizObj = new logic.Quiz();
+    quizObj.name = document.getElementById("idQuizName").value;
+    quizObj.theme = document.getElementById("idQuizTheme").value;
+    quizObj.QuestionsAndAnswers = this.state.quizes.QuestionsAndAnswers;
 
-      let key = this.state.quizes.addQuestionsAndAnswers();
-      let qAndAPair = this.state.quizes.getQuestionAndAnswers(key);
-      console.log(qAndAPair);
-      qAndAPair.type = document.getElementById("idQuestionType").value;
-      qAndAPair.question = document.getElementById("idQuestion").value;
+    let key = this.state.quizes.addQuestionsAndAnswers();
+    let qAndAPair = this.state.quizes.getQuestionAndAnswers(key);
+    console.log(qAndAPair);
+    qAndAPair.type = document.getElementById("idQuestionType").value;
+    qAndAPair.question = document.getElementById("idQuestion").value;
 
-      const CAarray = document.querySelectorAll(".CorrectAnswer");
-      for (let i=0; i<CAarray.length; i++) {
-          qAndAPair.correct_answers.push(CAarray[i].value);
-      }
+    const CAarray = document.querySelectorAll(".CorrectAnswer");
+    for (let i = 0; i < CAarray.length; i++) {
+      qAndAPair.correct_answers.push(CAarray[i].value);
+    }
 
-      const WAarray = document.querySelectorAll(".WrongAnswer");
-      for (let i=0; i<WAarray.length; i++) {
-          qAndAPair.incorrect_answers.push(WAarray[i].value);
-      }
-      
-      this.setState({quizes: quizObj})
-      this.clearInputs()
-      console.log(this.state.quizes)
+    const WAarray = document.querySelectorAll(".WrongAnswer");
+    for (let i = 0; i < WAarray.length; i++) {
+      qAndAPair.incorrect_answers.push(WAarray[i].value);
+    }
 
-  }
+    this.setState({ quizes: quizObj });
+    this.clearInputs();
+    console.log(this.state.quizes);
+  };
 
   onChangeQuestionHandler = (e) => {
-
     let type = document.getElementById("idQuestionType").value;
-    this.setState({questionType: type});
-  }
+    this.setState({ questionType: type });
+  };
 
   clearInputs = () => {
-      document.getElementById("idQuestion").value = '';
+    document.getElementById("idQuestion").value = "";
 
-      const CAarray = document.querySelectorAll(".CorrectAnswer");
-      for (let i=0; i<CAarray.length; i++) {
-          CAarray[i].value = '';
-      }
+    const CAarray = document.querySelectorAll(".CorrectAnswer");
+    for (let i = 0; i < CAarray.length; i++) {
+      CAarray[i].value = "";
+    }
 
-      const WAarray = document.querySelectorAll(".WrongAnswer");
-      for (let i=0; i<WAarray.length; i++) {
-          WAarray[i].value = '';
-      }
-  }
+    const WAarray = document.querySelectorAll(".WrongAnswer");
+    for (let i = 0; i < WAarray.length; i++) {
+      WAarray[i].value = "";
+    }
+  };
 
   onChangeQuestionHandler = (e) => {
-
     let type = document.getElementById("idQuestionType").value;
-    this.setState({questionType: type});
-  }
+    this.setState({ questionType: type });
+  };
 
   onClickEdit = (e) => {
-
-    console.log(e.target.getAttribute('uuid'));
+    let key = e.target.getAttribute("uuid");
     // back to edit entry display
-    this.setState({quizNav: "Create Quiz"});
-  }  
+    let obj = this.state.quizes.getQuestionAndAnswers(key);
+    console.log(obj.type);
+    this.setState({ quizNav: "Create Quiz" , qaID: key});
+    console.log(this.state.qaID)
+    
+  };
 
   onClickDelete = (e) => {
-
     const quizObj = this.state.quizes;
-    const key = e.target.getAttribute('uuid');
+    const key = e.target.getAttribute("uuid");
     const qAndAPair = quizObj.deleteQuestionsAndAnswers(key);
-    
-    this.setState({quizes: quizObj,
-                   quizNav: "Preview Quiz"
-                  });
-  }  
+
+    this.setState({ quizes: quizObj, quizNav: "Preview Quiz" });
+  };
 
   render() {
-    const entry = <QA.QAentry quiz={this.state.quizes} QAtype={this.state.questionType} onClick={this.onClickQuestionHandler} onChange={this.onChangeQuestionHandler}/>;
-    const preview = <QA.QApreview quiz={this.state.quizes} onClickEdit={this.onClickEdit} onClickDelete={this.onClickDelete}/>;
+    const entry = (
+      <QA.QAentry
+        qaID= {this.state.qaID}
+        quiz={this.state.quizes}
+        QAtype={this.state.questionType}
+        onClick={this.onClickQuestionHandler}
+        onChange={this.onChangeQuestionHandler}
+      />
+    );
+    const preview = (
+      <QA.QApreview
+        quiz={this.state.quizes}
+        onClickEdit={this.onClickEdit}
+        onClickDelete={this.onClickDelete}
+      />
+    );
 
-    const quizNavPanel = this.state.quizNav === "Create Quiz" ? entry : preview
+    const quizNavPanel = this.state.quizNav === "Create Quiz" ? entry : preview;
 
     return (
       <div className="createQuizContainer">
-        <QuizNavComp quizNav={this.state.quizNav} onEntryClick={this.onClickEntryHandler} onPreviewClick={this.onClickPreviewHandler}/>
+        <QuizNavComp
+          quizNav={this.state.quizNav}
+          onEntryClick={this.onClickEntryHandler}
+          onPreviewClick={this.onClickPreviewHandler}
+        />
         <input
           type="text"
           name="quizName"

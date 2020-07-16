@@ -2,38 +2,65 @@ import React, { Component } from "react";
 
 export class QAentry extends Component {
 
+
   render() {
-    let ansDisplay;
+    let ansDisplay=[];
+
+    console.log(this.props.qaID)
+    let category;
+    let type;
+    let question;
+    let correct_answers;
+    let incorrect_answers
+    let number_of_correct_entries;
+    let number_of_incorrect_entries;
+    
+
+    if (this.props.qaID != null) {
+        let obj = this.props.quiz.getQuestionAndAnswers(this.props.qaID);
+
+        ansDisplay=ansDisplay.push
+    
+        correct_answers = obj.correct_answers;
+        incorrect_answers = obj.incorrect_answers;
+        question = obj.question;
+        type = obj.type;
+      
+        console.log("correct_answers.length, ", correct_answers.length);
+        console.log(correct_answers[0]);
+        console.log("incorrect_answers.length, ",incorrect_answers.length);
+        console.log(incorrect_answers[1]);
+    }
+
     if (this.props.QAtype === "multipleChoice") {
-       ansDisplay = [
-        <input type="text" placeholder="Correct Answer" className='CorrectAnswer' key = 'c1'/>,
-        <input type="text" placeholder="Wrong Answer/s" className='WrongAnswer' key = 'w1'/>,
-        <input type="text" placeholder="Wrong Answer/s" className='WrongAnswer' key = 'w2'/>,
-        <input type="text" placeholder="Wrong Answer/s" className='WrongAnswer'key = 'w3'/>
-    ];
+      ansDisplay = [
+        <input type="text" placeholder="Correct Answer" className='CorrectAnswer' key = 'c1' defaultValue={correct_answers}/>,
+        <input type="text" placeholder="Wrong Answer/s" className='WrongAnswer' key = 'w1' defaultValue={incorrect_answers}/>,
+        <input type="text" placeholder="Wrong Answer/s" className='WrongAnswer' key = 'w2' defaultValue={incorrect_answers}/>,
+        <input type="text" placeholder="Wrong Answer/s" className='WrongAnswer'key = 'w3' defaultValue={incorrect_answers}/>
+      ];
 
     } else if(this.props.QAtype === "openEnded") {
 
-       ansDisplay = [
-        <input type="text" placeholder="Correct Answer" className='CorrectAnswer'key = 'c1'/>,
-        <input type="text" placeholder="Correct Answer" className='CorrectAnswer'key = 'c2'/>,
-        <input type="text" placeholder="Correct Answer" className='CorrectAnswer'key = 'c3'/>,
-        <input type="text" placeholder="Correct Answer" className='CorrectAnswer'key = 'c4'/>      
+      ansDisplay = [
+        <input type="text" placeholder="Correct Answer" className='CorrectAnswer' key='c1'/>,
+        <input type="text" placeholder="Correct Answer" className='CorrectAnswer' key='c2'/>,
+        <input type="text" placeholder="Correct Answer" className='CorrectAnswer' key='c3'/>,
+        <input type="text" placeholder="Correct Answer" className='CorrectAnswer' key='c4'/>      
       ];
 
     } else if(this.props.QAtype === "boolean") {
       ansDisplay = [
-        <input type="text" placeholder="Correct Answer" className='CorrectAnswer'key = 'c1'/>,
-        <input type="text" placeholder="Wrong Answer/s" className='WrongAnswer'key = 'w1'/>
-    ];
-
+        <input type="text" placeholder="Correct Answer" className='CorrectAnswer' key='c1'/>,
+        <input type="text" placeholder="Wrong Answer/s" className='WrongAnswer' key='w1'/>
+      ];
     }
 
     return (
       <div>
-        <input type="text" placeholder="Question"  id = 'idQuestion'/>
+        <input type="text" placeholder="Question"  id = 'idQuestion' defaultValue={question}/>
 
-        <select name="type" id="idQuestionType" onChange={this.props.onChange}>
+        <select name="type" id="idQuestionType" onChange={this.props.onChange} defaultValue={type}>
           <option value="multipleChoice">Multiple Choice</option>
           <option value="openEnded">Open Ended Question</option>
           <option value="boolean">True or False</option>
@@ -57,12 +84,15 @@ export class QApreview extends Component {
 
       QAentries.push(<div key={`Q${key}`}>{QA.question}</div>);
 
+      QAentries.push(<div key={`T${key}`}>{QA.type}</div>);
+
+
       for (let i=0; i<QA.correct_answers.length; i++) {
-        QAentries.push(<div key={`CA${key}${i}`}>{QA.correct_answers[i]}</div>);
+        QAentries.push(<div key={`CA${key}${i}`}>Correct answer: {QA.correct_answers[i]}</div>);
       }
 
       for (let i=0; i<QA.incorrect_answers.length; i++) {
-        QAentries.push(<div key={`IA${key}${i}`}>{QA.incorrect_answers[i]}</div>);
+        QAentries.push(<div key={`IA${key}${i}`}>Wrong answer: {QA.incorrect_answers[i]}</div>);
       }
             
       QAentries.push(<button key={`BEdit${key}`} uuid={key} onClick={this.props.onClickEdit}>Edit</button>);
