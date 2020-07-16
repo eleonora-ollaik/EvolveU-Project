@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export class QuestionComp extends Component {
+export class QAentry extends Component {
 
   render() {
     let ansDisplay;
@@ -33,7 +33,7 @@ export class QuestionComp extends Component {
       <div>
         <input type="text" placeholder="Question"  id = 'idQuestion'/>
 
-        <select name="type" id="idQuestionType" onChange = {this.props.onChange}>
+        <select name="type" id="idQuestionType" onChange={this.props.onChange}>
           <option value="multipleChoice">Multiple Choice</option>
           <option value="openEnded">Open Ended Question</option>
           <option value="boolean">True or False</option>
@@ -47,4 +47,23 @@ export class QuestionComp extends Component {
   }
 }
 
-export default QuestionComp;
+export class QApreview extends Component {
+
+  render() {
+    const entries_num = Object.keys(this.props.quiz.QuestionsAndAnswers).length;
+    let QAentries = [];
+    console.log("this.props.quiz.QuestionsAndAnswers,", this.props.quiz.QuestionsAndAnswers);
+    console.log("entries_num,", entries_num);
+    for (let i=0; i<entries_num; i++ ) {
+      QAentries.push(<QAentry key={i} quiz={this.props.quiz} QAtype={this.props.QAtype} onClick={this.props.onClick} onChange={this.props.onChange}/>);
+    }
+
+    return (
+      <div>
+        {QAentries}        
+      </div>
+    );
+  }
+}
+
+export default {QAentry, QApreview};

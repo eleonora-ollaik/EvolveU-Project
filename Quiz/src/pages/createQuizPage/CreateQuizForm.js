@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import QuestionComp from "./QuestionComp";
+import QA from "./QuestionComp";
 import logic from "../../business/business_logic";
 import QuizNavComp from './QuizNavComp'
 
@@ -9,17 +9,23 @@ export class CreateQuizForm extends Component {
     this.state = {
         questionType: "multipleChoice",
         quizNav: "Create Quiz",
-        quizes: new logic.Quiz()        
-    //   quiestions: new logic.QuestionsAndAnswers()
+        quizes: new logic.Quiz()
     };
   }
+
+  onClickEntryHandler = (e) => {
+    this.setState({quizNav: "Create Quiz"});
+  };
+
+  onClickPreviewHandler = (e) => {
+    this.setState({quizNav: "Preview Quiz"});
+  };
 
   onClickQuizHandler = (e) => {
     console.log("Save to the server");
   };
 
   onClickQuestionHandler = (e) => {
-    // const qA = new logic.QuestionsAndAnswers();
     const quizObj = new logic.Quiz();
     quizObj.name = document.getElementById("idQuizName").value;
     quizObj.theme = document.getElementById("idQuizTheme").value;
@@ -65,18 +71,18 @@ clearInputs = () => {
     const WAarray = document.querySelectorAll(".WrongAnswer");
     for (let i=0; i<WAarray.length; i++) {
         WAarray[i].value = '';
-
     }
-
-
 }
 
-
   render() {
+    const entry = <QA.QAentry quiz={this.state.quizes} QAtype={this.state.questionType} onClick={this.onClickQuestionHandler} onChange={this.onChangeQuestionHandler}/>;
+    const preview = <QA.QApreview quiz={this.state.quizes} QAtype={this.state.questionType} onClick={this.onClickQuestionHandler} onChange={this.onChangeQuestionHandler}/>;
+
+    const quizNavPanel = this.state.quizNav === "Create Quiz" ? entry : preview
+
     return (
       <div className="createQuizContainer">
-          <QuizNavComp quizNav = {this.state.quizNav}/>
-        {/* <form > */}
+        <QuizNavComp quizNav={this.state.quizNav} onEntryClick={this.onClickEntryHandler} onPreviewClick={this.onClickPreviewHandler}/>
         <input
           type="text"
           name="quizName"
@@ -91,7 +97,7 @@ clearInputs = () => {
           <option value="entertainment">Entertainment</option>
         </select>
 
-        <QuestionComp quiz={this.state.quizes} QAtype={this.state.questionType} onClick={this.onClickQuestionHandler} onChange={this.onChangeQuestionHandler}/>
+        {quizNavPanel}
 
         <button type="Submit" onClick={this.onClickQuizHandler}>
           Submit
