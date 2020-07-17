@@ -1,16 +1,31 @@
-import React from 'react';
-// import logo from './logo.svg';
+import React, { Component } from 'react';
+
 import './App.css';
-import CreateQuizForm from './pages/createQuizPage/CreateQuizForm'
+import LandingPage from './pages/homepage/landingpage';
+import Header from './components/header/header';
 
-function App() {
+class App extends Component {
+  constructor(props){
+    super(props)
 
-    
-  return (
-    <div className="App">
-      <CreateQuizForm/>
-    </div>
-  );
+    this.state = {
+      renderPage: <LandingPage />
+    }
+  }
+
+  handleNavigation = (component) => {
+    this.setState({renderPage: component})
+  }  
+
+  render() {
+    const { renderPage } = this.state;
+    return (
+      <div className="App">
+        <Header currentPage={renderPage} handleNavigation={this.handleNavigation}/>
+        {renderPage}
+      </div>
+    );
+  }
 }
 
 export default App;
