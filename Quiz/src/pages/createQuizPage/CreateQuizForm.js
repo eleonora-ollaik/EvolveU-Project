@@ -7,7 +7,7 @@ export class CreateQuizForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questionType: "multipleChoice",
+      qaType: "multipleChoice",
       quizNav: "Create Quiz",
       quizes: new logic.Quiz(),
       qaID: null
@@ -15,14 +15,17 @@ export class CreateQuizForm extends Component {
   }
 
   onClickEntryHandler = (e) => {
-    this.setState({ quizNav: "Create Quiz" });
+    // qaID = null resets the edit panel display
+    this.setState({quizNav: "Create Quiz", qaID: null});
   };
 
   onClickPreviewHandler = (e) => {
-    this.setState({ quizNav: "Preview Quiz" });
+    this.setState({quizNav: "Preview Quiz"});
   };
 
   onClickQuizHandler = (e) => {
+    // Save Quiz to the server
+    // Clear current Quiz controller
     console.log("Save to the server");
   };
 
@@ -55,7 +58,7 @@ export class CreateQuizForm extends Component {
 
   onChangeQuestionHandler = (e) => {
     let type = document.getElementById("idQuestionType").value;
-    this.setState({ questionType: type });
+    this.setState({ qaType: type });
   };
 
   clearInputs = () => {
@@ -74,17 +77,14 @@ export class CreateQuizForm extends Component {
 
   onChangeQuestionHandler = (e) => {
     let type = document.getElementById("idQuestionType").value;
-    this.setState({ questionType: type });
+    this.setState({ qaType: type });
   };
 
   onClickEdit = (e) => {
     let key = e.target.getAttribute("uuid");
-    // back to edit entry display
     let obj = this.state.quizes.getQuestionAndAnswers(key);
-    console.log(obj.type);
-    this.setState({ quizNav: "Create Quiz" , qaID: key});
-    console.log(this.state.qaID)
-    
+
+    this.setState({qaType: obj.type , qaID: key});    
   };
 
   onClickDelete = (e) => {
@@ -92,15 +92,15 @@ export class CreateQuizForm extends Component {
     const key = e.target.getAttribute("uuid");
     const qAndAPair = quizObj.deleteQuestionsAndAnswers(key);
 
-    this.setState({ quizes: quizObj, quizNav: "Preview Quiz" });
+    // qaID = null resets the edit panel display
+    this.setState({quizes: quizObj, quizNav: "Preview Quiz", qaID: null});
   };
 
   render() {
     const entry = (
-      <QA.QAentry
-        qaID= {this.state.qaID}
+      <QA.QAentry        
         quiz={this.state.quizes}
-        QAtype={this.state.questionType}
+        qaType={this.state.qaType}
         onClick={this.onClickQuestionHandler}
         onChange={this.onChangeQuestionHandler}
       />
@@ -108,8 +108,11 @@ export class CreateQuizForm extends Component {
     const preview = (
       <QA.QApreview
         quiz={this.state.quizes}
+        qaID= {this.state.qaID}
+        qaType={this.state.qaType}
         onClickEdit={this.onClickEdit}
         onClickDelete={this.onClickDelete}
+        onChange={this.onChangeQuestionHandler}
       />
     );
 
