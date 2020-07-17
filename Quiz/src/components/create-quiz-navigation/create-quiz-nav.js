@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export class QuizNavComp extends Component {
+export class CreateQuizNav extends Component {
 
     render() {        
         return (
@@ -12,4 +12,4 @@ export class QuizNavComp extends Component {
     }
 }
 
-export default QuizNavComp
+export default CreateQuizNav

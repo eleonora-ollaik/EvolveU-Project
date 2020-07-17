@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import QA from "./QuestionComp";
+import CreateQuiz from "../../components/create-quiz/create-quiz";
+import PreviewQuiz from "../../components/preview-quiz/preview-quiz";
 import logic from "../../business/business_logic";
-import QuizNavComp from "./QuizNavComp";
+import CreateQuizNav from "../../components/create-quiz-navigation/create-quiz-nav";
 
 export class CreateQuizForm extends Component {
   constructor(props) {
@@ -10,17 +11,17 @@ export class CreateQuizForm extends Component {
       qaType: "multipleChoice",
       quizNav: "Create Quiz",
       quizes: new logic.Quiz(),
-      qaID: null
+      qaID: null,
     };
   }
 
   onClickEntryHandler = (e) => {
     // qaID = null resets the edit panel display
-    this.setState({quizNav: "Create Quiz", qaID: null});
+    this.setState({ quizNav: "Create Quiz", qaID: null });
   };
 
   onClickPreviewHandler = (e) => {
-    this.setState({quizNav: "Preview Quiz"});
+    this.setState({ quizNav: "Preview Quiz" });
   };
 
   onClickQuizHandler = (e) => {
@@ -84,7 +85,40 @@ export class CreateQuizForm extends Component {
     let key = e.target.getAttribute("uuid");
     let obj = this.state.quizes.getQuestionAndAnswers(key);
 
-    this.setState({qaType: obj.type , qaID: key});    
+    console.log("onClickEdit key", key);
+
+    this.setState({ qaType: obj.type, qaID: key });
+  };
+
+  onClickSave = (e) => {
+    const quiz = this.state.quizes;
+    let key = this.state.qaID;
+
+    console.log("onClickSave key", key);
+    let obj = this.state.quizes.getQuestionAndAnswers(key);
+    console.log(obj);
+
+    const QA = new logic.QuestionsAndAnswers();
+    QA.question = document.getElementById("idQuestion").value;
+
+    let CAarray = document.querySelectorAll(".CorrectAnswer");
+    let WAarray = document.querySelectorAll(".WrongAnswer");
+    QA.type = document.getElementById("idQuestionType").value;
+    let array = [];
+    for (let i = 0; i < CAarray.length; i++) {
+      array.push(CAarray[i].value);
+    }
+
+    QA.correct_answers = array;
+    let Warray = [];
+
+    for (let i = 0; i < WAarray.length; i++) {
+      Warray.push(WAarray[i].value);
+    }    
+    QA.incorrect_answers = Warray;
+    quiz.QuestionsAndAnswers[key] = QA;
+    this.clearInputs();
+    this.setState({ quizes: quiz, qaType: QA.type });
   };
 
   onClickDelete = (e) => {
@@ -93,12 +127,12 @@ export class CreateQuizForm extends Component {
     const qAndAPair = quizObj.deleteQuestionsAndAnswers(key);
 
     // qaID = null resets the edit panel display
-    this.setState({quizes: quizObj, quizNav: "Preview Quiz", qaID: null});
+    this.setState({ quizes: quizObj, quizNav: "Preview Quiz", qaID: null });
   };
 
   render() {
     const entry = (
-      <QA.QAentry        
+      <CreateQuiz
         quiz={this.state.quizes}
         qaType={this.state.qaType}
         onClick={this.onClickQuestionHandler}
@@ -106,13 +140,14 @@ export class CreateQuizForm extends Component {
       />
     );
     const preview = (
-      <QA.QApreview
+      <PreviewQuiz
         quiz={this.state.quizes}
-        qaID= {this.state.qaID}
+        qaID={this.state.qaID}
         qaType={this.state.qaType}
         onClickEdit={this.onClickEdit}
         onClickDelete={this.onClickDelete}
         onChange={this.onChangeQuestionHandler}
+        onClick={this.onClickSave}
       />
     );
 
@@ -120,7 +155,7 @@ export class CreateQuizForm extends Component {
 
     return (
       <div className="createQuizContainer">
-        <QuizNavComp
+        <CreateQuizNav
           quizNav={this.state.quizNav}
           onEntryClick={this.onClickEntryHandler}
           onPreviewClick={this.onClickPreviewHandler}

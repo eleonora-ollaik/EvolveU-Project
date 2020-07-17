@@ -1,46 +1,5 @@
 import React, { Component } from "react";
 
-export class QAentry extends Component {
-
-
-  render() {
-    let ansDisplay=[];
-    const type = this.props.qaType;
-
-    const displayOption = {
-                            "multipleChoice": {"caNumer": 1, "iaNumber": 3},
-                            "openEnded": {"caNumer": 4, "iaNumber": 0},
-                            "boolean": {"caNumer": 1, "iaNumber": 1},
-                          }
-
-    // Generate correct answer inputs      
-    for (let i=0; i<displayOption[type]["caNumer"]; i++) {
-      ansDisplay.push(<input type="text" placeholder="Correct Answer" className='CorrectAnswer' key={`'ca'${i}`}/>);
-    }
-
-    // Generate wrong answer inputs
-    for (let i=0; i<displayOption[type]["iaNumber"]; i++) {
-      ansDisplay.push(<input type="text" placeholder="Wrong Answer" className='WrongAnswer' key={`'ia'${i}`}/>);
-    }      
-
-    return (
-      <div>
-        <input type="text" placeholder="Question"  id = 'idQuestion'/>
-
-        <select name="type" id="idQuestionType" onChange={this.props.onChange}>
-          <option value="multipleChoice">Multiple Choice</option>
-          <option value="openEnded">Open Ended Question</option>
-          <option value="boolean">True or False</option>
-        </select>
-
-        {ansDisplay}
-
-        <button onClick = {this.props.onClick}>Submit question</button>
-      </div>
-    );
-  }
-}
-
 export class QApreview extends Component {
 
   render() {
@@ -60,7 +19,7 @@ export class QApreview extends Component {
       }
 
       for (let i=0; i<QA.incorrect_answers.length; i++) {
-        console.log("incorrect_answers.length, ", QA.incorrect_answers.length)
+        // console.log("incorrect_answers.length, ", QA.incorrect_answers.length)
         QAentries.push(<div key={`IA${key}${i}`}>Wrong answer: {QA.incorrect_answers[i]}</div>);
       }
             
@@ -77,6 +36,7 @@ export class QApreview extends Component {
             qaID= {this.props.qaID}
             qaType={this.props.qaType}
             onChange={this.props.onChange}
+            onClick = {this.props.onClick}
           />        
         </div>        
       </div>
@@ -115,7 +75,7 @@ export class QAedit extends Component {
         ansDisplay.push(<input type="text" placeholder="Wrong Answer" className='WrongAnswer' key={`'ia'${i}`} defaultValue={incorrect_answers[i]}/>);
       }      
 
-      console.log("qaType", qaType);
+      // console.log("qaType", qaType);
     }
 
     return (
@@ -136,4 +96,4 @@ export class QAedit extends Component {
   }
 }
 
-export default {QAentry, QApreview};
+export default QApreview;
