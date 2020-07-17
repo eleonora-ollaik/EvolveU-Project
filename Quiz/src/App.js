@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.css';
+import LandingPage from './pages/homepage/landingpage';
+import Header from './components/header/header';
+
+class App extends Component {
+  constructor(props){
+    super(props)
+
+    this.state = {
+      renderPage: <LandingPage />
+    }
+  }
+
+  handleNavigation = (component) => {
+    this.setState({renderPage: component})
+  }  
+
+  render() {
+    const { renderPage } = this.state;
+    return (
+      <div className="App">
+        <Header currentPage={renderPage} handleNavigation={this.handleNavigation}/>
+        {renderPage}
+      </div>
+    );
+  }
 }
 
 export default App;
