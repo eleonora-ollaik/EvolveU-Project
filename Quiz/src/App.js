@@ -9,12 +9,25 @@ class App extends Component {
     super(props)
 
     this.state = {
-      renderPage: <LandingPage />
+      renderPage: <LandingPage />,
+      alertChangePage: false,
     }
   }
 
+  setAlertChangePageToTrue = () => {
+    this.setState({alertChangePage: true})
+  }
+
   handleNavigation = (component) => {
-    this.setState({renderPage: component})
+    if (this.alertChangePage) {
+      if (window.confirm('Are you sure you want to leave the current page?')) {
+        this.setState({renderPage: component})
+      } else {
+        return;
+      }
+    } else {
+      this.setState({renderPage: component})
+    }
   }  
 
   render() {

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
 import SelectQuiz from "../../components/select-quiz/select-quiz";
 import PlayQuiz from "../../components/play-quiz/play-quiz";
@@ -23,7 +23,7 @@ async function postData(url = "", data = {}) {
   return response.json();
 }
 
-class TakeQuiz extends Component {
+class TakeQuiz extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,8 +36,8 @@ class TakeQuiz extends Component {
           creator: "John",
           theme: "Entertainment",
           // lastKey: 0,
-          questionsAndAnswers: [
-            {
+          questionsAndAnswers: {
+            1: {
               uuid: 1,
               category: "Entertainment: Comics",
               type: "open", //type: "multiple, boolean, open{short answer}",
@@ -45,10 +45,10 @@ class TakeQuiz extends Component {
                 "This Marvel superhero is often called 'The man without fear'.",
               number_of_correct_entries: 5,
               number_of_incorrect_entries: 10,
-              correct_answers: ["Daredevil", "Dare devil"],
+              correct_answers: ["Daredevil", "Dare devil"], 
               incorrect_answers: ["Thor", "Wolverine", "Hulk"],
             },
-            {
+            2: {
               uuid: 2,
               category: "Entertainment: Comics",
               type: "open", //type: "multiple, boolean, open{short answer}",
@@ -58,7 +58,7 @@ class TakeQuiz extends Component {
               correct_answers: ["Itchy"],
               incorrect_answers: [],
             },
-          ],
+          },
         },
         {
           name: "Chocolates of the world",
@@ -66,8 +66,8 @@ class TakeQuiz extends Component {
           creator: "Cornelius",
           theme: "Food",
           // lastKey: 0,
-          questionsAndAnswers: [
-            {
+          questionsAndAnswers: {
+            3:{
               uuid: 3,
               category: "Food",
               type: "multiple", //type: "multiple, boolean, open{short answer}",
@@ -77,7 +77,7 @@ class TakeQuiz extends Component {
               correct_answers: ["Lindt", "Callier"],
               incorrect_answers: ["Mars", "Cadbury"],
             },
-            {
+            4: {
               uuid: 4,
               category: "Food",
               type: "boolean", //type: "multiple, boolean, open{short answer}",
@@ -88,7 +88,7 @@ class TakeQuiz extends Component {
               correct_answers: ["true"],
               incorrect_answers: ["false"],
             },
-          ],
+          },
         },
       ],
     };

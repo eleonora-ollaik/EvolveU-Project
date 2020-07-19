@@ -15,10 +15,11 @@ class QuizTable extends Component {
 
     render(){
         const { quizData } = this.props;
+        const quizDataArray = Object.values(quizData) // Turn Quiz Data (responseData) from Object to Array
 
         // style={{backgroundColor: this.state.highlightedQuizID === quiz.quizId?'red':'white'}}
     
-        const list = quizData.map((quiz, i) => {
+        const list = quizDataArray.map((quiz, i) => {
             return (
                 <tr key={i} onClick={() => this.props.selectQuiz(quiz)}>
                     <td>{quiz.quizId}</td>

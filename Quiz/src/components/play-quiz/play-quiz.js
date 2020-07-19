@@ -10,26 +10,28 @@ class PlayQuiz extends Component {
     super(props);
     this.state = {
       currentQuestion: 0,
-      isTestOver: false
+      isTestOver: false,
     };
   }
+
   handlePlayQuiz = () => {
     this.setState({ currentQuestion: 1 })
   }
 
   render() {
-    const { questionsAndAnswers, name } = this.props.selectedQuiz;
-
+    const { name } = this.props.selectedQuiz;
+    const { questionsAndAnswers } = this.props.selectedQuiz;
+    const quizDataArray = Object.values(questionsAndAnswers) // Turn Quiz Data (responseData) from Object to Array\
     let newCurrentQuestion;
-    if (this.state.currentQuestion > 0 && questionsAndAnswers[this.state.currentQuestion - 1].type === "multiple") {
-      const currentQ = questionsAndAnswers[this.state.currentQuestion - 1];
+    if (this.state.currentQuestion > 0 && quizDataArray[this.state.currentQuestion - 1].type === "multiple") {
+      const currentQ = quizDataArray[this.state.currentQuestion - 1];
       const { correct_answers, incorrect_answers } = currentQ;
       const shuffledAnswers = randomizeAnswerArray(correct_answers, incorrect_answers);
       newCurrentQuestion = { ...currentQ, shuffledAnswers: shuffledAnswers };
     } else {
-      newCurrentQuestion = questionsAndAnswers[this.state.currentQuestion - 1];
+      newCurrentQuestion = quizDataArray[this.state.currentQuestion -1 ];
     }
-
+    
     return (
       <div>
         <h3>Play Quiz</h3>
@@ -86,6 +88,7 @@ class QandA extends Component {
 
   render() {
     const { currentQuestion, questionsAndAnswers } = this.props;
+    
     return (
       <div>
         <div>Question {currentQuestion}</div>
