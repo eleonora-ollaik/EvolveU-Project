@@ -11,6 +11,7 @@ pylint = "*"
 flask = "*"
 flask-restful = "*"
 flask-sqlalchemy = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.8"

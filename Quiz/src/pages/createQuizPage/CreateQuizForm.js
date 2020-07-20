@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CreateQuiz from "../../components/create-quiz/create-quiz";
 import PreviewQuiz from "../../components/preview-quiz/preview-quiz";
 import logic from "../../business/business_logic";
+import net from "../../business/netcomm";
 import CreateQuizNav from "../../components/create-quiz-navigation/create-quiz-nav";
 
 export class CreateQuizForm extends Component {
@@ -12,6 +13,7 @@ export class CreateQuizForm extends Component {
       quizNav: "Create Quiz",
       quizes: new logic.Quiz(),
       qaID: null,
+      noticeMsg: "",
     };
   }
 
@@ -24,9 +26,43 @@ export class CreateQuizForm extends Component {
     this.setState({ quizNav: "Preview Quiz" });
   };
 
+  async saveQuiz () {
+
+    const quiz = this.state.quizes;
+
+    const url = "http://127.0.0.1:5000/quiz";  
+    let responsedata = null;
+
+    if(Object.keys(quiz.QuestionsAndAnswers).length > 0) {  // At least one pair of question and answer
+      try {
+        // let webdata = quiz;
+        let data = {
+          "quiz_name": "Name 1", 
+          "quiz_theme": "Theme 1"
+        }
+     
+        let webdata = data;
+
+        responsedata = await net.postData(url, webdata);
+
+        if (responsedata.status >= 500) {
+            throw (new Error(`${responsedata.status} ${responsedata.message}`));
+        }
+        else {
+          this.setState({noticeMsg: "Data saved.", quizes: new logic.Quiz()});
+        }
+      }
+      catch (error) {
+          console.error ("Failed in saving data to server: ", error);
+          this.setState({noticeMsg: "Failed in saving data to server, please try again."});
+      }      
+    }
+  }
+
   onClickQuizHandler = (e) => {
     // Save Quiz to the server
     // Clear current Quiz controller
+    this.saveQuiz();
     console.log("Save to the server");
   };
 
@@ -59,7 +95,7 @@ export class CreateQuizForm extends Component {
 
   onChangeQuestionHandler = (e) => {
     let type = document.getElementById("idQuestionType").value;
-    this.setState({ qaType: type });
+    this.setState({qaType: type, noticeMsg: ""});
   };
 
   clearInputs = () => {
@@ -74,11 +110,6 @@ export class CreateQuizForm extends Component {
     for (let i = 0; i < WAarray.length; i++) {
       WAarray[i].value = "";
     }
-  };
-
-  onChangeQuestionHandler = (e) => {
-    let type = document.getElementById("idQuestionType").value;
-    this.setState({ qaType: type });
   };
 
   onClickEdit = (e) => {
@@ -179,6 +210,8 @@ export class CreateQuizForm extends Component {
         <button type="Submit" onClick={this.onClickQuizHandler}>
           Submit
         </button>
+
+        {this.state.noticeMsg}
       </div>
     );
   }

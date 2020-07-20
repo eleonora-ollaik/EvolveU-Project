@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 from db import db
 from resources.quiz import Quiz, QuizList
@@ -9,8 +10,13 @@ from resources.question import Question, QuestionList
 
 # Initiate Flask obj
 app = Flask(__name__)
+app.secret_key = os.urandom(16)
+app.config['CORS_ENABLED'] = True
+# CORS(app, supports_credentials=True)
+CORS(app)
 
 app.config['DEBUG'] = True
+
 
 # https://flask-sqlalchemy.palletsprojects.com/en/2.x/config/
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///quiz.db')
