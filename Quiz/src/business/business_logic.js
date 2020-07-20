@@ -76,7 +76,6 @@ class QuestionsAndAnswers {
         return result;
     }
 
-
     // Generate new key (UUID) for new questions and answers object
     // newKey() {
     //     return ++QuestionsAndAnswers.lastKey;
