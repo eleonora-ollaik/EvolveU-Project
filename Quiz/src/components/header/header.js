@@ -19,7 +19,6 @@ class Header extends Component {
                 <button onClick={()=>handleNavigation(<LandingPage />)}>LOGO (home)</button>
                 <div className='navbar'>
                     <button onClick={()=>handleNavigation(<CreateQuizForm />)}>create quiz</button>
-                    <button onClick={()=>handleNavigation(<CreateQuizForm />)}>create quiz</button>
                     <button onClick={()=>handleNavigation(<TakeQuiz/>)}>take quiz</button>
                     <button onClick={()=>handleNavigation('Quiz Manager')}>quiz manager</button>
                 </div>
