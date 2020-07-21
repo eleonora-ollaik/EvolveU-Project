@@ -127,6 +127,9 @@ class TakeQuiz extends PureComponent {
             selectedQuiz={
               this.state.selectedQuiz
             }
+            reselectQuiz={
+              () => this.setState({selectedQuiz:  null })
+            }
           />
         ) : (
           <SelectQuiz

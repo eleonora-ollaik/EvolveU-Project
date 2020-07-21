@@ -57,6 +57,13 @@ export function checkIfAnswerCorrect(value, questionAndAnswer) {
         } else {
             result = false; 
         }
+    } else {
+        const correctAnswer = questionAndAnswer.correct_answers[0];
+        if(value === correctAnswer){
+            result = true;
+        } else {
+            result = false;
+        }
     }
 
     // Send result to server to adjust number of correct/incorrect entries 

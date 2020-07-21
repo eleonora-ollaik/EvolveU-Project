@@ -13,7 +13,8 @@ class Header extends Component {
     }
 
     render() {
-        const {currentPage, handleNavigation} = this.props;
+        // const {currentPage, handleNavigation} = this.props;
+        const {handleNavigation} = this.props;
         return (
             <div className='appHeader'>
                 <button onClick={()=>handleNavigation(<LandingPage />)}>LOGO (home)</button>
