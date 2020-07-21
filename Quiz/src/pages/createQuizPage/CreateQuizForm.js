@@ -34,14 +34,11 @@ export class CreateQuizForm extends Component {
     let responsedata = null;
 
     if(Object.keys(quiz.QuestionsAndAnswers).length > 0) {  // At least one pair of question and answer
-      try {
-        // let webdata = quiz;
-        let data = {
-          "quiz_name": "Name 1", 
-          "quiz_theme": "Theme 1"
-        }
-     
-        let webdata = data;
+      try {        
+        let webdata = {
+          "quiz_name": quiz.name, 
+          "quiz_theme": quiz.theme
+        }    
 
         responsedata = await net.postData(url, webdata);
 
@@ -95,7 +92,7 @@ export class CreateQuizForm extends Component {
 
   onChangeQuestionHandler = (e) => {
     let type = document.getElementById("idQuestionType").value;
-    this.setState({qaType: type, noticeMsg: ""});
+    this.setState({qaType: type});
   };
 
   clearInputs = () => {
