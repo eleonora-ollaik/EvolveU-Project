@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import CreateQuiz from "../../components/create-quiz/create-quiz";
 import PreviewQuiz from "../../components/preview-quiz/preview-quiz";
+import EditQuiz from "../../components/edit-quiz/edit-quiz";
 import logic from "../../business/business_logic";
 import net from "../../business/netcomm";
 import CreateQuizNav from "../../components/create-quiz-navigation/create-quiz-nav";
@@ -10,6 +11,7 @@ export class CreateQuizForm extends Component {
     super(props);
     this.state = {
       qaType: "multipleChoice",
+      quizEdit: false,
       quizNav: "Create Quiz",
       quizes: new logic.Quiz(),
       qaID: null,
@@ -112,20 +114,18 @@ export class CreateQuizForm extends Component {
     let key = e.target.getAttribute("uuid");
     let obj = this.state.quizes.getQuestionAndAnswers(key);
 
-    console.log("onClickEdit key", key);
-
     // Open edit modal box
     const modal = document.getElementById("idEditQAModal");
-    // modal.setAttribute("display", "block");
     modal.style.display = "block";
 
-    this.setState({ qaType: obj.type, qaID: key });
+    this.setState({qaType: obj.type, qaID: key, quizEdit: true});
   };
 
   onClickClose = (e) => {
     const modal = document.getElementById("idEditQAModal");
-    // modal.setAttribute("display", "none");
     modal.style.display = "none";
+
+    this.setState({quizEdit: false});
   };
 
   onClickSave = (e) => {
@@ -155,6 +155,8 @@ export class CreateQuizForm extends Component {
     }    
     QA.incorrect_answers = Warray;
     quiz.QuestionsAndAnswers[key] = QA;
+    // this.clearInputs();
+
     this.setState({ quizes: quiz, qaType: QA.type });
   };
 
@@ -177,19 +179,30 @@ export class CreateQuizForm extends Component {
       />
     );
     const preview = (
-      <PreviewQuiz
-        quiz={this.state.quizes}
-        qaID={this.state.qaID}
-        qaType={this.state.qaType}
-        onClickEdit={this.onClickEdit}
-        onClickDelete={this.onClickDelete}
-        onChange={this.onChangeQuestionHandler}
-        onClickSave={this.onClickSave}
-        onClickClose={this.onClickClose}
-      />
+        <PreviewQuiz
+          quiz={this.state.quizes}
+          qaID={this.state.qaID}
+          qaType={this.state.qaType}
+          onClickEdit={this.onClickEdit}
+          onClickDelete={this.onClickDelete}
+        />
     );
 
+    const edit = (
+      <div id="idEditQAModal" className="modal">
+        <EditQuiz
+          quiz={this.state.quizes}
+          qaID={this.state.qaID}
+          qaType={this.state.qaType}
+          onChange={this.onChangeQuestionHandler}
+          onClickSave={this.onClickSave}
+          onClickClose={this.onClickClose}      
+        />
+      </div>
+    );
+    
     const quizNavPanel = this.state.quizNav === "Create Quiz" ? entry : preview;
+    const quizEdit = this.state.quizEdit ? edit : <div id="idEditQAModal" className="modal"></div>;
 
     return (
       <div className="createQuizContainer">
@@ -213,6 +226,7 @@ export class CreateQuizForm extends Component {
         </select>
 
         {quizNavPanel}
+        {quizEdit}
 
         <button type="Submit" onClick={this.onClickQuizHandler}>
           Submit
