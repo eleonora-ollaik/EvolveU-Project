@@ -7,6 +7,7 @@ from flask_cors import CORS
 from db import db
 from resources.quiz import Quiz, QuizList
 from resources.question import Question, QuestionList
+from resources.answer import Answer, AnswerList
 
 # Initiate Flask obj
 app = Flask(__name__)

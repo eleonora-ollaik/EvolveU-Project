@@ -10,10 +10,10 @@ class Answer(Resource):
     # additional arguments will be removed when parse_args() is called
     # if the request does not contain any added arguments, help message
     # will be returned to the browser instead
-    parser.add_argument('answer_id',
+    parser.add_argument('question_id',
         type=int,
         required=True,
-        help="Every answer needs an id."
+        help="Every answer needs a question id."
     )    
     parser.add_argument('answer_is_correct',
         type=bool,
