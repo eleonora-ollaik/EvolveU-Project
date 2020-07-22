@@ -1,8 +1,10 @@
 from datetime import datetime
 from flask_restful import Resource, reqparse
 # from flask_jwt import jwt_required
+import json
 
 from models.quiz import QuizModel
+from models.question import QuestionModel
 
 # Inheritance of Resource class
 class Quiz(Resource):
@@ -21,6 +23,14 @@ class Quiz(Resource):
         required=True,
         help="Every quiz needs a theme."
     )
+    # Use action "append" to add multiple dict object
+    # https://flask-restful.readthedocs.io/en/latest/reqparse.html
+    parser.add_argument('questions',
+        type=dict,
+        action='append',
+        required=True,
+        help="Every quiz needs at least one question."
+    )    
         
     def get(self, quiz_id):
         quiz = QuizModel.find_by_id(quiz_id)
@@ -32,14 +42,23 @@ class Quiz(Resource):
         # parse_args() return only arguments added by add_argument as Namespace
         # Any missing added argument will stop and return help message to the browser
         data = Quiz.parser.parse_args()
-
-        # data namespace is rolled into one argument (**data)
-        quiz = QuizModel(**data)
+        
+        # Save data into Quiz table
+        quiz = QuizModel(data["quiz_name"], data["quiz_theme"])     
 
         try:
-            quiz.save_to_db()
+            quiz.save_to_db()            
         except:
             return {"message": "An error occurred inserting the item."}, 500
+
+        # Save data into Question table
+        questions = data["questions"]
+        for q in questions:
+            question = QuestionModel(quiz.quiz_id, q["question_category"], q["question_type"], q["question_statement"], q["question_correct_entries"], q["question_wrong_entries"])
+            try:
+                question.save_to_db()
+            except:
+                return {"message": "An error occurred inserting the question."}, 500            
 
         return quiz.json(), 201
 

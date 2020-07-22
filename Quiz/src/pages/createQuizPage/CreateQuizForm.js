@@ -37,11 +37,27 @@ export class CreateQuizForm extends Component {
     let responsedata = null;
 
     if(Object.keys(quiz.QuestionsAndAnswers).length > 0) {  // At least one pair of question and answer
-      try {        
+      try {
+        
+        let QAjson = [];
+
+        for (const [key, value] of Object.entries(quiz.QuestionsAndAnswers)) {
+          QAjson.push({
+            "question_category": value.category,
+            "question_type": value.type,
+            "question_statement": value.question,
+            "question_correct_entries": 0, 
+            "question_wrong_entries": 0
+          });
+        }
+
         let webdata = {
           "quiz_name": quiz.name, 
-          "quiz_theme": quiz.theme
+          "quiz_theme": quiz.theme,
+          "questions": QAjson
         }    
+
+        console.log(webdata);
 
         responsedata = await net.postData(url, webdata);
 
