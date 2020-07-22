@@ -46,7 +46,8 @@ export class CreateQuizForm extends Component {
             throw (new Error(`${responsedata.status} ${responsedata.message}`));
         }
         else {
-          this.setState({noticeMsg: "Data saved.", quizes: new logic.Quiz()});
+          // Must reset key when quiz controller is reset
+          this.setState({noticeMsg: "Data saved.", quizes: new logic.Quiz(), qaID: null});
         }
       }
       catch (error) {
@@ -71,7 +72,6 @@ export class CreateQuizForm extends Component {
 
     let key = this.state.quizes.addQuestionsAndAnswers();
     let qAndAPair = this.state.quizes.getQuestionAndAnswers(key);
-    console.log(qAndAPair);
     qAndAPair.type = document.getElementById("idQuestionType").value;
     qAndAPair.question = document.getElementById("idQuestion").value;
 
@@ -87,7 +87,6 @@ export class CreateQuizForm extends Component {
 
     this.setState({ quizes: quizObj });
     this.clearInputs();
-    console.log(this.state.quizes);
   };
 
   onChangeQuestionHandler = (e) => {
@@ -115,7 +114,18 @@ export class CreateQuizForm extends Component {
 
     console.log("onClickEdit key", key);
 
+    // Open edit modal box
+    const modal = document.getElementById("idEditQAModal");
+    // modal.setAttribute("display", "block");
+    modal.style.display = "block";
+
     this.setState({ qaType: obj.type, qaID: key });
+  };
+
+  onClickClose = (e) => {
+    const modal = document.getElementById("idEditQAModal");
+    // modal.setAttribute("display", "none");
+    modal.style.display = "none";
   };
 
   onClickSave = (e) => {
@@ -145,7 +155,6 @@ export class CreateQuizForm extends Component {
     }    
     QA.incorrect_answers = Warray;
     quiz.QuestionsAndAnswers[key] = QA;
-    this.clearInputs();
     this.setState({ quizes: quiz, qaType: QA.type });
   };
 
@@ -175,7 +184,8 @@ export class CreateQuizForm extends Component {
         onClickEdit={this.onClickEdit}
         onClickDelete={this.onClickDelete}
         onChange={this.onChangeQuestionHandler}
-        onClick={this.onClickSave}
+        onClickSave={this.onClickSave}
+        onClickClose={this.onClickClose}
       />
     );
 

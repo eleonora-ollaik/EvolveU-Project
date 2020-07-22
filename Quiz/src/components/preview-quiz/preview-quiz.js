@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import './preview-quiz.css';
 
 export class QApreview extends Component {
 
@@ -19,7 +20,6 @@ export class QApreview extends Component {
       }
 
       for (let i=0; i<QA.incorrect_answers.length; i++) {
-        // console.log("incorrect_answers.length, ", QA.incorrect_answers.length)
         QAentries.push(<div key={`IA${key}${i}`}>Wrong answer: {QA.incorrect_answers[i]}</div>);
       }
             
@@ -36,7 +36,8 @@ export class QApreview extends Component {
             qaID= {this.props.qaID}
             qaType={this.props.qaType}
             onChange={this.props.onChange}
-            onClick = {this.props.onClick}
+            onClickSave = {this.props.onClickSave}
+            onClickClose = {this.props.onClickClose}
           />        
         </div>        
       </div>
@@ -52,7 +53,7 @@ export class QAedit extends Component {
     const qaType = this.props.qaType;
     let ansDisplay=[];
     let question = null;
-    
+
     const displayOption = {
                             "multipleChoice": {"caNumer": 1, "iaNumber": 3},
                             "openEnded": {"caNumer": 4, "iaNumber": 0},
@@ -74,12 +75,13 @@ export class QAedit extends Component {
       for (let i=0; i<displayOption[qaType]["iaNumber"]; i++) {
         ansDisplay.push(<input type="text" placeholder="Wrong Answer" className='WrongAnswer' key={`'ia'${i}`} defaultValue={incorrect_answers[i]}/>);
       }      
-
-      // console.log("qaType", qaType);
     }
 
     return (
-      <div>
+      // Modal Box
+      <div className="modal-content">
+
+        <span className="close" onClick={this.props.onClickClose}>x</span>
         <input type="text" placeholder="Question"  id = 'idQuestion' defaultValue={question}/>
 
         <select name="type" id="idQuestionType" onChange={this.props.onChange} value={qaType}>
@@ -87,10 +89,10 @@ export class QAedit extends Component {
           <option value="openEnded">Open Ended Question</option>
           <option value="boolean">True or False</option>
         </select>
-
+        
         {ansDisplay}
 
-        <button onClick={this.props.onClick}>Save</button>
+        <button onClick={this.props.onClickSave}>Save</button>
       </div>
     );
   }
