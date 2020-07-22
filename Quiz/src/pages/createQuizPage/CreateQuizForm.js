@@ -42,13 +42,30 @@ export class CreateQuizForm extends Component {
         let QAjson = [];
 
         for (const [key, value] of Object.entries(quiz.QuestionsAndAnswers)) {
+          let answers =[];
+          let correct_answers = quiz.QuestionsAndAnswers[key].correct_answers;
+          let wrong_answers = quiz.QuestionsAndAnswers[key].incorrect_answers;
+  
+          // console.log("correct_answers, ", correct_answers);        
+          // console.log("wrong_answers, ", wrong_answers);
+          for (let i=0; i<correct_answers.length; i++) {
+            answers.push({"answer_is_correct": true, "answer_statement": correct_answers[i]})
+          }
+  
+          for (let i=0; i<wrong_answers.length; i++) {
+            answers.push({"answer_is_correct": false, "answer_statement": wrong_answers[i]})
+          }
+  
+          console.log(answers);
+
           QAjson.push({
             "question_category": value.category,
             "question_type": value.type,
             "question_statement": value.question,
             "question_correct_entries": 0, 
-            "question_wrong_entries": 0
-          });
+            "question_wrong_entries": 0,
+            "answers": answers
+          });          
         }
 
         let webdata = {

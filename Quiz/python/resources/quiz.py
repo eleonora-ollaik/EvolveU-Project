@@ -55,10 +55,18 @@ class Quiz(Resource):
         questions = data["questions"]
         for q in questions:
             question = QuestionModel(quiz.quiz_id, q["question_category"], q["question_type"], q["question_statement"], q["question_correct_entries"], q["question_wrong_entries"])
+
             try:
                 question.save_to_db()
             except:
                 return {"message": "An error occurred inserting the question."}, 500            
+            
+            # Save data into Question table
+            answers = q["answers"]
+            print("============================")
+            print(question.question_id)
+            print(answers)
+            print("============================")
 
         return quiz.json(), 201
 

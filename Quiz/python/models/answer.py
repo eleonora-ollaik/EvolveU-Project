@@ -8,7 +8,7 @@ class AnswerModel(db.Model):
 
     answer_id = db.Column(db.Integer, primary_key=True)
     question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'))
-    answer_is_correct = db.Column(db.String(100))
+    answer_is_correct = db.Column(db.Boolean)
     answer_statement = db.Column(db.String(100))
     answer_creation = db.Column(db.DateTime)
     answer_update = db.Column(db.DateTime)
