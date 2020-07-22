@@ -4,6 +4,7 @@ import './header.css';
 import TakeQuiz from '../../pages/take-quiz/take-quiz';
 import CreateQuizForm from '../../pages/createQuizPage/CreateQuizForm';
 import LandingPage from '../../pages/homepage/landingpage';
+import QuizManager from '../../pages/quizManager/quizManager';
 
 class Header extends Component {
     constructor(props) {
@@ -20,8 +21,8 @@ class Header extends Component {
                 <button onClick={()=>handleNavigation(<LandingPage />)}>LOGO (home)</button>
                 <div className='navbar'>
                     <button onClick={()=>handleNavigation(<CreateQuizForm />)}>create quiz</button>
-                    <button onClick={()=>handleNavigation(<TakeQuiz/>)}>take quiz</button>
-                    <button onClick={()=>handleNavigation('Quiz Manager')}>quiz manager</button>
+                    <button onClick={()=>handleNavigation(<TakeQuiz />)}>take quiz</button>
+                    <button onClick={()=>handleNavigation(<QuizManager />)}>quiz manager</button>
                 </div>
             </div>
         )
