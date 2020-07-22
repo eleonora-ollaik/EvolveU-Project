@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CreateQuiz from "../../components/create-quiz/create-quiz";
 import PreviewQuiz from "../../components/preview-quiz/preview-quiz";
 import EditQuiz from "../../components/edit-quiz/edit-quiz";
+import ModalBox from "../../components/modalbox/modalbox";
 import logic from "../../business/business_logic";
 import net from "../../business/netcomm";
 import CreateQuizNav from "../../components/create-quiz-navigation/create-quiz-nav";
@@ -87,8 +88,9 @@ export class CreateQuizForm extends Component {
       qAndAPair.incorrect_answers.push(WAarray[i].value);
     }
 
-    this.setState({ quizes: quizObj });
     this.clearInputs();
+
+    this.setState({ quizes: quizObj });
   };
 
   onChangeQuestionHandler = (e) => {
@@ -115,17 +117,19 @@ export class CreateQuizForm extends Component {
     let obj = this.state.quizes.getQuestionAndAnswers(key);
 
     // Open edit modal box
-    const modal = document.getElementById("idEditQAModal");
-    modal.style.display = "block";
+    document.getElementById("idEditQAModal").setAttribute("class", "modalshow");
 
     this.setState({qaType: obj.type, qaID: key, quizEdit: true});
   };
 
-  onClickClose = (e) => {
-    const modal = document.getElementById("idEditQAModal");
-    modal.style.display = "none";
+  onClickCloseModal = (e) => {
+    const modal = e.target.parentNode;
+    modal.setAttribute("class", "modalhide");
 
+    // Handle edit modal box
     this.setState({quizEdit: false});
+    // Handle submit modal box
+    this.setState({noticeMsg: ""});    
   };
 
   onClickSave = (e) => {
@@ -155,7 +159,6 @@ export class CreateQuizForm extends Component {
     }    
     QA.incorrect_answers = Warray;
     quiz.QuestionsAndAnswers[key] = QA;
-    // this.clearInputs();
 
     this.setState({ quizes: quiz, qaType: QA.type });
   };
@@ -163,7 +166,7 @@ export class CreateQuizForm extends Component {
   onClickDelete = (e) => {
     const quizObj = this.state.quizes;
     const key = e.target.getAttribute("uuid");
-    const qAndAPair = quizObj.deleteQuestionsAndAnswers(key);
+    quizObj.deleteQuestionsAndAnswers(key);
 
     // qaID = null resets the edit panel display
     this.setState({ quizes: quizObj, quizNav: "Preview Quiz", qaID: null });
@@ -178,6 +181,7 @@ export class CreateQuizForm extends Component {
         onChange={this.onChangeQuestionHandler}
       />
     );
+
     const preview = (
         <PreviewQuiz
           quiz={this.state.quizes}
@@ -189,20 +193,22 @@ export class CreateQuizForm extends Component {
     );
 
     const edit = (
-      <div id="idEditQAModal" className="modal">
-        <EditQuiz
-          quiz={this.state.quizes}
-          qaID={this.state.qaID}
-          qaType={this.state.qaType}
-          onChange={this.onChangeQuestionHandler}
-          onClickSave={this.onClickSave}
-          onClickClose={this.onClickClose}      
-        />
-      </div>
+      <ModalBox 
+        boxID="idEditQAModal"        
+        content={<EditQuiz
+                  quiz={this.state.quizes}
+                  qaID={this.state.qaID}
+                  qaType={this.state.qaType}
+                  onChange={this.onChangeQuestionHandler}
+                  onClickSave={this.onClickSave}     
+                />}
+        onClickModalClose={this.onClickCloseModal}      
+      />
     );
     
     const quizNavPanel = this.state.quizNav === "Create Quiz" ? entry : preview;
-    const quizEdit = this.state.quizEdit ? edit : <div id="idEditQAModal" className="modal"></div>;
+    const quizEdit = this.state.quizEdit ? edit : <div id="idEditQAModal"></div>;
+    const hidemsg = this.state.noticeMsg ? false : true;
 
     return (
       <div className="createQuizContainer">
@@ -231,8 +237,8 @@ export class CreateQuizForm extends Component {
         <button type="Submit" onClick={this.onClickQuizHandler}>
           Submit
         </button>
-
-        {this.state.noticeMsg}
+        
+        <ModalBox content={this.state.noticeMsg} onClickModalClose={this.onClickCloseModal} hide={hidemsg}/>        
       </div>
     );
   }

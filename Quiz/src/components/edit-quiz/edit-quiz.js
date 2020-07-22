@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import './edit-quiz.css';
 
 export class QAedit extends Component {
 
@@ -34,10 +33,7 @@ export class QAedit extends Component {
     }
 
     return (
-      // Modal Box
-      <div className="modal-content">
-
-        <span className="close" onClick={this.props.onClickClose}>x</span>
+      <div>
         <input type="text" placeholder="Question"  id = 'idQuestion' defaultValue={question}/>
 
         <select name="type" id="idQuestionType" onChange={this.props.onChange} value={qaType}>
