@@ -8,7 +8,7 @@ class AnswerModel(db.Model):
 
     answer_id = db.Column(db.Integer, primary_key=True)
     question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'))
-    answer_type = db.Column(db.String(100))
+    answer_is_correct = db.Column(db.String(100))
     answer_statement = db.Column(db.String(100))
     answer_creation = db.Column(db.DateTime)
     answer_update = db.Column(db.DateTime)
@@ -16,16 +16,16 @@ class AnswerModel(db.Model):
     # All class property names must match to column defined above 
     # to save the information to the database
     # Additional unmatched properties will not save in the database columns
-    def __init__(self, question_id, answer_type, answer_type, answer_statement, answer_creation=datetime.now(), answer_update=datetime.now()):
+    def __init__(self, question_id, answer_is_correct, answer_statement, answer_creation=datetime.now(), answer_update=datetime.now()):
         self.question_id = question_id
-        self.answer_type = answer_type
+        self.answer_is_correct = answer_is_correct
         self.answer_statement = answer_statement
         self.answer_creation = answer_creation
         self.answer_update = answer_update    
 
     def json(self):
         return {'answer_id': self.answer_id, 'question_id': self.question_id,  
-                'answer_type': self.answer_type, 'answer_statement': self.answer_statement,
+                'answer_is_correct': self.answer_is_correct, 'answer_statement': self.answer_statement,
                 'answer_creation': self.answer_creation.strftime('%Y-%m-%d %X'), 
                 'answer_update': self.answer_update.strftime('%Y-%m-%d %X')}
 
@@ -49,10 +49,10 @@ class AnswerModel(db.Model):
     @classmethod
     def query_all(cls):
         result = db.session.query(cls.answer_id, cls.question_id,
-                                  cls.answer_type, cls.answer_statement,
+                                  cls.answer_is_correct, cls.answer_statement,
                                   cls.answer_creation, cls.answer_update).all()
 
         return [{"answer_id": answer.answer_id, "question_id": answer.question_id,
-                 "answer_type": answer.answer_type, "answer_statement": answer.answer_statement,
+                 "answer_is_correct": answer.answer_is_correct, "answer_statement": answer.answer_statement,
                  "answer_creation": answer.answer_creation.strftime('%Y-%m-%d %X'), 
                  "answer_update": answer.answer_update.strftime('%Y-%m-%d %X')} for answer in result]

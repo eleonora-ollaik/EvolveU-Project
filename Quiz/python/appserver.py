@@ -37,6 +37,8 @@ api.add_resource(Quiz, '/quiz/<int:quiz_id>', '/quiz')
 api.add_resource(QuizList, '/quizes')
 api.add_resource(Question, '/question/<int:question_id>', '/question')
 api.add_resource(QuestionList, '/questions')
+api.add_resource(Answer, '/answer/<int:answer_id>', '/answer')
+api.add_resource(AnswerList, '/answers')
 
 if __name__ == '__main__':
     # https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/

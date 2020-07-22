@@ -13,13 +13,10 @@ class QuestionModel(db.Model):
     question_statement = db.Column(db.String(100))
     question_correct_entries = db.Column(db.Integer)
     question_wrong_entries = db.Column(db.Integer)    
-    # question_correct_ans_id = db.Column(db.Integer)
-    # question_wrong_ans_id = db.Column(db.Integer)
     question_creation = db.Column(db.DateTime)
     question_update = db.Column(db.DateTime)
 
-    # correctanswers = db.relationship('CorrectAnswerModel', lazy='dynamic', cascade="all, delete")
-    # wronganswers = db.relationship('WrongAnswerModel', lazy='dynamic', cascade="all, delete")
+    answers = db.relationship('AnswerModel', lazy='dynamic', cascade="all, delete")
 
     # All class property names must match to column defined above 
     # to save the information to the database
