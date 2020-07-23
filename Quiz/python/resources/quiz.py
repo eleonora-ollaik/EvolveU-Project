@@ -5,6 +5,7 @@ import json
 
 from models.quiz import QuizModel
 from models.question import QuestionModel
+from models.answer import AnswerModel
 
 # Inheritance of Resource class
 class Quiz(Resource):
@@ -63,10 +64,13 @@ class Quiz(Resource):
             
             # Save data into Question table
             answers = q["answers"]
-            print("============================")
-            print(question.question_id)
-            print(answers)
-            print("============================")
+            for a in answers:
+                answer = AnswerModel(question.question_id, a["answer_is_correct"], a["answer_statement"])
+
+                try:
+                    answer.save_to_db()
+                except:
+                    return {"message": "An error occurred inserting the answer."}, 500                
 
         return quiz.json(), 201
 
