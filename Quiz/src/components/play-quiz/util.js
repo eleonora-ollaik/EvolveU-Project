@@ -26,8 +26,7 @@
 
 
 
-export function randomizeAnswerArray(correct_answers, wrong_answers){
-    const answerArray = [...correct_answers, ...wrong_answers];
+export function randomizeAnswerArray(answerArray){
     let i = 0;
     // the answerArray will always have length of 4,( 4 maxium choices per question)
     while(i !== 4){
@@ -42,28 +41,46 @@ export function randomizeAnswerArray(correct_answers, wrong_answers){
     return answerArray;
 }
 
-export function checkIfAnswerCorrect(value, questionAndAnswer) {
+export function checkIfAnswerCorrect(arrayOfAnswers, questionsAndAnswers ) {
     let result;
-    if (questionAndAnswer.type === "multiple") {
-        const intersection = (userAnswer, correctAnswer) => userAnswer.filter(answer => correctAnswer.indexOf(answer) > -1);
-        if (intersection(value, questionAndAnswer.correct_answers).length === questionAndAnswer.correct_answers.length) {
-            result = true;
+    if (questionsAndAnswers.question_type === "multiple") {
+        if(arrayOfAnswers.some((userAnswer) => userAnswer.answer_is_correct === false)){
+            result = false;
         } else {
-            result = false; 
+            result = true;
         }
-    } else if (questionAndAnswer.correct_answers.length > 1) {
-        if (questionAndAnswer.correct_answers.indexOf(value) > -1) {
+    } else if (questionsAndAnswers.question_type === "openEnded"){
+        if(questionsAndAnswers.answers.some((answer)=> answer.answer_statement === arrayOfAnswers[0])){
             result = true;
         } else {
-            result = false; 
+            result = false
         }
     } else {
-        const correctAnswer = questionAndAnswer.correct_answers[0];
-        if(value === correctAnswer){
+        const correctAnswer = questionsAndAnswers.answers.find((answer) => answer.answer_correct === true );
+        if(correctAnswer.answer_statement === arrayOfAnswers[0]){
             result = true;
         } else {
             result = false;
         }
+        // const intersection = (userAnswer, correctAnswer) => userAnswer.filter(answer => correctAnswer.indexOf(answer) > -1);
+        // if (intersection(arrayOfAnswers, questionsAndAnswers.correct_answers).length === questionsAndAnswers.correct_answers.length) {
+        //     result = true;
+        // } else {
+        //     result = false; 
+        // }
+    // } else if (questionsAndAnswers.correct_answers.length > 1) {
+    //     if (questionsAndAnswers.correct_answers.indexOf(arrayOfAnswers) > -1) {
+    //         result = true;
+    //     } else {
+    //         result = false; 
+    //     }
+    // } else {
+    //     const correctAnswer = questionsAndAnswers.correct_answers[0];
+    //     if(arrayOfAnswers === correctAnswer){
+    //         result = true;
+    //     } else {
+    //         result = false;
+    //     }
     }
 
     // Send result to server to adjust number of correct/incorrect entries 

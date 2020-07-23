@@ -21,8 +21,7 @@ class PlayQuiz extends Component {
 
   onNext = () => {
     const { questionsAndAnswers } = this.props.selectedQuiz;
-    const quizDataArray = Object.values(questionsAndAnswers); // Turn Quiz Data (responseData) from Object to Array\
-    if (this.state.currentQuestion + 1 > quizDataArray.length) {
+    if (this.state.currentQuestion + 1 > questionsAndAnswers.length) {
       this.setState({ isTestOver: true });
     } else {
       this.setState({ currentQuestion: this.state.currentQuestion + 1 });
@@ -40,22 +39,17 @@ class PlayQuiz extends Component {
   render() {
     const { name } = this.props.selectedQuiz;
     const { questionsAndAnswers } = this.props.selectedQuiz;
-    const quizDataArray = Object.values(questionsAndAnswers); // Turn Quiz Data (responseData) from Object to Array\
     let newCurrentQuestion;
     if (!this.state.isTestOver) {
       if (
         this.state.currentQuestion > 0 &&
-        quizDataArray[this.state.currentQuestion - 1].type === "multiple"
+        questionsAndAnswers[this.state.currentQuestion - 1].question_type === "multipleChoice"
       ) {
-        const currentQ = quizDataArray[this.state.currentQuestion - 1];
-        const { correct_answers, incorrect_answers } = currentQ;
-        const shuffledAnswers = randomizeAnswerArray(
-          correct_answers,
-          incorrect_answers
-        );
+        const currentQ = questionsAndAnswers[this.state.currentQuestion - 1];
+        const shuffledAnswers = randomizeAnswerArray(currentQ.answers);
         newCurrentQuestion = { ...currentQ, shuffledAnswers: shuffledAnswers };
       } else {
-        newCurrentQuestion = quizDataArray[this.state.currentQuestion - 1];
+        newCurrentQuestion = questionsAndAnswers[this.state.currentQuestion - 1];
       }
     }
 
@@ -86,7 +80,7 @@ class PlayQuiz extends Component {
             reselectQuiz = {this.props.reselectQuiz}
             resetPlayQuiz ={this.resetPlayQuiz}
             correctlyAnsweredQuestions={this.state.correctlyAnsweredQuestions}
-            quizDataArray={quizDataArray}
+            quizDataArray={questionsAndAnswers}
           />
         ) : (
           <div>Welcome to the quiz!</div>
@@ -154,8 +148,8 @@ class QandA extends Component {
       <div>
         <div>Question {currentQuestion}</div>
         <div>Question:</div>
-        <div>{questionsAndAnswers.question}</div>
-        {questionsAndAnswers.type === "open" ? (
+        <div>{questionsAndAnswers.question_statement}</div>
+        {questionsAndAnswers.question_type === "openEnded" ? (
           <div>
             <input
               placeholder="Please enter your answer here"
@@ -165,7 +159,7 @@ class QandA extends Component {
               disabled={this.state.submitted ? true : false}
             />
           </div>
-        ) : questionsAndAnswers.type === "boolean" ? (
+        ) : questionsAndAnswers.question_type === "boolean" ? (
           <div>
             <button
               style={{
@@ -198,7 +192,7 @@ class QandA extends Component {
                   onChange={(e) => this.handleCheckbox(e)}
                   disabled={this.state.submitted ? true : false}
                 />
-                {answer}
+                {answer.answer_statement}
               </div>
             ))}
           </div>
@@ -216,7 +210,9 @@ class QandA extends Component {
           ) : (
             <div>
               Answer is WRONG!!! The correct answer is:{" "}
-              {questionsAndAnswers.correct_answers.join(" ")}
+              {questionsAndAnswers.answers.map((answer) => 
+                (answer.answer_is_correct)? answer.answer_statement:null
+              )}
             </div>
           )
         ) : null}
