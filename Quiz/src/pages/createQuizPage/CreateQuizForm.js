@@ -158,7 +158,7 @@ export class CreateQuizForm extends Component {
   onClickCloseModal = (e) => {
     const modal = e.target.parentNode.parentNode;
     modal.setAttribute("class", "modalhide");
-
+    e.stopPropagation();
     // Handle edit modal box
     this.setState({quizEdit: false});
     // Handle submit modal box
