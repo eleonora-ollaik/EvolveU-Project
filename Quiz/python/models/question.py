@@ -32,9 +32,11 @@ class QuestionModel(db.Model):
         self.question_update = question_update    
 
     def json(self):
-        return {'question_id': self.question_id, 'quiz_id': self.quiz_id, 'question_category': self.question_category, 'question_type': self.question_type, 
-                'question_statement': self.question_statement, 'question_correct_entries': self.question_correct_entries, 
+        return {'question_id': self.question_id, 'quiz_id': self.quiz_id, 'question_category': self.question_category, 
+                'question_type': self.question_type, 'question_statement': self.question_statement, 
+                'question_correct_entries': self.question_correct_entries, 
                 'question_wrong_entries': self.question_wrong_entries,
+                'answers': [answer.json() for answer in self.answers.all()], 
                 'question_creation': self.question_creation.strftime('%Y-%m-%d %X'), 
                 'question_update': self.question_update.strftime('%Y-%m-%d %X')}
 
