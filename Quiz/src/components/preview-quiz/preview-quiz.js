@@ -19,8 +19,8 @@ export class QApreview extends Component {
         QAentries.push(<div key={`CA${key}${i}`}>Correct answer: {QA.correct_answers[i]}</div>);
       }
 
-      for (let i=0; i<QA.incorrect_answers.length; i++) {
-        QAentries.push(<div key={`IA${key}${i}`}>Wrong answer: {QA.incorrect_answers[i]}</div>);
+      for (let i=0; i<QA.wrong_answers.length; i++) {
+        QAentries.push(<div key={`IA${key}${i}`}>Wrong answer: {QA.wrong_answers[i]}</div>);
       }
             
       QAentries.push(<button key={`BEdit${key}`} uuid={key} onClick={this.props.onClickEdit}>Edit</button>);

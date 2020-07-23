@@ -44,7 +44,7 @@ export class CreateQuizForm extends Component {
         for (const [key, value] of Object.entries(quiz.QuestionsAndAnswers)) {
           let answers =[];
           let correct_answers = quiz.QuestionsAndAnswers[key].correct_answers;
-          let wrong_answers = quiz.QuestionsAndAnswers[key].incorrect_answers;
+          let wrong_answers = quiz.QuestionsAndAnswers[key].wrong_answers;
   
           // console.log("correct_answers, ", correct_answers);        
           // console.log("wrong_answers, ", wrong_answers);
@@ -118,7 +118,7 @@ export class CreateQuizForm extends Component {
 
     const WAarray = document.querySelectorAll(".WrongAnswer");
     for (let i = 0; i < WAarray.length; i++) {
-      qAndAPair.incorrect_answers.push(WAarray[i].value);
+      qAndAPair.wrong_answers.push(WAarray[i].value);
     }
 
     this.clearInputs();
@@ -190,7 +190,7 @@ export class CreateQuizForm extends Component {
     for (let i = 0; i < WAarray.length; i++) {
       Warray.push(WAarray[i].value);
     }    
-    QA.incorrect_answers = Warray;
+    QA.wrong_answers = Warray;
     quiz.QuestionsAndAnswers[key] = QA;
 
     this.setState({ quizes: quiz, qaType: QA.type });

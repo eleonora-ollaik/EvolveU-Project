@@ -10,7 +10,7 @@ class QuestionsAndAnswers {
         this.number_of_correct_entries = 0;
         this.number_of_incorrect_entries = 0;
         this.correct_answers = [];
-        this.incorrect_answers = [];        
+        this.wrong_answers = [];        
     }
 
     assignType (type, optionlist) {
@@ -49,7 +49,7 @@ class QuestionsAndAnswers {
             for (let i=0; i < types.length; i++) {
                 if(this.type === types[i].type) {
                     if(types[i].min <= answers.length && answers.length <= types[i].max) {
-                        this.incorrect_answers = answers;
+                        this.wrong_answers = answers;
                     } 
                     
                 }
@@ -57,7 +57,7 @@ class QuestionsAndAnswers {
     }
 
     calculate_difficulty() {
-        let total_answers = (this.correct_answers + this.incorrect_answers);        
+        let total_answers = (this.correct_answers + this.wrong_answers);        
         let acurracy = total_answers===0 ? 0: this.correct_answers / total_answers;
         
         let comlexityInfo = [

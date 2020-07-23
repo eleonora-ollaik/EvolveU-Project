@@ -18,7 +18,7 @@ export class QAedit extends Component {
     if (key !== null) {   // A question and answer object provided
       const QA = quiz.QuestionsAndAnswers[key];
       const correct_answers = QA.correct_answers;
-      const incorrect_answers = QA.incorrect_answers;
+      const wrong_answers = QA.wrong_answers;
       question = QA.question;
 
       // Generate correct answer inputs      
@@ -28,7 +28,7 @@ export class QAedit extends Component {
 
       // Generate wrong answer inputs
       for (let i=0; i<displayOption[qaType]["iaNumber"]; i++) {
-        ansDisplay.push(<input type="text" placeholder="Wrong Answer" className='WrongAnswer' key={`'ia'${i}`} defaultValue={incorrect_answers[i]}/>);
+        ansDisplay.push(<input type="text" placeholder="Wrong Answer" className='WrongAnswer' key={`'ia'${i}`} defaultValue={wrong_answers[i]}/>);
       }      
     }
 
