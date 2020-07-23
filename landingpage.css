@@ -1,0 +1,14 @@
+body {
+    background-image: url('https://bit.ly/2ZRRd9G');
+    background-repeat: no-repeat;
+    background-attachment: fixed;  
+    background-size: cover;
+    color: black;
+    padding: 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    position: absolute;
+    width: 1440px;
+    height: 1024px;
+
+  }
