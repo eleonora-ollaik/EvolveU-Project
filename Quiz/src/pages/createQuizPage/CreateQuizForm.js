@@ -156,7 +156,7 @@ export class CreateQuizForm extends Component {
   };
 
   onClickCloseModal = (e) => {
-    const modal = e.target.parentNode;
+    const modal = e.target.parentNode.parentNode;
     modal.setAttribute("class", "modalhide");
 
     // Handle edit modal box
