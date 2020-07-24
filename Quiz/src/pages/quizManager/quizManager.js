@@ -1,27 +1,20 @@
 import React, { Component } from "react";
-import SelectQuizM from "../../components/select-quiz/select-quizM";
+import SelectQuiz from "../../components/select-quiz/select-quiz";
+import QAedit from "../../components/edit-quiz/edit-quiz";
+import Modal from "../../components/modalbox/modalbox";
 // Component "EditQuiz" still needs to be done - B&E have already created this
 // import EditQuiz from "../../components/edit-quiz";
 
+import {
+  postData,
+  getData,
+  convertFormat,
+  convertQuizDetails,
+} from "../../fetch-data.util";
+
 import "./quizManager.css";
 
-const serverUrl = "www.dwan.com";
-
-async function postData(url = "", data = {}) {
-  const response = await fetch(url, {
-    method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
-    body: JSON.stringify(data),
-  });
-  return response.json();
-}
+const serverUrl = "http://127.0.0.1:5000/";
 
 class QuizManager extends Component {
   constructor(props) {
@@ -29,68 +22,13 @@ class QuizManager extends Component {
     this.state = {
       value: "",
       selectedQuiz: null,
-      responseData: [
-        {
-          name: "Superheros of the world",
-          quizId: "1",
-          creator: "John",
-          theme: "Entertainment",
-          // lastKey: 0,
-          questionsAndAnswers: {
-            1: {
-              uuid: 1,
-              category: "Entertainment: Comics",
-              type: "open", //type: "multiple, boolean, open{short answer}",
-              question:
-                "This Marvel superhero is often called 'The man without fear'.",
-              number_of_correct_entries: 5,
-              number_of_incorrect_entries: 10,
-              correct_answers: ["Daredevil", "Dare devil"], 
-              incorrect_answers: ["Thor", "Wolverine", "Hulk"],
-            },
-            2: {
-              uuid: 2,
-              category: "Entertainment: Comics",
-              type: "open", //type: "multiple, boolean, open{short answer}",
-              question: "This hero is a mouse in the Simpsons.",
-              number_of_correct_entries: 2,
-              number_of_incorrect_entries: 7,
-              correct_answers: ["Itchy"],
-              incorrect_answers: [],
-            },
-          },
-        },
-        {
-          name: "Chocolates of the world",
-          quizId: "2",
-          creator: "Cornelius",
-          theme: "Food",
-          // lastKey: 0,
-          questionsAndAnswers: {
-            3:{
-              uuid: 3,
-              category: "Food",
-              type: "multiple", //type: "multiple, boolean, open{short answer}",
-              question: "These are some famous Swiss brands.",
-              number_of_correct_entries: 2,
-              number_of_incorrect_entries: 4,
-              correct_answers: ["Lindt", "Callier"],
-              incorrect_answers: ["Mars", "Cadbury"],
-            },
-            4: {
-              uuid: 4,
-              category: "Food",
-              type: "boolean", //type: "multiple, boolean, open{short answer}",
-              question:
-                "White chocolate does not contain cocoa solids. True or false?",
-              number_of_correct_entries: 5,
-              number_of_incorrect_entries: 1,
-              correct_answers: ["true"],
-              incorrect_answers: ["false"],
-            },
-          },
-        },
-      ],
+      responseData: null,
+      noticeMsg: "",
+      qaTypeList: null,
+      qaTypeCheck: null,
+      qaType: null,
+      // quizes: null,
+      qaID: null,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
@@ -98,13 +36,15 @@ class QuizManager extends Component {
   }
 
   componentDidMount() {
-      console.log("Component mounted")
-      // Function goes here
-      // Pass username to server and retrieve only quizzes where creator matches username 
+    getData(serverUrl + "quizes")
+      .then((data) => convertFormat(data.quizes))
+      .then((arr) => this.setState({ quizes: arr })); // before: this.setState({ responseData: arr }));
   }
 
-  selectQuiz(quiz) {
-    this.setState({ selectedQuiz: quiz });
+  selectQuiz(quizId) {
+    getData(serverUrl + `quiz/${quizId}`)
+      .then((data) => convertQuizDetails(data))
+      .then((quiz) => this.setState({ selectedQuiz: quiz }));
   }
 
   handleChange(event) {
@@ -124,25 +64,71 @@ class QuizManager extends Component {
     console.log("Search button clicked");
   }
 
+  // onClickSave = (e) => {
+  //   const quiz = this.state.quizes;
+  //   let key = this.state.qaID;
+
+  //   const QA = new logic.QuestionsAndAnswers();
+  //   QA.question = document.getElementById("idQuestion").value;
+
+  //   let CAarray = document.querySelectorAll(".CorrectAnswer");
+  //   let WAarray = document.querySelectorAll(".WrongAnswer");
+  //   QA.type = document.getElementById("idQuestionType").value;
+  //   let array = [];
+  //   for (let i = 0; i < CAarray.length; i++) {
+  //     array.push(CAarray[i].value);
+  //   }
+
+  //   QA.correct_answers = array;
+  //   let Warray = [];
+
+  //   for (let i = 0; i < WAarray.length; i++) {
+  //     Warray.push(WAarray[i].value);
+  //   }    
+  //   QA.wrong_answers = Warray;
+  //   quiz.QuestionsAndAnswers[key] = QA;
+
+  //   this.setState({ quizes: quiz, qaType: QA.type });
+  // };
+
+  onClickCloseModal = (e) => {
+    const modal = e.target.parentNode.parentNode;
+    modal.setAttribute("class", "modalhide");
+    e.stopPropagation();
+    // Handle submit modal box
+    this.setState({ noticeMsg: "" });
+  };
+
   render() {
+    // console.log(this.state.selectedQuiz);
     return (
       <div className="quizContainer">
         {this.state.selectedQuiz ? (
-            <div>EditQuiz component goes here</div>
-          /* <EditQuiz
-            selectedQuiz={
-              this.state.selectedQuiz
+          <Modal
+            boxID="idEditQAModal"
+            content={
+              <QAedit
+                quiz={this.state.selectedQuiz} // before: this.state.quizes
+                qaID={this.state.qaID}
+                qaType={this.state.qaType}
+                qaTypeCheck={this.state.qaTypeCheck}
+                qaTypeList={this.state.qaTypeList}
+                onChange={this.onChangeQuestionHandler}
+                onClickSave={this.onClickSave}
+                selectedQuiz={this.state.selectedQuiz}
+              />
             }
-          /> */
-        ) : (
-          <SelectQuizM
+            onClickModalClose={this.onClickCloseModal}
+          />
+        ) : this.state.responseData ? (
+          <SelectQuiz
             value={this.state.value}
             handleChange={this.handleChange}
             handleSearch={this.handleSearch}
             responseData={this.state.responseData}
             selectQuiz={this.selectQuiz}
           />
-        )}
+        ) : null}
       </div>
     );
   }

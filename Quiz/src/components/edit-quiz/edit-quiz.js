@@ -3,6 +3,7 @@ import React, { Component } from "react";
 export class QAedit extends Component {
 
   render() {
+    console.log(this.props)
     const quiz = this.props.quiz;
     const key = this.props.qaID;
     const qaType = this.props.qaType;
