@@ -26,8 +26,8 @@
 
 
 
-export function randomizeAnswerArray(correct_answers, incorrect_answers){
-    const answerArray = [...correct_answers, ...incorrect_answers];
+export function randomizeAnswerArray(correct_answers, wrong_answers){
+    const answerArray = [...correct_answers, ...wrong_answers];
     let i = 0;
     // the answerArray will always have length of 4,( 4 maxium choices per question)
     while(i !== 4){

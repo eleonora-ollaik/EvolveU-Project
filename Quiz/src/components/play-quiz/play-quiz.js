@@ -23,8 +23,8 @@ class PlayQuiz extends Component {
     let newCurrentQuestion;
     if (this.state.currentQuestion > 0 && questionsAndAnswers[this.state.currentQuestion - 1].type === "multiple") {
       const currentQ = questionsAndAnswers[this.state.currentQuestion - 1];
-      const { correct_answers, incorrect_answers } = currentQ;
-      const shuffledAnswers = randomizeAnswerArray(correct_answers, incorrect_answers);
+      const { correct_answers, wrong_answers } = currentQ;
+      const shuffledAnswers = randomizeAnswerArray(correct_answers, wrong_answers);
       newCurrentQuestion = { ...currentQ, shuffledAnswers: shuffledAnswers };
     } else {
       newCurrentQuestion = questionsAndAnswers[this.state.currentQuestion - 1];
