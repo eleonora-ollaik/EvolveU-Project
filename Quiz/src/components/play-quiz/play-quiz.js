@@ -43,7 +43,7 @@ class PlayQuiz extends Component {
     if (!this.state.isTestOver) {
       if (
         this.state.currentQuestion > 0 &&
-        questionsAndAnswers[this.state.currentQuestion - 1].question_type === "multipleChoice"
+        questionsAndAnswers[this.state.currentQuestion - 1].questiontype_id === 1
       ) {
         const currentQ = questionsAndAnswers[this.state.currentQuestion - 1];
         const shuffledAnswers = randomizeAnswerArray(currentQ.answers);
@@ -105,21 +105,21 @@ class QandA extends Component {
     this.setState({ value: e.target.value });
   }
 
-  handleCheckbox(e) {
+  handleCheckbox(e, input) {
     if (!e.target.checked) {
       //uncheck the checkbox
       if (this.state.value.length === 1) {
         this.setState({ value: "" });
       } else {
         this.setState({
-          value: this.state.value.filter((answer) => answer !== e.target.value),
+          value: this.state.value.filter((answer) => answer !== input),
         });
       }
     } else {
       if (!this.state.value) {
-        this.setState({ value: [e.target.value] });
+        this.setState({ value: [input] });
       } else {
-        this.setState({ value: [...this.state.value, e.target.value] });
+        this.setState({ value: [...this.state.value, input] });
       }
     }
   }
@@ -149,7 +149,7 @@ class QandA extends Component {
         <div>Question {currentQuestion}</div>
         <div>Question:</div>
         <div>{questionsAndAnswers.question_statement}</div>
-        {questionsAndAnswers.question_type === "openEnded" ? (
+        {questionsAndAnswers.questiontype_id === 3 ? (
           <div>
             <input
               placeholder="Please enter your answer here"
@@ -159,7 +159,7 @@ class QandA extends Component {
               disabled={this.state.submitted ? true : false}
             />
           </div>
-        ) : questionsAndAnswers.question_type === "boolean" ? (
+        ) : questionsAndAnswers.questiontype_id === 2 ? (
           <div>
             <button
               style={{
@@ -188,8 +188,8 @@ class QandA extends Component {
               <div key={idx}>
                 <input
                   type="checkbox"
-                  value={answer}
-                  onChange={(e) => this.handleCheckbox(e)}
+                  value={answer.answer_statement}
+                  onChange={(e) => this.handleCheckbox(e, answer)}
                   disabled={this.state.submitted ? true : false}
                 />
                 {answer.answer_statement}
