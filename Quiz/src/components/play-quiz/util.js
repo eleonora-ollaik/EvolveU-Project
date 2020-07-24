@@ -43,7 +43,7 @@ export function randomizeAnswerArray(answerArray){
 
 export function checkIfAnswerCorrect(arrayOfAnswers, questionsAndAnswers ) {
     let result;
-    if (questionsAndAnswers.question_type === "multiple") {
+    if (questionsAndAnswers.question_type === "multipleChoice") {
         if(arrayOfAnswers.some((userAnswer) => userAnswer.answer_is_correct === false)){
             result = false;
         } else {
