@@ -8,6 +8,8 @@ from db import db
 from resources.quiz import Quiz, QuizList
 from resources.question import Question, QuestionList
 from resources.answer import Answer, AnswerList
+from resources.theme import Theme, ThemeList
+from resources.questiontype import QuestionType, QuestionTypeList
 
 # Initiate Flask obj
 app = Flask(__name__)
@@ -40,6 +42,10 @@ api.add_resource(Question, '/question/<int:question_id>', '/question')
 api.add_resource(QuestionList, '/questions')
 api.add_resource(Answer, '/answer/<int:answer_id>', '/answer')
 api.add_resource(AnswerList, '/answers')
+api.add_resource(Theme, '/theme/<int:theme_id>', '/theme')
+api.add_resource(ThemeList, '/themes')
+api.add_resource(QuestionType, '/questiontype/<int:questiontype_id>', '/questiontype')
+api.add_resource(QuestionTypeList, '/questiontypes')
 
 if __name__ == '__main__':
     # https://flask-sqlalchemy.palletsprojects.com/en/2.x/api/

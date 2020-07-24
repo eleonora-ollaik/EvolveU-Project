@@ -19,10 +19,10 @@ class Quiz(Resource):
         required=True,
         help="Every quiz needs a name."
     )    
-    parser.add_argument('quiz_theme',
-        type=str,
+    parser.add_argument('theme_id',
+        type=int,
         required=True,
-        help="Every quiz needs a theme."
+        help="Every quiz needs a theme id."
     )
     # Use action "append" to add multiple dict object
     # https://flask-restful.readthedocs.io/en/latest/reqparse.html
@@ -45,7 +45,7 @@ class Quiz(Resource):
         data = Quiz.parser.parse_args()
         
         # Save data into Quiz table
-        quiz = QuizModel(data["quiz_name"], data["quiz_theme"])     
+        quiz = QuizModel(data["quiz_name"], data["theme_id"])     
 
         try:
             quiz.save_to_db()            
@@ -55,7 +55,7 @@ class Quiz(Resource):
         # Save data into Question table
         questions = data["questions"]
         for q in questions:
-            question = QuestionModel(quiz.quiz_id, q["question_category"], q["question_type"], q["question_statement"], q["question_correct_entries"], q["question_wrong_entries"])
+            question = QuestionModel(quiz.quiz_id, q["question_category"], q["questiontype_id"], q["question_statement"], q["question_correct_entries"], q["question_wrong_entries"])
 
             try:
                 question.save_to_db()
@@ -83,7 +83,7 @@ class Quiz(Resource):
             quiz = QuizModel(**data)
         else:               # Update the quiz if it exists in the database
             quiz.quiz_name = data['quiz_name']
-            quiz.quiz_theme = data['quiz_theme']
+            quiz.theme_id = data['theme_id']
             quiz.quiz_update = datetime.now()
 
         quiz.save_to_db()

@@ -60,7 +60,7 @@ export class CreateQuizForm extends Component {
 
           QAjson.push({
             "question_category": value.category,
-            "question_type": value.type,
+            "questiontype_id": 1,
             "question_statement": value.question,
             "question_correct_entries": 0, 
             "question_wrong_entries": 0,
@@ -70,7 +70,7 @@ export class CreateQuizForm extends Component {
 
         let webdata = {
           "quiz_name": quiz.name, 
-          "quiz_theme": quiz.theme,
+          "theme_id": 1,
           "questions": QAjson
         }    
 

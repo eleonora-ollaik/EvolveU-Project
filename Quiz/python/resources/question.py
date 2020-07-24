@@ -20,10 +20,10 @@ class Question(Resource):
         required=True,
         help="Every question needs a category."
     )
-    parser.add_argument('question_type',
+    parser.add_argument('questiontype_id',
         type=str,
         required=True,
-        help="Every question needs a type."
+        help="Every question needs a question type id."
     )
     parser.add_argument('question_statement',
         type=str,
@@ -72,7 +72,7 @@ class Question(Resource):
         else:               # Update the question if it exists in the database
             question.quiz_id = data['quiz_id']
             question.question_category = data['question_category']
-            question.question_type = data['question_type']
+            question.questiontype_id = data['questiontype_id']
             question.question_statement = data['question_statement']
             question.question_correct_entries = data['question_correct_entries']
             question.question_wrong_entries = data['question_wrong_entries']
