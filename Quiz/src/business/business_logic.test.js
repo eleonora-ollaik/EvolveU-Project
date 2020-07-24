@@ -12,10 +12,10 @@ test('Question Class', () => {
     question1.category = 'world';
     question1.question= 'What is the capital of France?';
     question1.correct_answers.push('Paris')
-    question1.incorrect_answers.push('Berlin', 'Moscow', 'Beijing')
+    question1.wrong_answers.push('Berlin', 'Moscow', 'Beijing')
 
     expect(question1.correct_answers[0]).toBe('Paris');
-    expect(question1.incorrect_answers[1]).toBe('Moscow');
+    expect(question1.wrong_answers[1]).toBe('Moscow');
 
     expect(question1.category).toBe('world');
     expect(question1.question).toBe('What is the capital of France?');
@@ -38,7 +38,7 @@ test('Quiz Class', () => {
     expect(qandA1.number_of_correct_entries).toBe(0);
     expect(qandA1.number_of_incorrect_entries).toBe(0);
     expect(qandA1.correct_answers).toEqual([]);
-    expect(qandA1.incorrect_answers).toEqual([]);
+    expect(qandA1.wrong_answers).toEqual([]);
     expect(qandA1.number_of_incorrect_entries).toBe(0);
     expect(length).toBe(1);
     
@@ -52,22 +52,22 @@ test('Quiz Class', () => {
     qandA2.type = 'multiple choice';
     qandA2.category = 'world';
     qandA2.correct_answers = 8;
-    qandA2.incorrect_answers = 2;
+    qandA2.wrong_answers = 2;
     // // console.log(key2);
     // // console.log(length);
     expect(qandA2.calculate_difficulty()).toBe('easy')
     expect(ctrl.getQuestionAndAnswers(key2).category).toBe('world');
 
     qandA2.correct_answers = 2;
-    qandA2.incorrect_answers = 7;
+    qandA2.wrong_answers = 7;
     expect(qandA2.calculate_difficulty()).toBe('hard');
 
     qandA2.correct_answers = 5;
-    qandA2.incorrect_answers = 5;
+    qandA2.wrong_answers = 5;
     expect(qandA2.calculate_difficulty()).toBe('normal');
 
     qandA2.correct_answers = 0;
-    qandA2.incorrect_answers = 0;
+    qandA2.wrong_answers = 0;
     expect(qandA2.calculate_difficulty()).toBe('Undetermined');
 
     let optionlist = ['multiple choice', 'open ended question', 'true or false'];
@@ -80,9 +80,9 @@ test('Quiz Class', () => {
     qandA2.correct_answers = []
     qandA2.assignCorrectAnsw(['Paris', 'Berlin'])
     expect(qandA2.correct_answers).toEqual([]);
-    qandA2.incorrect_answers = []
+    qandA2.wrong_answers = []
     qandA2.assignInCorrectAnsw(['Beijing'])
-    expect(qandA2.incorrect_answers).toEqual(['Beijing']);
+    expect(qandA2.wrong_answers).toEqual(['Beijing']);
 
 
     qandA2.type = 'open ended question';
@@ -92,15 +92,15 @@ test('Quiz Class', () => {
     qandA2.correct_answers = []
     qandA2.assignCorrectAnsw([])
     expect(qandA2.correct_answers).toEqual([]);
-    qandA2.incorrect_answers = []
+    qandA2.wrong_answers = []
     qandA2.assignInCorrectAnsw(['Moscow', 'Berlin', 'Beijing'])
-    expect(qandA2.incorrect_answers).toEqual([]);
+    expect(qandA2.wrong_answers).toEqual([]);
 
 
     qandA2.type = 'multiple choice';
-    qandA2.incorrect_answers = []
+    qandA2.wrong_answers = []
     qandA2.assignInCorrectAnsw(['Moscow', 'Berlin', 'Beijing'])
-    expect(qandA2.incorrect_answers).toEqual(['Moscow', 'Berlin', 'Beijing']);
+    expect(qandA2.wrong_answers).toEqual(['Moscow', 'Berlin', 'Beijing']);
 
 
   

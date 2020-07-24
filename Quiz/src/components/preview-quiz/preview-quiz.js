@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import './preview-quiz.css';
 
 export class QApreview extends Component {
 
@@ -18,9 +19,8 @@ export class QApreview extends Component {
         QAentries.push(<div key={`CA${key}${i}`}>Correct answer: {QA.correct_answers[i]}</div>);
       }
 
-      for (let i=0; i<QA.incorrect_answers.length; i++) {
-        // console.log("incorrect_answers.length, ", QA.incorrect_answers.length)
-        QAentries.push(<div key={`IA${key}${i}`}>Wrong answer: {QA.incorrect_answers[i]}</div>);
+      for (let i=0; i<QA.wrong_answers.length; i++) {
+        QAentries.push(<div key={`IA${key}${i}`}>Wrong answer: {QA.wrong_answers[i]}</div>);
       }
             
       QAentries.push(<button key={`BEdit${key}`} uuid={key} onClick={this.props.onClickEdit}>Edit</button>);
@@ -30,67 +30,6 @@ export class QApreview extends Component {
     return (
       <div>
         {QAentries}
-        <div id="idEditQAModal" className="modal">
-          <QAedit
-            quiz={this.props.quiz}
-            qaID= {this.props.qaID}
-            qaType={this.props.qaType}
-            onChange={this.props.onChange}
-            onClick = {this.props.onClick}
-          />        
-        </div>        
-      </div>
-    );
-  }
-}
-
-export class QAedit extends Component {
-
-  render() {
-    const quiz = this.props.quiz;
-    const key = this.props.qaID;
-    const qaType = this.props.qaType;
-    let ansDisplay=[];
-    let question = null;
-    
-    const displayOption = {
-                            "multipleChoice": {"caNumer": 1, "iaNumber": 3},
-                            "openEnded": {"caNumer": 4, "iaNumber": 0},
-                            "boolean": {"caNumer": 1, "iaNumber": 1},
-                          }
-
-    if (key !== null) {   // A question and answer object provided
-      const QA = quiz.QuestionsAndAnswers[key];
-      const correct_answers = QA.correct_answers;
-      const incorrect_answers = QA.incorrect_answers;
-      question = QA.question;
-
-      // Generate correct answer inputs      
-      for (let i=0; i<displayOption[qaType]["caNumer"]; i++) {
-        ansDisplay.push(<input type="text" placeholder="Correct Answer" className='CorrectAnswer' key={`'ca'${i}`} defaultValue={correct_answers[i]}/>);
-      }
-
-      // Generate wrong answer inputs
-      for (let i=0; i<displayOption[qaType]["iaNumber"]; i++) {
-        ansDisplay.push(<input type="text" placeholder="Wrong Answer" className='WrongAnswer' key={`'ia'${i}`} defaultValue={incorrect_answers[i]}/>);
-      }      
-
-      // console.log("qaType", qaType);
-    }
-
-    return (
-      <div>
-        <input type="text" placeholder="Question"  id = 'idQuestion' defaultValue={question}/>
-
-        <select name="type" id="idQuestionType" onChange={this.props.onChange} value={qaType}>
-          <option value="multipleChoice">Multiple Choice</option>
-          <option value="openEnded">Open Ended Question</option>
-          <option value="boolean">True or False</option>
-        </select>
-
-        {ansDisplay}
-
-        <button onClick={this.props.onClick}>Save</button>
       </div>
     );
   }
