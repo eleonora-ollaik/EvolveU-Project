@@ -9,11 +9,8 @@ export class QAedit extends Component {
     let ansDisplay=[];
     let question = null;
 
-    const displayOption = {
-                            "multipleChoice": {"caNumer": 1, "iaNumber": 3},
-                            "openEnded": {"caNumer": 4, "iaNumber": 0},
-                            "boolean": {"caNumer": 1, "iaNumber": 1},
-                          }
+    const displayOption = this.props.qaTypeList;
+    const qaTypeCheck = this.props.qaTypeCheck;
 
     if (key !== null) {   // A question and answer object provided
       const QA = quiz.QuestionsAndAnswers[key];
@@ -22,14 +19,14 @@ export class QAedit extends Component {
       question = QA.question;
 
       // Generate correct answer inputs      
-      for (let i=0; i<displayOption[qaType]["caNumer"]; i++) {
+      for (let i=0; i<qaTypeCheck[qaType]["caNumer"]; i++) {
         ansDisplay.push(<input type="text" placeholder="Correct Answer" className='CorrectAnswer' key={`'ca'${i}`} defaultValue={correct_answers[i]}/>);
       }
 
       // Generate wrong answer inputs
-      for (let i=0; i<displayOption[qaType]["iaNumber"]; i++) {
+      for (let i=0; i<qaTypeCheck[qaType]["iaNumber"]; i++) {
         ansDisplay.push(<input type="text" placeholder="Wrong Answer" className='WrongAnswer' key={`'ia'${i}`} defaultValue={wrong_answers[i]}/>);
-      }      
+      }        
     }
 
     return (
@@ -37,9 +34,7 @@ export class QAedit extends Component {
         <input type="text" placeholder="Question"  id = 'idQuestion' defaultValue={question}/>
 
         <select name="type" id="idQuestionType" onChange={this.props.onChange} value={qaType}>
-          <option value="multipleChoice">Multiple Choice</option>
-          <option value="openEnded">Open Ended Question</option>
-          <option value="boolean">True or False</option>
+          {displayOption}
         </select>
         
         {ansDisplay}

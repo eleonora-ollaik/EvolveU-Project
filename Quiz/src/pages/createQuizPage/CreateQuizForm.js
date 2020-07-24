@@ -10,8 +10,11 @@ import CreateQuizNav from "../../components/create-quiz-navigation/create-quiz-n
 export class CreateQuizForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      qaType: "multipleChoice",
+    this.state = {      
+      quizThemeList: null,
+      qaTypeList: null,
+      qaTypeCheck: null,
+      qaType: null,
       quizEdit: false,
       quizNav: "Create Quiz",
       quizes: new logic.Quiz(),
@@ -20,14 +23,55 @@ export class CreateQuizForm extends Component {
     };
   }
 
+  componentDidMount() {
+    if(this.state.qaTypeList == null) {
+      this.getQAtypeList();
+    }    
+
+    if(this.state.quizThemeList == null) {
+      this.getQuizThemeList();
+    }        
+  }
+
   onClickEntryHandler = (e) => {
     // qaID = null resets the edit panel display
-    this.setState({ quizNav: "Create Quiz", qaID: null });
+    this.setState({quizNav: "Create Quiz", qaID: null});
   };
 
   onClickPreviewHandler = (e) => {
-    this.setState({ quizNav: "Preview Quiz" });
+    this.setState({quizNav: "Preview Quiz"});
   };
+
+  async getQAtypeList () {
+    const url = "http://127.0.0.1:5000/questiontypes";
+    let responsedata = await net.getData(url);
+
+    // Convert into dictionary format for generating drop down list by other components (create-quiz)
+    const list = responsedata["question types"];
+    let dictdata = {};
+    for (let i=0; i<list.length; i++) {
+      dictdata[list[i]["questiontype_id"]] = {"caNumer": list[i]["correct_answer_num"], 
+                                                "iaNumber": list[i]["wrong_answer_num"]};
+    }
+    let listdata = [];
+    for (let i=0; i<list.length; i++) {      
+      listdata.push(<option value={list[i]["questiontype_id"]} key={i}>{list[i]["questiontype_name"]}</option>);    
+    }        
+    this.setState({qaType: list[0]["questiontype_id"],qaTypeCheck: dictdata, qaTypeList: listdata});    
+  }
+
+  async getQuizThemeList () {
+    const url = "http://127.0.0.1:5000/themes";
+    let responsedata = await net.getData(url);
+
+    const list = responsedata["themes"];
+    let listdata = [];
+    for (let i=0; i<list.length; i++) {      
+      listdata.push(<option value={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</option>);    
+    }    
+  
+    this.setState({quizThemeList: listdata});
+  }
 
   async saveQuiz () {
 
@@ -46,8 +90,6 @@ export class CreateQuizForm extends Component {
           let correct_answers = quiz.QuestionsAndAnswers[key].correct_answers;
           let wrong_answers = quiz.QuestionsAndAnswers[key].wrong_answers;
   
-          // console.log("correct_answers, ", correct_answers);        
-          // console.log("wrong_answers, ", wrong_answers);
           for (let i=0; i<correct_answers.length; i++) {
             answers.push({"answer_is_correct": true, "answer_statement": correct_answers[i]})
           }
@@ -55,12 +97,10 @@ export class CreateQuizForm extends Component {
           for (let i=0; i<wrong_answers.length; i++) {
             answers.push({"answer_is_correct": false, "answer_statement": wrong_answers[i]})
           }
-  
-          console.log(answers);
 
           QAjson.push({
             "question_category": value.category,
-            "questiontype_id": 1,
+            "questiontype_id": value.type,
             "question_statement": value.question,
             "question_correct_entries": 0, 
             "question_wrong_entries": 0,
@@ -70,11 +110,9 @@ export class CreateQuizForm extends Component {
 
         let webdata = {
           "quiz_name": quiz.name, 
-          "theme_id": 1,
+          "theme_id": quiz.theme,
           "questions": QAjson
         }    
-
-        console.log(webdata);
 
         responsedata = await net.postData(url, webdata);
 
@@ -93,7 +131,7 @@ export class CreateQuizForm extends Component {
     }
   }
 
-  onClickQuizHandler = (e) => {
+  onClickQuizSumbit = (e) => {
     // Save Quiz to the server
     // Clear current Quiz controller
     this.saveQuiz();
@@ -107,18 +145,20 @@ export class CreateQuizForm extends Component {
     quizObj.QuestionsAndAnswers = this.state.quizes.QuestionsAndAnswers;
 
     let key = this.state.quizes.addQuestionsAndAnswers();
-    let qAndAPair = this.state.quizes.getQuestionAndAnswers(key);
-    qAndAPair.type = document.getElementById("idQuestionType").value;
-    qAndAPair.question = document.getElementById("idQuestion").value;
+    let QA = this.state.quizes.getQuestionAndAnswers(key);
+    const sel = document.getElementById("idQuestionType");    
+    QA.type = sel.value;
+    QA.typename = sel.options[sel.selectedIndex].text;
+    QA.question = document.getElementById("idQuestion").value;
 
     const CAarray = document.querySelectorAll(".CorrectAnswer");
     for (let i = 0; i < CAarray.length; i++) {
-      qAndAPair.correct_answers.push(CAarray[i].value);
+      QA.correct_answers.push(CAarray[i].value);
     }
 
     const WAarray = document.querySelectorAll(".WrongAnswer");
     for (let i = 0; i < WAarray.length; i++) {
-      qAndAPair.wrong_answers.push(WAarray[i].value);
+      QA.wrong_answers.push(WAarray[i].value);
     }
 
     this.clearInputs();
@@ -133,7 +173,6 @@ export class CreateQuizForm extends Component {
 
   clearInputs = () => {
     document.getElementById("idQuestion").value = "";
-
     const CAarray = document.querySelectorAll(".CorrectAnswer");
     for (let i = 0; i < CAarray.length; i++) {
       CAarray[i].value = "";
@@ -210,6 +249,8 @@ export class CreateQuizForm extends Component {
       <CreateQuiz
         quiz={this.state.quizes}
         qaType={this.state.qaType}
+        qaTypeCheck={this.state.qaTypeCheck}
+        qaTypeList={this.state.qaTypeList}
         onClick={this.onClickQuestionHandler}
         onChange={this.onChangeQuestionHandler}
       />
@@ -232,12 +273,14 @@ export class CreateQuizForm extends Component {
                   quiz={this.state.quizes}
                   qaID={this.state.qaID}
                   qaType={this.state.qaType}
+                  qaTypeCheck={this.state.qaTypeCheck}
+                  qaTypeList={this.state.qaTypeList}
                   onChange={this.onChangeQuestionHandler}
                   onClickSave={this.onClickSave}     
                 />}
         onClickModalClose={this.onClickCloseModal}      
       />
-    );
+    ); 
     
     const quizNavPanel = this.state.quizNav === "Create Quiz" ? entry : preview;
     const quizEdit = this.state.quizEdit ? edit : <div id="idEditQAModal"></div>;
@@ -258,16 +301,13 @@ export class CreateQuizForm extends Component {
         />
 
         <select name="theme" id="idQuizTheme">
-          <option value="history">History</option>
-          <option value="geography">Geography</option>
-          <option value="sports">Sports</option>
-          <option value="entertainment">Entertainment</option>
+          {this.state.quizThemeList}
         </select>
 
         {quizNavPanel}
         {quizEdit}
 
-        <button type="Submit" onClick={this.onClickQuizHandler}>
+        <button type="Submit" onClick={this.onClickQuizSumbit}>
           Submit
         </button>
         
@@ -278,3 +318,4 @@ export class CreateQuizForm extends Component {
 }
 
 export default CreateQuizForm;
+

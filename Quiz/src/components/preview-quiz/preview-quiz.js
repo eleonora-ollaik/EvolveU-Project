@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import './preview-quiz.css';
 
 export class QApreview extends Component {
 
@@ -14,6 +13,7 @@ export class QApreview extends Component {
       QAentries.push(<div key={`Q${key}`}>{QA.question}</div>);
 
       QAentries.push(<div key={`T${key}`}>{QA.type}</div>);
+      QAentries.push(<div key={`TN${key}`}>{QA.typename}</div>);
 
       for (let i=0; i<QA.correct_answers.length; i++) {
         QAentries.push(<div key={`CA${key}${i}`}>Correct answer: {QA.correct_answers[i]}</div>);

@@ -1,59 +1,15 @@
 
 class QuestionsAndAnswers {
-
-    // static lastKey = 0;
-
+    
     constructor () {
         this.category = null;
         this.type = null;
+        this.typename = null;
         this.question = null;
         this.number_of_correct_entries = 0;
         this.number_of_incorrect_entries = 0;
         this.correct_answers = [];
         this.wrong_answers = [];        
-    }
-
-    assignType (type, optionlist) {
-        for (let i = 0; i < optionlist.length; i++){
-            if (type === optionlist[i]) {
-                this.type = type;
-            }
-        }
-    }
-
-    assignCorrectAnsw (answers) {
-
-        let types = [
-            {'type': 'multiple choice', 'min': 1, 'max': 1,},
-            {'type': 'true or false', 'min': 1, 'max': 1,},
-            {'type': 'open ended question', 'min': 1, 'max': 5,}
-        ]        
-
-        for (let i=0; i < types.length; i++) {
-            if(this.type === types[i].type) {
-                if(types[i].min <= answers.length && answers.length <= types[i].max) {
-                    this.correct_answers = answers;
-                } 
-
-            }
-        }
-    }
-        assignInCorrectAnsw (answers) {
-
-            let types = [
-                {'type': 'multiple choice', 'min': 3, 'max': 3,},
-                {'type': 'true or false', 'min': 1, 'max': 1,},
-                {'type': 'open ended question', 'min': 0, 'max': 0,}
-            ]        
-    
-            for (let i=0; i < types.length; i++) {
-                if(this.type === types[i].type) {
-                    if(types[i].min <= answers.length && answers.length <= types[i].max) {
-                        this.wrong_answers = answers;
-                    } 
-                    
-                }
-            }   
     }
 
     calculate_difficulty() {
@@ -74,12 +30,7 @@ class QuestionsAndAnswers {
             }               
         }
         return result;
-    }
-
-    // Generate new key (UUID) for new questions and answers object
-    // newKey() {
-    //     return ++QuestionsAndAnswers.lastKey;
-    // }    
+    } 
 }
 
 class Quiz {

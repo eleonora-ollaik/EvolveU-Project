@@ -28,7 +28,6 @@ test('Quiz Class', () => {
 
     let qandA1 = ctrl.QuestionsAndAnswers[key1]
     let length = Object.keys(ctrl.QuestionsAndAnswers).length
-    // console.log(key1)
     qandA1.type = 'multiple choice';
     qandA1.category = 'world';
 
@@ -53,8 +52,6 @@ test('Quiz Class', () => {
     qandA2.category = 'world';
     qandA2.correct_answers = 8;
     qandA2.wrong_answers = 2;
-    // // console.log(key2);
-    // // console.log(length);
     expect(qandA2.calculate_difficulty()).toBe('easy')
     expect(ctrl.getQuestionAndAnswers(key2).category).toBe('world');
 
@@ -69,39 +66,4 @@ test('Quiz Class', () => {
     qandA2.correct_answers = 0;
     qandA2.wrong_answers = 0;
     expect(qandA2.calculate_difficulty()).toBe('Undetermined');
-
-    let optionlist = ['multiple choice', 'open ended question', 'true or false'];
-    qandA2.assignType(qandA2.type, optionlist)
-    expect(qandA2.type).toBe('multiple choice');
-
-    qandA2.type = 'true or false';
-    qandA2.assignType(qandA2.type, optionlist)
-    expect(qandA2.type).toBe('true or false');
-    qandA2.correct_answers = []
-    qandA2.assignCorrectAnsw(['Paris', 'Berlin'])
-    expect(qandA2.correct_answers).toEqual([]);
-    qandA2.wrong_answers = []
-    qandA2.assignInCorrectAnsw(['Beijing'])
-    expect(qandA2.wrong_answers).toEqual(['Beijing']);
-
-
-    qandA2.type = 'open ended question';
-
-    qandA2.assignCorrectAnsw(['Paris', 'Berlin'])
-    expect(qandA2.correct_answers).toEqual(['Paris', 'Berlin']);
-    qandA2.correct_answers = []
-    qandA2.assignCorrectAnsw([])
-    expect(qandA2.correct_answers).toEqual([]);
-    qandA2.wrong_answers = []
-    qandA2.assignInCorrectAnsw(['Moscow', 'Berlin', 'Beijing'])
-    expect(qandA2.wrong_answers).toEqual([]);
-
-
-    qandA2.type = 'multiple choice';
-    qandA2.wrong_answers = []
-    qandA2.assignInCorrectAnsw(['Moscow', 'Berlin', 'Beijing'])
-    expect(qandA2.wrong_answers).toEqual(['Moscow', 'Berlin', 'Beijing']);
-
-
-  
 })

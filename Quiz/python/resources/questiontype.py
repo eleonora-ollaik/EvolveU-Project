@@ -14,7 +14,17 @@ class QuestionType(Resource):
         type=str,
         required=True,
         help="Every question type needs a type."
-    )    
+    )
+    parser.add_argument('correct_answer_num',
+        type=int,
+        required=True,
+        help="Every question type needs a number of correct answers."
+    ) 
+    parser.add_argument('wrong_answer_num',
+        type=int,
+        required=True,
+        help="Every question type needs a number of wrong answers."
+    )             
         
     def get(self, questiontype_id):
         questiontype = QuestionTypeModel.find_by_id(questiontype_id)       
