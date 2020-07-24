@@ -43,13 +43,16 @@ export function randomizeAnswerArray(answerArray){
 
 export function checkIfAnswerCorrect(arrayOfAnswers, questionsAndAnswers ) {
     let result;
-    if (questionsAndAnswers.question_type === "multipleChoice") {
+    if (questionsAndAnswers.questiontype_id === 1) {
+        // multiple
         if(arrayOfAnswers.some((userAnswer) => userAnswer.answer_is_correct === false)){
             result = false;
         } else {
+            console.log(arrayOfAnswers)
             result = true;
         }
-    } else if (questionsAndAnswers.question_type === "openEnded"){
+    } else if (questionsAndAnswers.questiontype_id === 3){
+        // open
         if(questionsAndAnswers.answers.some((answer)=> answer.answer_statement === arrayOfAnswers[0])){
             result = true;
         } else {
