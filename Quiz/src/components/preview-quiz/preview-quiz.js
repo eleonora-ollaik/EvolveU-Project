@@ -3,6 +3,7 @@ import React, { Component } from "react";
 export class QApreview extends Component {
 
   render() {
+    console.log(this.props)
     const QAobject = this.props.quiz.QuestionsAndAnswers;
     let QAentries = [];
     
