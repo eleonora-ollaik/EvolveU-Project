@@ -5,7 +5,6 @@ import QuizManagerPreview from "../../components/quiz-manager-preview/quiz-manag
 import net from "../../business/netcomm";
 
 import {
-    postData,
     getData,
     convertFormat,
     convertQuizDetails,
@@ -24,6 +23,7 @@ class QuizManager extends Component {
             responseData: null,
             isModalOpen: false,
             qaTypeList: null,
+            currentEditQuestion: null
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
@@ -50,17 +50,8 @@ class QuizManager extends Component {
         this.setState({ value: event.target.value });
     }
 
-    async handleSearch() {
-        try {
-            const response = await postData(serverUrl, this.state.value).then(
-                (data) => data
-            );
-            this.setState({ responseData: response });
-            console.log("fetch success");
-        } catch (error) {
-            console.log(error);
-        }
-        console.log("Search button clicked");
+    handleSearch() {
+       console.log('local filter')
     }
 
     async getQAtypeList() {
@@ -83,8 +74,8 @@ class QuizManager extends Component {
         this.setState({ qaType: list[0]["questiontype_id"], qaTypeCheck: dictData, qaTypeList: listData });
     }
 
-    handleEdit = (e) => {
-        console.log('open modal, and edit')
+    handleEdit = (question) => {
+        this.setState({currentEditQuestion:question,isModalOpen:true})
     };
 
     handleRemove = (e) => {
@@ -93,7 +84,6 @@ class QuizManager extends Component {
 
 
     render() {
-        // console.log(this.state.selectedQuiz);
         return (
             <div className="quizContainer">
                 {this.state.selectedQuiz ? (
@@ -114,7 +104,9 @@ class QuizManager extends Component {
                 {
                     this.state.isModalOpen ? (
                     <div className='modal'>
-                        
+                        <div>
+                            <h2>{this.state.currentEditQuestion.question_statement}</h2>
+                        </div>
                     </div>
                     ) : null
                 }
