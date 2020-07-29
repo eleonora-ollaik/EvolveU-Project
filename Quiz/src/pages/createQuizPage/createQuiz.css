@@ -1,0 +1,9 @@
+.DropdownButton {
+    width: 20px;
+    height: 10px;
+}
+
+.ModalBox {
+    width: fit-content;
+    height: fit-content;
+}

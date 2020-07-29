@@ -6,6 +6,9 @@ import ModalBox from "../../components/modalbox/modalbox";
 import logic from "../../business/business_logic";
 import net from "../../business/netcomm";
 import CreateQuizNav from "../../components/create-quiz-navigation/create-quiz-nav";
+import {Jumbotron, Form, DropdownButton, InputGroup, Button, Dropdown} from 'react-bootstrap';
+import css from './createQuiz.css'
+// import {} from "react-bootstrap/esm/DropdownItem";
 
 export class CreateQuizForm extends Component {
   constructor(props) {
@@ -49,15 +52,18 @@ export class CreateQuizForm extends Component {
     // Convert into dictionary format for generating drop down list by other components (create-quiz)
     const list = responsedata["question types"];
     let dictdata = {};
+    
     for (let i=0; i<list.length; i++) {
       dictdata[list[i]["questiontype_id"]] = {"caNumer": list[i]["correct_answer_num"], 
                                                 "iaNumber": list[i]["wrong_answer_num"]};
     }
+    console.log(dictdata)
     let listdata = [];
     for (let i=0; i<list.length; i++) {      
-      listdata.push(<option value={list[i]["questiontype_id"]} key={i}>{list[i]["questiontype_name"]}</option>);    
+      listdata.push(<Dropdown.Item value={list[i]["questiontype_id"]} key={i}>{list[i]["questiontype_name"]}</Dropdown.Item>);    
     }        
-    this.setState({qaType: list[0]["questiontype_id"],qaTypeCheck: dictdata, qaTypeList: listdata});    
+    this.setState({qaType: list[0]["questiontype_id"],qaTypeCheck: dictdata, qaTypeList: listdata}); 
+    console.log(this.state.qaTypeCheck)   
   }
 
   async getQuizThemeList () {
@@ -67,10 +73,12 @@ export class CreateQuizForm extends Component {
     const list = responsedata["themes"];
     let listdata = [];
     for (let i=0; i<list.length; i++) {      
-      listdata.push(<option value={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</option>);    
-    }    
+      listdata.push(<Dropdown.Item value={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</Dropdown.Item>);    
   
+    }    
     this.setState({quizThemeList: listdata});
+    console.log(this.state.quizThemeList)   
+
   }
 
   async saveQuiz () {
@@ -146,9 +154,10 @@ export class CreateQuizForm extends Component {
 
     let key = this.state.quizes.addQuestionsAndAnswers();
     let QA = this.state.quizes.getQuestionAndAnswers(key);
-    const sel = document.getElementById("idQuestionType");    
+    const sel = document.getElementById("idQuestionType"); 
+    console.log(sel.value);   
     QA.type = sel.value;
-    QA.typename = sel.options[sel.selectedIndex].text;
+    QA.typename = sel.DropdownButton[sel.selectedIndex].text;
     QA.question = document.getElementById("idQuestion").value;
 
     const CAarray = document.querySelectorAll(".CorrectAnswer");
@@ -167,7 +176,10 @@ export class CreateQuizForm extends Component {
   };
 
   onChangeQuestionHandler = (e) => {
+    console.log(document.getElementById("idQuestionType").value)
+
     let type = document.getElementById("idQuestionType").value;
+
     this.setState({qaType: type});
   };
 
@@ -287,32 +299,37 @@ export class CreateQuizForm extends Component {
     const hidemsg = this.state.noticeMsg ? false : true;
 
     return (
+      <Jumbotron>
       <div className="createQuizContainer">
         <CreateQuizNav
           quizNav={this.state.quizNav}
           onEntryClick={this.onClickEntryHandler}
           onPreviewClick={this.onClickPreviewHandler}
         />
-        <input
+        <br/>
+        <InputGroup>
+        <Form.Control
           type="text"
           name="quizName"
           placeholder="Quiz name"
           id="idQuizName"
         />
 
-        <select name="theme" id="idQuizTheme">
-          {this.state.quizThemeList}
-        </select>
-
+        <DropdownButton as={InputGroup.Append} variant="outline-secondary" title="Theme" id="idQuizTheme">
+           {this.state.quizThemeList}
+        </DropdownButton>
+        </InputGroup>
+        <br/>
         {quizNavPanel}
         {quizEdit}
-
-        <button type="Submit" onClick={this.onClickQuizSumbit}>
-          Submit
-        </button>
+        <br/>
+        <Button variant="success" type="Submit" onClick={this.onClickQuizSumbit}>
+          Submit Quiz
+        </Button>
         
         <ModalBox content={this.state.noticeMsg} onClickModalClose={this.onClickCloseModal} hide={hidemsg}/>        
       </div>
+      </Jumbotron>
     );
   }
 }

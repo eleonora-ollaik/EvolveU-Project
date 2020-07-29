@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import SelectQuiz from "../../components/select-quiz/select-quiz";
 import QuizManagerPreview from "../../components/quiz-manager-preview/quiz-manager-preview";
 import net from "../../business/netcomm";
+import {Jumbotron} from 'react-bootstrap'
 
 import {
     getData,
@@ -85,32 +86,34 @@ class QuizManager extends Component {
 
     render() {
         return (
-            <div className="quizContainer">
-                {this.state.selectedQuiz ? (
-                    <QuizManagerPreview
-                        quiz={this.state.selectedQuiz}
-                        handleEdit={this.handleEdit}
-                        handleRemove={this.handleRemove}
-                    />
-                ) : this.state.responseData ? (
-                    <SelectQuiz
-                        value={this.state.value}
-                        handleChange={this.handleChange}
-                        handleSearch={this.handleSearch}
-                        responseData={this.state.responseData}
-                        selectQuiz={this.selectQuiz}
-                    />
-                ) : null}
-                {
-                    this.state.isModalOpen ? (
-                    <div className='modal'>
-                        <div>
-                            <h2>{this.state.currentEditQuestion.question_statement}</h2>
+            <Jumbotron>
+                <div className="quizContainer">
+                    {this.state.selectedQuiz ? (
+                        <QuizManagerPreview
+                            quiz={this.state.selectedQuiz}
+                            handleEdit={this.handleEdit}
+                            handleRemove={this.handleRemove}
+                        />
+                    ) : this.state.responseData ? (
+                        <SelectQuiz
+                            value={this.state.value}
+                            handleChange={this.handleChange}
+                            handleSearch={this.handleSearch}
+                            responseData={this.state.responseData}
+                            selectQuiz={this.selectQuiz}
+                        />
+                    ) : null}
+                    {
+                        this.state.isModalOpen ? (
+                        <div className='modal'>
+                            <div>
+                                <h2>{this.state.currentEditQuestion.question_statement}</h2>
+                            </div>
                         </div>
+                        ) : null
+                    }
                     </div>
-                    ) : null
-                }
-            </div>
+            </Jumbotron>
         );
     }
 }

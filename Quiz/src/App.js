@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import LandingPage from './pages/homepage/landingpage';
 import Header from './components/header/header';
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 class App extends Component {
   constructor(props){
     super(props)

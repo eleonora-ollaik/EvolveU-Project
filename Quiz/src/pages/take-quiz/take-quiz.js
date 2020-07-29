@@ -5,6 +5,8 @@ import PlayQuiz from "../../components/play-quiz/play-quiz";
 
 import { postData, getData, convertFormat, convertQuizDetails } from "../../fetch-data.util";
 import "./take-quiz.css";
+import {Jumbotron} from 'react-bootstrap'
+
 
 const serverUrl = "http://127.0.0.1:5000/";
 
@@ -112,6 +114,7 @@ class TakeQuiz extends PureComponent {
   render() {
     // console.log(this.state.selectedQuiz);
     return (
+      <Jumbotron>
       <div className="quizContainer">
         {this.state.selectedQuiz ? (
           <PlayQuiz
@@ -133,6 +136,7 @@ class TakeQuiz extends PureComponent {
           /> : null
         )}
       </div>
+      </Jumbotron>
     );
   }
 }
