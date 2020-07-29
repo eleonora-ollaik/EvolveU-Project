@@ -41,45 +41,47 @@ export function randomizeAnswerArray(answerArray){
     return answerArray;
 }
 
-export function checkIfAnswerCorrect(arrayOfAnswers, questionsAndAnswers ) {
+export function checkIfAnswerCorrect(userAnswer, questionsAndAnswers ) {
     let result;
     if (questionsAndAnswers.questiontype_id === 1) {
         // multiple
-        if(arrayOfAnswers.some((userAnswer) => userAnswer.answer_is_correct === false)){
+
+        if(userAnswer.some((userAnswer) => userAnswer.answer_is_correct === false)){
             result = false;
         } else {
-            console.log(arrayOfAnswers)
             result = true;
         }
     } else if (questionsAndAnswers.questiontype_id === 3){
         // open
-        if(questionsAndAnswers.answers.some((answer)=> answer.answer_statement === arrayOfAnswers[0])){
+
+        if(questionsAndAnswers.answers.some((answer)=> answer.answer_statement === userAnswer)){
             result = true;
         } else {
             result = false
         }
     } else {
-        const correctAnswer = questionsAndAnswers.answers.find((answer) => answer.answer_correct === true );
-        if(correctAnswer.answer_statement === arrayOfAnswers[0]){
+        // true or false
+        const correctAnswer = questionsAndAnswers.answers.find((answer) => answer.answer_is_correct === true );
+        if(correctAnswer.answer_statement === userAnswer){
             result = true;
         } else {
             result = false;
         }
         // const intersection = (userAnswer, correctAnswer) => userAnswer.filter(answer => correctAnswer.indexOf(answer) > -1);
-        // if (intersection(arrayOfAnswers, questionsAndAnswers.correct_answers).length === questionsAndAnswers.correct_answers.length) {
+        // if (intersection(userAnswer, questionsAndAnswers.correct_answers).length === questionsAndAnswers.correct_answers.length) {
         //     result = true;
         // } else {
         //     result = false; 
         // }
     // } else if (questionsAndAnswers.correct_answers.length > 1) {
-    //     if (questionsAndAnswers.correct_answers.indexOf(arrayOfAnswers) > -1) {
+    //     if (questionsAndAnswers.correct_answers.indexOf(userAnswer) > -1) {
     //         result = true;
     //     } else {
     //         result = false; 
     //     }
     // } else {
     //     const correctAnswer = questionsAndAnswers.correct_answers[0];
-    //     if(arrayOfAnswers === correctAnswer){
+    //     if(userAnswer === correctAnswer){
     //         result = true;
     //     } else {
     //         result = false;

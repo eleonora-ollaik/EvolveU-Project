@@ -143,7 +143,7 @@ class QandA extends Component {
 
   render() {
     const { currentQuestion, questionsAndAnswers } = this.props;
-
+    console.log(this.state.value)
     return (
       <div>
         <div>Question {currentQuestion}</div>
@@ -185,7 +185,7 @@ class QandA extends Component {
         ) : (
           <div>
             {questionsAndAnswers.shuffledAnswers.map((answer, idx) => (
-              <div key={idx}>
+              <div key={answer.answer_statement}>
                 <input
                   type="checkbox"
                   value={answer.answer_statement}
