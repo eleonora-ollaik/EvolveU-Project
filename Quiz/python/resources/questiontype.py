@@ -24,7 +24,12 @@ class QuestionType(Resource):
         type=int,
         required=True,
         help="Every question type needs a number of wrong answers."
-    )             
+    )
+    parser.add_argument('input_type',
+        type=str,
+        required=True,
+        help="Every question type needs an input type."
+    )                  
         
     def get(self, questiontype_id):
         questiontype = QuestionTypeModel.find_by_id(questiontype_id)       
