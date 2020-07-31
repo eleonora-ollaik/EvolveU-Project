@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Table, Container } from 'react-bootstrap';
 
 class QuizTable extends Component {
     constructor(props) {
@@ -20,7 +21,7 @@ class QuizTable extends Component {
     
         const list = quizData.map((quiz, i) => {
             return (
-                <tr key={i} onClick={() => this.props.selectQuiz(quiz.quizId)}>
+                <tr key={i} onClick={() => this.props.selectQuiz(quiz.quizId)} style={{padding: "0", cursor: "pointer"}}>
                     <td>{quiz.quizId}</td>
                     <td>{quiz.name}</td>
                     <td>{quiz.theme}</td>
@@ -31,18 +32,22 @@ class QuizTable extends Component {
         });
     
         return (
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Quiz name</th>
-                        <th>Theme</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {list}
-                </tbody>
-            </table>
+            <Container style={{width: "480px"}} >
+                <div className="table-responsive-sm">
+                    <Table className="table table-striped">
+                        <thead className="thead-light" style={{padding: "0"}}>
+                            <tr>
+                                <th>ID</th>
+                                <th>Quiz name</th>
+                                <th>Theme</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {list}
+                        </tbody>
+                    </Table>
+                </div>
+            </Container> 
     
         )
 
