@@ -36,7 +36,7 @@ console.log(type)
           {/* <Form.Label>Question:</Form.Label>  */}
       
           <Form.Control type="text" placeholder="Question"  id = 'idQuestion'/>
-            <DropdownButton as={InputGroup.Append} variant="outline-secondary" title="Type" id="idQuestionType" onSelect={this.props.onChange}>
+            <DropdownButton as={InputGroup.Append} variant="outline-secondary" title={this.props.question_type} id="idQuestionType" onSelect={this.props.onChange}>
             {displayOption}
             </DropdownButton>
         

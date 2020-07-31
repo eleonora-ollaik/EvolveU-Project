@@ -23,6 +23,8 @@ export class CreateQuizForm extends Component {
       quizes: new logic.Quiz(),
       qaID: null,
       noticeMsg: "",
+      theme_name:'Theme',
+      type_name: 'Type'
     };
   }
 
@@ -60,10 +62,12 @@ export class CreateQuizForm extends Component {
     console.log(dictdata)
     let listdata = [];
     for (let i=0; i<list.length; i++) {      
-      listdata.push(<Dropdown.Item value={list[i]["questiontype_id"]} key={i}>{list[i]["questiontype_name"]}</Dropdown.Item>);    
+      // listdata.push(<Dropdown.Item value={list[i]["questiontype_id"]} key={i}>{list[i]["questiontype_name"]}</Dropdown.Item>);  
+      listdata.push(<Dropdown.Item eventKey={list[i]["questiontype_id"]} key={i}>{list[i]["questiontype_name"]}</Dropdown.Item>);    
+  
     }        
     this.setState({qaType: list[0]["questiontype_id"],qaTypeCheck: dictdata, qaTypeList: listdata}); 
-    console.log(this.state.qaTypeCheck)   
+    console.log(this.state.qaTypeList)   
   }
 
   async getQuizThemeList () {
@@ -73,13 +77,28 @@ export class CreateQuizForm extends Component {
     const list = responsedata["themes"];
     let listdata = [];
     for (let i=0; i<list.length; i++) {      
-      listdata.push(<Dropdown.Item value={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</Dropdown.Item>);    
-  
+      listdata.push(<Dropdown.Item eventKey={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</Dropdown.Item>);    
+      // listdata.push(<option value={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</option>);    
+      console.log(list[i]["theme_name"])
+      console.log(list[i]["theme_id"])
+
     }    
     this.setState({quizThemeList: listdata});
     console.log(this.state.quizThemeList)   
 
   }
+
+  onChangeThemeHandler = (e) => {
+    let type ;
+    for (let i=0; i<this.state.qaTypeList.length; i++) {
+      if (e == this.state.qaTypeList[i].props.eventKey) {
+        type = this.state.qaTypeList[i].props.children;
+      }
+    }
+    console.log('type:', type)
+    this.setState({qaType: e, type_name: type});
+
+  };
 
   async saveQuiz () {
 
@@ -154,10 +173,15 @@ export class CreateQuizForm extends Component {
 
     let key = this.state.quizes.addQuestionsAndAnswers();
     let QA = this.state.quizes.getQuestionAndAnswers(key);
-    const sel = document.getElementById("idQuestionType"); 
-    console.log(sel.value);   
-    QA.type = sel.value;
-    QA.typename = sel.DropdownButton[sel.selectedIndex].text;
+    console.log(QA)
+    console.log('event:', e)
+
+    // const sel = document.getElementById("idQuestionType"); 
+    // console.log(sel.value);   
+    // QA.type = sel.value;
+    // QA.typename = sel.DropdownButton[sel.selectedIndex].text;
+    QA.typename = 'hello world';
+
     QA.question = document.getElementById("idQuestion").value;
 
     const CAarray = document.querySelectorAll(".CorrectAnswer");
@@ -176,11 +200,21 @@ export class CreateQuizForm extends Component {
   };
 
   onChangeQuestionHandler = (e) => {
-    console.log(document.getElementById("idQuestionType").value)
+    // console.log(document.getElementById("idQuestionType").value)
+    // console.log(e)
+    let type ;
+    // let type = document.getElementById("idQuestionType").value;
+    for (let i=0; i<this.state.qaTypeList.length; i++) {
+      if (e == this.state.qaTypeList[i].props.eventKey) {
+      // console.log('element:', this.state.qaTypeList[i].props)
+        type = this.state.qaTypeList[i].props.children;
+        // console.log('Bootsrap')
+      }
+    }
+    console.log('type:', type)
+    // this.setState({qaType: type});
+    this.setState({qaType: e, type_name: type});
 
-    let type = document.getElementById("idQuestionType").value;
-
-    this.setState({qaType: type});
   };
 
   clearInputs = () => {
@@ -265,6 +299,7 @@ export class CreateQuizForm extends Component {
         qaTypeList={this.state.qaTypeList}
         onClick={this.onClickQuestionHandler}
         onChange={this.onChangeQuestionHandler}
+        question_type = {this.state.type_name}
       />
     );
 
@@ -314,10 +349,12 @@ export class CreateQuizForm extends Component {
           placeholder="Quiz name"
           id="idQuizName"
         />
-
-        <DropdownButton as={InputGroup.Append} variant="outline-secondary" title="Theme" id="idQuizTheme">
+        <DropdownButton as={InputGroup.Append} variant="outline-secondary" title={this.state.theme_name} id="idQuizTheme">
            {this.state.quizThemeList}
         </DropdownButton>
+        {/* <select  name="Theme" id="idQuizTheme">
+           {this.state.quizThemeList}
+        </select> */}
         </InputGroup>
         <br/>
         {quizNavPanel}
