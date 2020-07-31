@@ -3,11 +3,11 @@ import React from 'react';
 import './select-quiz.css';
 import QuizTable from "../QuizTable/QuizTable";
 
-const SelectQuiz = ({ value, handleChange, handleSearch, responseData, selectQuiz }) => (
+const SelectQuiz = ({ value, handleChange, handleSearch, responseData, selectQuiz, header, subHeader }) => (
   <div>
-    <h1>TAKE QUIZ</h1>
+    <h1>{header}</h1>
     <br />
-    <h3>Please select a quiz to play!</h3>
+    <h3>{subHeader}</h3>
     <br />
     <div>Quiz name:</div>
     <input

@@ -51,7 +51,7 @@ class QuizManager extends Component {
     }
 
     handleSearch() {
-       console.log('local filter')
+        console.log('local filter')
     }
 
     async getQAtypeList() {
@@ -75,12 +75,38 @@ class QuizManager extends Component {
     }
 
     handleEdit = (question) => {
-        this.setState({currentEditQuestion:question,isModalOpen:true})
+        this.setState({ currentEditQuestion: question, isModalOpen: true })
     };
 
     handleRemove = (e) => {
         console.log('this delete the question in the selected quiz')
     };
+
+    handleCancel = () => {
+        this.setState({isModalOpen:false, currentEditQuestion: null})
+    }
+
+    handleEditQuestionInputChange = (e, targetProperty) => {
+        this.setState({currentEditQuestion: {...this.state.currentEditQuestion, [targetProperty]:e.target.value}})
+    }
+
+    handleEditAnswerInputChange = (e, idx, targetProperty)=> {
+        let newAnswerObj = {...this.state.currentEditQuestion.answers[idx], [targetProperty]: e.target.value};
+        const { answers } = this.state.currentEditQuestion;
+        let newAnswerArr = answers.slice(0, idx).concat(newAnswerObj).concat(answers.slice(idx+1, answers.length));
+        this.setState({currentEditQuestion: {...this.state.currentEditQuestion, answers: newAnswerArr}});
+    }
+
+    handleSaveQuestionInputChange = () => {
+        let updatedQuestion = this.state.currentEditQuestion;
+        let newQuestionArr = this.state.selectedQuiz.questionsAndAnswers.map((questionObj)=> questionObj.question_id === updatedQuestion.question_id? updatedQuestion:questionObj);
+        let newSelectedQuiz = {...this.state.selectedQuiz, questionsAndAnswers: newQuestionArr};
+        this.setState({selectedQuiz: newSelectedQuiz, isModalOpen:false, currentEditQuestion: null})
+    }
+
+    finalizeChanges = () => {
+        console.log("use the selectedQuiz state to submit to the server and update it")
+    }
 
 
     render() {
@@ -99,17 +125,27 @@ class QuizManager extends Component {
                         handleSearch={this.handleSearch}
                         responseData={this.state.responseData}
                         selectQuiz={this.selectQuiz}
+                        header="Quiz Manager"
+                        subHeader="Please select a quiz to edit!"
                     />
                 ) : null}
                 {
                     this.state.isModalOpen ? (
-                    <div className='modal'>
-                        <div>
-                            <h2>{this.state.currentEditQuestion.question_statement}</h2>
+                        <div className='modal'>
+                            <div className="edit-container">
+                                <input type='text' onChange={(e) => this.handleEditQuestionInputChange(e,"question_statement")} defaultValue={this.state.currentEditQuestion.question_statement} />
+                                {
+                                    this.state.currentEditQuestion.answers.map((answerObj, idx) => 
+                                    <input key={answerObj.answer_id} type='text' onChange={(e) => this.handleEditAnswerInputChange(e,idx, "answer_statement")} defaultValue={answerObj.answer_statement} />
+                                    )
+                                }
+                            </div>
+                            <button onClick={this.handleSaveQuestionInputChange}>save</button>
+                            <button onClick={this.handleCancel}>cancel</button>
                         </div>
-                    </div>
                     ) : null
                 }
+                <button onClick={this.finalizeChanges}>Finalize all changes</button>
             </div>
         );
     }

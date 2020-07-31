@@ -67,25 +67,6 @@ export function checkIfAnswerCorrect(userAnswer, questionsAndAnswers ) {
         } else {
             result = false;
         }
-        // const intersection = (userAnswer, correctAnswer) => userAnswer.filter(answer => correctAnswer.indexOf(answer) > -1);
-        // if (intersection(userAnswer, questionsAndAnswers.correct_answers).length === questionsAndAnswers.correct_answers.length) {
-        //     result = true;
-        // } else {
-        //     result = false; 
-        // }
-    // } else if (questionsAndAnswers.correct_answers.length > 1) {
-    //     if (questionsAndAnswers.correct_answers.indexOf(userAnswer) > -1) {
-    //         result = true;
-    //     } else {
-    //         result = false; 
-    //     }
-    // } else {
-    //     const correctAnswer = questionsAndAnswers.correct_answers[0];
-    //     if(userAnswer === correctAnswer){
-    //         result = true;
-    //     } else {
-    //         result = false;
-    //     }
     }
 
     // Send result to server to adjust number of correct/incorrect entries 
