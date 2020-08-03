@@ -44,12 +44,12 @@ def lambda_handler(event, context):
 
         return {
             'statusCode': 200,
-            'body': json.dumps('Query executed successfully'),
-            'payload': json.dumps(records)
+            'body': 'Query executed successfully',
+            'payload': records
         }
 
     except:
         return {
             'statusCode': 400,
-            'body': json.dumps('An error occurred')
+            'body': 'An error occurred'
         }
