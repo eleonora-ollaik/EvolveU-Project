@@ -1,0 +1,1 @@
+DELETE FROM theme WHERE theme_id=29 RETURNING *
