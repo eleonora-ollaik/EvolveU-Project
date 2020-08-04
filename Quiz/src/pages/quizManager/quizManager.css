@@ -1,0 +1,6 @@
+.quizManagerContainer {
+    min-height: 800px;
+    padding-top: 50px;
+    background: rgb(82,84,12);
+    background: linear-gradient(0deg, rgba(82,84,12,1) 0%, rgba(141,144,37,1) 27%, rgba(196,199,100,1) 61%, rgba(229,230,189,1) 96%, rgba(229,230,189,1) 100%);
+}

@@ -14,15 +14,17 @@ class Header extends Component {
     }
 
     render() {
-        // const {currentPage, handleNavigation} = this.props;
-        const {handleNavigation} = this.props;
+        const {currentPage, handleNavigation} = this.props;
+        let currentComponent = currentPage.type.name; 
         return (
-            <div className='appHeader'>
-                <button onClick={()=>handleNavigation(<LandingPage />)}>LOGO (home)</button>
+            <div>
+                <div className='appHeader'>
+                    <a onClick={()=>handleNavigation(<LandingPage />)}>Q</a>
+                </div>
                 <div className='navbar'>
-                    <button onClick={()=>handleNavigation(<CreateQuizForm />)}>create quiz</button>
-                    <button onClick={()=>handleNavigation(<TakeQuiz />)}>take quiz</button>
-                    <button onClick={()=>handleNavigation(<QuizManager />)}>quiz manager</button>
+                        <button className="tablink" style={currentComponent === "CreateQuizForm"? {backgroundColor: "rgba(0,212,255,1)", color: "rgba(2,0,36,1)"} : null} onClick={()=>handleNavigation(<CreateQuizForm />)}>Create Quiz</button>
+                        <button className="tablink" style={currentComponent === "TakeQuiz"? {backgroundColor: "rgba(197,185,247,1)", color: "rgba(56,31,111,1)"} : null} onClick={()=>handleNavigation(<TakeQuiz />)}>Take Quiz</button>
+                        <button className="tablink" style={currentComponent === "QuizManager"? {backgroundColor: "rgba(229,230,189,1)", color: "rgba(82,84,12,1)"} : null} onClick={()=>handleNavigation(<QuizManager />)}>Quiz Manager</button>
                 </div>
             </div>
         )

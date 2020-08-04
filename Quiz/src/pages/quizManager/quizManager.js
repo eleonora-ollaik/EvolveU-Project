@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import SelectQuiz from "../../components/select-quiz/select-quiz";
+import SelectQuizM from "../../components/select-quiz/select-quizM";
 import QuizManagerPreview from "../../components/quiz-manager-preview/quiz-manager-preview";
 import net from "../../business/netcomm";
 
@@ -85,7 +85,7 @@ class QuizManager extends Component {
 
     render() {
         return (
-            <div className="quizContainer">
+            <div className="quizManagerContainer background">
                 {this.state.selectedQuiz ? (
                     <QuizManagerPreview
                         quiz={this.state.selectedQuiz}
@@ -93,7 +93,7 @@ class QuizManager extends Component {
                         handleRemove={this.handleRemove}
                     />
                 ) : this.state.responseData ? (
-                    <SelectQuiz
+                    <SelectQuizM
                         value={this.state.value}
                         handleChange={this.handleChange}
                         handleSearch={this.handleSearch}

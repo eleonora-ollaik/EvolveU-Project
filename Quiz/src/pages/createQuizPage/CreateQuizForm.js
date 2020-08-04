@@ -6,6 +6,7 @@ import ModalBox from "../../components/modalbox/modalbox";
 import logic from "../../business/business_logic";
 import net from "../../business/netcomm";
 import CreateQuizNav from "../../components/create-quiz-navigation/create-quiz-nav";
+import './CreateQuizForm.css';
 
 export class CreateQuizForm extends Component {
   constructor(props) {

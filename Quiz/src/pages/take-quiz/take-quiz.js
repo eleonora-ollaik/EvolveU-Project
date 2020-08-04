@@ -112,7 +112,7 @@ class TakeQuiz extends PureComponent {
   render() {
     // console.log(this.state.selectedQuiz);
     return (
-      <div className="quizContainer">
+      <div className="takeQuizContainer">
         {this.state.selectedQuiz ? (
           <PlayQuiz
             selectedQuiz={

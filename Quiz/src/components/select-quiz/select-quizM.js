@@ -4,7 +4,7 @@ import './select-quizM.css';
 import QuizTableM from "../QuizTable/QuizTableM";
 
 const SelectQuizM = ({ value, handleChange, handleSearch, responseData, selectQuiz }) => (
-  <div>
+  <div className="main">
     <h1>Quiz Manager</h1>
     <br />
     <h3>Please select the quiz you want to edit</h3>

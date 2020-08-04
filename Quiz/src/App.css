@@ -1,5 +1,14 @@
+@import url(https://fonts.googleapis.com/css2?family=Acme&display=swap>
+);
+
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
 .App {
   text-align: center;
+  font-family: 'Acme', sans-serif;
 }
 
 .App-logo {
