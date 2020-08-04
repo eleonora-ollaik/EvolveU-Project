@@ -4,47 +4,22 @@ INSERT INTO question (quiz_id, question_category,
 					  questiontype_id, question_statement, 
 					  question_correct_entries, question_wrong_entries,
 					  question_creation, question_update) 
-VALUES (1, 'History', 1, 'Who is this', 0, 0, now(), now()) RETURNING *;
+VALUES
+(1, 'History', 1, 'Who is this', 0, 0, now(), now()),
+(1, 'Sports', 1, 'Who is the player', 0, 0, now(), now());
 
 INSERT INTO answer (question_id, answer_is_correct, 
 					answer_statement, 
 					answer_creation, answer_update) 
-VALUES (1, true, 'chocolate', now(), now()) RETURNING *;
-
-INSERT INTO answer (question_id, answer_is_correct, 
-					answer_statement, 
-					answer_creation, answer_update) 
-VALUES (1, false, 'soup', now(), now()) RETURNING *;
-
-INSERT INTO answer (question_id, answer_is_correct, 
-					answer_statement, 
-					answer_creation, answer_update) 
-VALUES (1, false, 'rice', now(), now()) RETURNING *;
-
-INSERT INTO answer (question_id, answer_is_correct, 
-					answer_statement, 
-					answer_creation, answer_update) 
-VALUES (1, false, 'seafood', now(), now()) RETURNING *;
-
-INSERT INTO answer (question_id, answer_is_correct, 
-					answer_statement, 
-					answer_creation, answer_update) 
-VALUES (2, true, 'biology', now(), now()) RETURNING *;
-
-INSERT INTO answer (question_id, answer_is_correct, 
-					answer_statement, 
-					answer_creation, answer_update) 
-VALUES (2, false, 'math', now(), now()) RETURNING *;
-
-INSERT INTO answer (question_id, answer_is_correct, 
-					answer_statement, 
-					answer_creation, answer_update) 
-VALUES (2, false, 'chemistry', now(), now()) RETURNING *;
-
-INSERT INTO answer (question_id, answer_is_correct, 
-					answer_statement, 
-					answer_creation, answer_update) 
-VALUES (2, false, 'engish', now(), now()) RETURNING *;
+VALUES 
+(1, true, 'chocolate', now(), now()),
+(1, false, 'soup', now(), now()),
+(1, false, 'rice', now(), now()),
+(1, false, 'seafood', now(), now()),
+(2, true, 'biology', now(), now()),
+(2, false, 'math', now(), now()),
+(2, false, 'chemistry', now(), now()),
+(2, false, 'engish', now(), now());
 
 INSERT INTO questiontype (questiontype_name, 
 					      correct_answer_num, wrong_answer_num,
@@ -67,10 +42,10 @@ VALUES
 INSERT INTO theme (theme_name, 
 					theme_creation, theme_update) 
 VALUES
-(History, now(), now()),
-(Sports, now(), now()),
-(Video Game, now(), now()),
-(Trivia, now(), now()),
-(Food, now(), now()),
-(Science, now(), now()),
-(Arts, now(), now());
+('History', now(), now()),
+('Sports', now(), now()),
+('Video Game', now(), now()),
+('Trivia', now(), now()),
+('Food', now(), now()),
+('Science', now(), now()),
+('Arts', now(), now());
