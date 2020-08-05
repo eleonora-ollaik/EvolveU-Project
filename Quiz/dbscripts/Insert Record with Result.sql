@@ -27,17 +27,7 @@ INSERT INTO questiontype (questiontype_name,
 VALUES
 ('Multiple Choice', 1, 3, now(), now()),
 ('True or False', 1, 1, now(), now()),
-('Open Ended', 4, 0, now(), now()),
-('Multiple Choice', 1, 3, now(), now()),
-('Multiple Choice', 1, 3, now(), now()),
-('Multiple Choice', 1, 3, now(), now()),
-('True or False', 1, 1, now(), now()),
-('True or False', 1, 1, now(), now()),
-('Open Ended', 4, 0, now(), now()),
-('Open Ended', 4, 0, now(), now()),
-('Open Ended', 4, 0, now(), now()),
-('Open Ended', 4, 0, now(), now()),
-('Multiple Choice', 1, 3, now(), now());
+('Open Ended', 4, 0, now(), now());
 
 INSERT INTO theme (theme_name, 
 					theme_creation, theme_update) 
