@@ -25,6 +25,11 @@ yarn-error.log*
 # python virtual environments
 __pycache__*
 .pytest_cache*
+<<<<<<< HEAD
+aws_psycopg2-1.2.1.dist-info*
+psycopg2*
+=======
 psycopg2*
 aws_psycopg2*
 test_config.py
+>>>>>>> master
