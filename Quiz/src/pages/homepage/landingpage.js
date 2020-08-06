@@ -8,8 +8,8 @@ class LandingPage extends Component {
 
     render(){
         return(
-            <div>
-                <h1>Quizera</h1>
+            <div className="landingPage">
+                <div className="title">Quizera</div>
                 <br/>
                 <div>Log in / Register</div>
                 <br/>

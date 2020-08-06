@@ -6,6 +6,7 @@ import ModalBox from "../../components/modalbox/modalbox";
 import logic from "../../business/business_logic";
 import net from "../../business/netcomm";
 import CreateQuizNav from "../../components/create-quiz-navigation/create-quiz-nav";
+import './CreateQuizForm.css';
 
 export class CreateQuizForm extends Component {
   constructor(props) {
@@ -241,8 +242,8 @@ export class CreateQuizForm extends Component {
 
   onClickDelete = (e) => {
     const quizObj = this.state.quizes;
-    const key = e.target.getAttribute("uuid");
-    quizObj.deleteQuestionsAndAnswers(key);
+    // const key = e.target.getAttribute("uuid");
+    // const qAndAPair = quizObj.deleteQuestionsAndAnswers(key);
 
     // qaID = null resets the edit panel display
     this.setState({ quizes: quizObj, quizNav: "Preview Quiz", qaID: null });
