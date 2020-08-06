@@ -242,8 +242,8 @@ export class CreateQuizForm extends Component {
 
   onClickDelete = (e) => {
     const quizObj = this.state.quizes;
-    // const key = e.target.getAttribute("uuid");
-    // const qAndAPair = quizObj.deleteQuestionsAndAnswers(key);
+    const key = e.target.getAttribute("uuid");
+    const qAndAPair = quizObj.deleteQuestionsAndAnswers(key);
 
     // qaID = null resets the edit panel display
     this.setState({ quizes: quizObj, quizNav: "Preview Quiz", qaID: null });
