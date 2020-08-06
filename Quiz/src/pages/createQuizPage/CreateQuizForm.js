@@ -46,11 +46,11 @@ export class CreateQuizForm extends Component {
   };
 
   async getQAtypeList () {
-    const url = "http://127.0.0.1:5000/questiontypes";
+    const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/questiontype";
     let responsedata = await net.getData(url);
 
     // Convert into dictionary format for generating drop down list by other components (create-quiz)
-    const list = responsedata["question types"];
+    const list = responsedata["payload"];
     let dictdata = {};
     let defaultType = list[0]["questiontype_id"];
     let listdata = [];
@@ -62,10 +62,10 @@ export class CreateQuizForm extends Component {
   }
 
   async getQuizThemeList () {
-    const url = "http://127.0.0.1:5000/themes";
+    const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/theme";
     let responsedata = await net.getData(url);
 
-    const list = responsedata["themes"];
+    const list = responsedata["payload"];
     let listdata = [];
     for (let i=0; i<list.length; i++) {      
       listdata.push(<option value={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</option>);    
@@ -80,7 +80,7 @@ export class CreateQuizForm extends Component {
 
     const quiz = this.state.quizes;
 
-    const url = "http://127.0.0.1:5000/quiz";  
+    const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/quiz";  
     let responsedata = null;
 
     if(Object.keys(quiz.QuestionsAndAnswers).length > 0) {  // At least one pair of question and answer
