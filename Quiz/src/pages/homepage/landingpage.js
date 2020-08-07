@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Login from '../../components/login/Login';
 import './landingpage.css';
 
 class LandingPage extends Component {
@@ -10,10 +11,8 @@ class LandingPage extends Component {
         return(
             <div className="landingPage">
                 <div className="title">Quizera</div>
-                <br/>
-                <div>Log in / Register</div>
-                <br/>
-                <p>This app is the best Quiz Maker in the world!</p>
+                <div>An efficient and easy-to-use online Quiz Maker</div>
+                <Login />
             </div>
         )
     }
