@@ -13,7 +13,15 @@ export class QApreview extends Component {
       QAentries.push(<div key={`Q${key}`}>{QA.question}</div>);
 
       QAentries.push(<div key={`T${key}`}>{QA.type}</div>);
+      console.log('type id:', QA.type)
       QAentries.push(<div key={`TN${key}`}>{QA.typename}</div>);
+      console.log('type:', QA.typename)
+
+      QAentries.push(<div key={`C${key}`}>{QA.category_id}</div>);
+      console.log('category id:', QA.category_id)
+      QAentries.push(<div key={`CN${key}`}>{QA.category} </div>);
+      console.log('category:', QA.category)
+
 
       for (let i=0; i<QA.correct_answers.length; i++) {
         QAentries.push(<div key={`CA${key}${i}`}>Correct answer: {QA.correct_answers[i]}</div>);

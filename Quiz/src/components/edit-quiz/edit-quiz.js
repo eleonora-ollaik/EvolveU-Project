@@ -7,10 +7,12 @@ export class QAedit extends Component {
     const quiz = this.props.quiz;
     const key = this.props.qaID;
     const qaType = this.props.qaType;
+    const qaCategory = this.props.qaCategory;
     let ansDisplay=[];
     let question = null;
 
     const displayOption = this.props.qaTypeList;
+    const qaCategoryList = this.props.qaCategoryList;
     const qaTypeCheck = this.props.qaTypeCheck;
 
     if (key !== null) {   // A question and answer object provided
@@ -37,6 +39,10 @@ export class QAedit extends Component {
         <select name="type" id="idQuestionType" onChange={this.props.onChange} value={qaType}>
           {displayOption}
         </select>
+        <select name="type" id="idQuestionCategory" onChange={this.props.onChange} value={qaCategory}>
+          {qaCategoryList}
+        </select>
+
         
         {ansDisplay}
 

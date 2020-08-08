@@ -8,6 +8,8 @@ import net from "../../business/netcomm";
 import CreateQuizNav from "../../components/create-quiz-navigation/create-quiz-nav";
 import './CreateQuizForm.css';
 
+
+
 export class CreateQuizForm extends Component {
   constructor(props) {
     super(props);
@@ -23,12 +25,23 @@ export class CreateQuizForm extends Component {
       quizes: new logic.Quiz(),
       qaID: null,
       noticeMsg: "",
+      qaCategory: null,
+      qaCategoryList: null,
+      qaDefaultCategory: null
     };
   }
+
+
+
+
 
   componentDidMount() {
     if(this.state.qaTypeList == null) {
       this.getQAtypeList();
+    }    
+
+    if(this.state.qaCategoryList == null) {
+      this.getQACategoryList();
     }    
 
     if(this.state.quizThemeList == null) {
@@ -36,15 +49,28 @@ export class CreateQuizForm extends Component {
     }        
   }
 
+
+
+
+
   onClickEntryHandler = (e) => {
     // qaID = null resets the edit panel display
     // qaType = qaDefaultType resets the edit panel display independent from Preview Edit panel
-    this.setState({quizNav: "Create Quiz", qaID: null, qaType: this.state.qaDefaultType});
+    this.setState({quizNav: "Create Quiz", qaID: null, qaType: this.state.qaDefaultType, qaCategory: this.state.qaDefaultCategory});
   };
+
+
+
+
 
   onClickPreviewHandler = (e) => {
     this.setState({quizNav: "Preview Quiz"});
   };
+
+
+
+
+
 
   async getQAtypeList () {
     const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/questiontype";
@@ -56,11 +82,39 @@ export class CreateQuizForm extends Component {
     let defaultType = list[0]["questiontype_id"];
     let listdata = [];
     for (let i=0; i<list.length; i++) {
-      dictdata[list[i]["questiontype_id"]] = {"caNumer": list[i]["correct_answer_num"], "iaNumber": list[i]["wrong_answer_num"], "inputType": list[i]["input_type"]};      
+      dictdata[list[i]["questiontype_id"]] = {"caNumer": list[i]["correct_answer_num"], "iaNumber": list[i]["wrong_answer_num"], 
+      "inputType": list[i]["questiontype_input"], "question_label": list[i]["questiontype_label"], "correctansw_label": list[i]["correctanswer_label"],
+       "wrongansw_label": list[i]["wronganswer_label"]};      
       listdata.push(<option value={list[i]["questiontype_id"]} key={i}>{list[i]["questiontype_name"]}</option>);    
+      // console.log(list[i]["questiontype_input"])
+
     }    
     this.setState({qaType: defaultType, qaTypeCheck: dictdata, qaTypeList: listdata, qaDefaultType: defaultType});    
   }
+
+
+
+
+  async getQACategoryList () {
+
+    const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/questioncategory";
+    let responsedata = await net.getData(url);
+
+
+    // Convert into dictionary format for generating drop down list by other components (create-quiz)
+    const list = responsedata["payload"];
+    let defaultCategory = list[0]["questioncategory_id"];
+    let listdata = [];
+    for (let i=0; i<list.length; i++) {
+
+      listdata.push(<option value={list[i]["questioncategory_id"]} key={i}>{list[i]["questioncategory_name"]}</option>);    
+    }    
+    this.setState({ qaCategoryList: listdata, qaDefaultCategory: defaultCategory});    
+  }
+
+
+
+
 
   async getQuizThemeList () {
     const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/theme";
@@ -76,6 +130,11 @@ export class CreateQuizForm extends Component {
 
     this.setState({quizThemeList: listdata, quizDefaultTheme: defaultTheme});
   }
+
+
+
+
+
 
   async saveQuiz () {
 
@@ -104,6 +163,7 @@ export class CreateQuizForm extends Component {
 
           QAjson.push({
             "question_category": value.category,
+            "questioncategory_id": value.category_id,
             "questiontype_id": value.type,
             "question_statement": value.question,
             "question_correct_entries": 0, 
@@ -111,7 +171,6 @@ export class CreateQuizForm extends Component {
             "answers": answers
           });          
         }
-
         let webdata = {
           "quiz_name": quiz.name, 
           "theme_id": quiz.theme,
@@ -119,6 +178,7 @@ export class CreateQuizForm extends Component {
         }    
 
         responsedata = await net.postData(url, webdata);
+        console.log(webdata.questions)
 
         if (responsedata.status >= 500) {
             throw (new Error(`${responsedata.status} ${responsedata.message}`));
@@ -141,6 +201,12 @@ export class CreateQuizForm extends Component {
     }
   }
 
+
+
+
+
+
+
   onClickQuizSumbit = (e) => {
     
     let quizname = document.getElementById("idQuizName")
@@ -156,6 +222,10 @@ export class CreateQuizForm extends Component {
     }
   };
 
+
+
+
+
   onClickQuestionHandler = (e) => {
     const quizObj = new logic.Quiz();
     quizObj.name = document.getElementById("idQuizName").value;
@@ -164,9 +234,17 @@ export class CreateQuizForm extends Component {
 
     let key = this.state.quizes.addQuestionsAndAnswers();
     let QA = this.state.quizes.getQuestionAndAnswers(key);
-    const sel = document.getElementById("idQuestionType");    
+    const sel = document.getElementById("idQuestionType");
+    console.log('type value: ', sel.value)    
     QA.type = sel.value;
     QA.typename = sel.options[sel.selectedIndex].text;
+
+    const category = document.getElementById("idQuestionCategory");
+    console.log('category value:', category.value); 
+    QA.category_id = category.value;
+    QA.category = category.options[category.selectedIndex].text;
+    console.log(QA.category);
+
     QA.question = document.getElementById("idQuestion").value;
 
     const CAarray = document.querySelectorAll(".CorrectAnswer");
@@ -184,10 +262,23 @@ export class CreateQuizForm extends Component {
     this.setState({ quizes: quizObj });
   };
 
+
+
+
+
+
   onChangeQuestionHandler = (e) => {
     let type = document.getElementById("idQuestionType").value;
-    this.setState({qaType: type});
+    // console.log('type from onchangequestionhandler:', type)
+    let category = document.getElementById("idQuestionCategory").value;
+    // console.log('category from onchangequestionhandler:', category)
+
+    this.setState({qaType: type, qaCategory: category });
   };
+
+
+
+
 
   onClickEdit = (e) => {
     let key = e.target.getAttribute("uuid");
@@ -196,8 +287,11 @@ export class CreateQuizForm extends Component {
     // Open edit modal box
     document.getElementById("idEditQAModal").setAttribute("class", "modalshow");
 
-    this.setState({qaType: obj.type, qaID: key, quizEdit: true});
+    this.setState({qaType: obj.type, qaCategory: obj.category_id, qaID: key, quizEdit: true});
   };
+
+
+
 
   onClickCloseModal = (e) => {
     const modal = e.target.parentNode.parentNode;
@@ -209,20 +303,31 @@ export class CreateQuizForm extends Component {
     this.setState({noticeMsg: ""});    
   };
 
+
+
+
+
   onClickSave = (e) => {
     const quiz = this.state.quizes;
     let key = this.state.qaID;
 
-    console.log("onClickSave key", key);
+    // console.log("onClickSave key", key);
     let obj = this.state.quizes.getQuestionAndAnswers(key);
-    console.log(obj);
+    // console.log(obj);
 
     const QA = new logic.QuestionsAndAnswers();
     QA.question = document.getElementById("idQuestion").value;
 
     let CAarray = document.querySelectorAll(".CorrectAnswer");
     let WAarray = document.querySelectorAll(".WrongAnswer");
-    QA.type = document.getElementById("idQuestionType").value;
+    let type = document.getElementById("idQuestionType");
+    QA.type = type.value;
+    QA.typename = type.options[type.selectedIndex].text;
+
+    let category = document.getElementById("idQuestionCategory")
+    QA.category_id = category.value;
+    QA.category = category.options[category.selectedIndex].text;
+
     let array = [];
     for (let i = 0; i < CAarray.length; i++) {
       array.push(CAarray[i].value);
@@ -237,8 +342,13 @@ export class CreateQuizForm extends Component {
     QA.wrong_answers = Warray;
     quiz.QuestionsAndAnswers[key] = QA;
 
-    this.setState({ quizes: quiz, qaType: QA.type });
+    this.setState({ quizes: quiz, qaType: QA.type, qaCategory: QA.category_id });
+    // console.log(this.state.qaCategory)
   };
+
+
+
+
 
   onClickDelete = (e) => {
     const quizObj = this.state.quizes;
@@ -249,6 +359,9 @@ export class CreateQuizForm extends Component {
     this.setState({ quizes: quizObj, quizNav: "Preview Quiz", qaID: null });
   };
 
+
+
+
   clearQuizHeader() {
     let quizname = document.getElementById("idQuizName")
     let quiztheme = document.getElementById("idQuizTheme")
@@ -256,6 +369,10 @@ export class CreateQuizForm extends Component {
 
     quiztheme.value = this.state.quizDefaultTheme;
   }
+
+
+
+
 
   clearInputs = () => {
     document.getElementById("idQuestion").value = "";
@@ -270,6 +387,10 @@ export class CreateQuizForm extends Component {
     }
   };
 
+
+
+
+
   render() {
     const entry = (
       <CreateQuiz
@@ -279,6 +400,9 @@ export class CreateQuizForm extends Component {
         qaTypeList={this.state.qaTypeList}
         onClick={this.onClickQuestionHandler}
         onChange={this.onChangeQuestionHandler}
+        qaCategoryList={this.state.qaCategoryList}
+
+        
       />
     );
 
@@ -287,6 +411,7 @@ export class CreateQuizForm extends Component {
           quiz={this.state.quizes}
           qaID={this.state.qaID}
           qaType={this.state.qaType}
+          qaCategory={this.state.qaCategory}
           onClickEdit={this.onClickEdit}
           onClickDelete={this.onClickDelete}
         />
@@ -299,8 +424,10 @@ export class CreateQuizForm extends Component {
                   quiz={this.state.quizes}
                   qaID={this.state.qaID}
                   qaType={this.state.qaType}
+                  qaCategory={this.state.qaCategory}
                   qaTypeCheck={this.state.qaTypeCheck}
                   qaTypeList={this.state.qaTypeList}
+                  qaCategoryList={this.state.qaCategoryList}
                   onChange={this.onChangeQuestionHandler}
                   onClickSave={this.onClickSave}     
                 />}

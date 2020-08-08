@@ -13,6 +13,7 @@ CREATE TABLE question (
    question_id serial PRIMARY KEY,
    quiz_id INT NOT NULL,
    question_category VARCHAR,
+   questioncategory_id INT, 
    questiontype_id INT NOT NULL,
    question_statement VARCHAR,
    question_correct_entries INT,
@@ -25,6 +26,10 @@ DROP TABLE IF EXISTS questiontype;
 CREATE TABLE questiontype (
    questiontype_id serial PRIMARY KEY,
    questiontype_name VARCHAR,
+   questiontype_input VARCHAR NOT NULL,
+   questiontype_label VARCHAR,
+   correctanswer_label VARCHAR,
+   wronganswer_label VARCHAR,
    correct_answer_num INT,
    wrong_answer_num INT,
    questiontype_creation TIMESTAMPTZ,
@@ -47,3 +52,11 @@ CREATE TABLE theme(
    theme_creation TIMESTAMPTZ,
    theme_update TIMESTAMPTZ
 );
+
+DROP TABLE IF EXISTS questioncategory;
+CREATE TABLE questioncategory (
+   questioncategory_id serial PRIMARY KEY,
+   questioncategory_name  VARCHAR,
+   questioncategory_creation TIMESTAMPTZ,
+   questioncategory_update TIMESTAMPTZ
+); 
