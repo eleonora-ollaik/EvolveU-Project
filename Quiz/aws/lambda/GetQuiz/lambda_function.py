@@ -1,3 +1,13 @@
+# The corresponding must be set up with URL parameter mapping prior to this lambda working properly
+# In API Gateway,
+#   Step 1: Click "Method Request"
+#   Step 2: Click "URL Query String Parameters"
+#   Step 3: Click "Add query string" -> Enter a URL parameter name, e.g "quizid"
+#   Step 4: Click "Integration Request"
+#   Step 5: Click "Mapping Templates"
+#   Step 6: Click "Add mapping template" -> Enter "application/json" as "Content-Type"
+#   Step 7: Enter { "quiz_id": "$input.params('quizid')" } in the body
+#   Step 8: quizid can not be accessed in lambda as event['quiz_id']
 import json
 import boto3
 
@@ -6,27 +16,30 @@ client = boto3.client('lambda')
 
 def lambda_handler(event, context):
     try:
-        query =f"SELECT * FROM \
-                    (SELECT * \
-                    FROM quiz \
-                    INNER JOIN theme \
-                    ON quiz.theme_id = theme.theme_id WHERE quiz_id = {event['quiz_id']}) as ct1 \
-                INNER JOIN  \
-                    (SELECT * \
-                    FROM \
+        
+        if event['quiz_id'] != "": 
+            query =f"SELECT * FROM \
                         (SELECT * \
-                        FROM question \
-                        INNER JOIN answer \
-                        ON question.question_id = answer.question_id) as ct3 \
-                    INNER JOIN questiontype \
-                    ON ct3.questiontype_id = questiontype.questiontype_id) as ct2 \
-                ON ct1.quiz_id = ct2.quiz_id;"
-
+                        FROM quiz \
+                        INNER JOIN theme \
+                        ON quiz.theme_id = theme.theme_id WHERE quiz_id = {event['quiz_id']}) as ct1 \
+                    INNER JOIN  \
+                        (SELECT * \
+                        FROM \
+                            (SELECT * \
+                            FROM question \
+                            INNER JOIN answer \
+                            ON question.question_id = answer.question_id) as ct3 \
+                        INNER JOIN questiontype \
+                        ON ct3.questiontype_id = questiontype.questiontype_id) as ct2 \
+                    ON ct1.quiz_id = ct2.quiz_id;"            
+        else:         
+            query ="SELECT * FROM quiz"
+        
         inputParams = {
             "query": query,
             "haspayload": True   
         }
-
 
         response = client.invoke(
             FunctionName = 'arn:aws:lambda:ca-central-1:712789485255:function:ExecuteDBQuery',
@@ -39,7 +52,10 @@ def lambda_handler(event, context):
             raise
 
         # Repackage the result into Json format accepted by front end
-        payload = repack_payload(json.loads(responseFromChild["payload"]))
+        if event['quiz_id'] != "":
+            payload = repack_payload(json.loads(responseFromChild["payload"]))
+        else:
+            payload = json.loads(responseFromChild["payload"])
 
         return {
             'statusCode': 200,
