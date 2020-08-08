@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-
 import './App.css';
 import LandingPage from './pages/homepage/landingpage';
 import Header from './components/header/header';
+import { Amplify } from 'aws-amplify';
+import config from './config';
+
 
 class App extends Component {
   constructor(props){
@@ -32,6 +34,17 @@ class App extends Component {
 
   render() {
     const { renderPage } = this.state;
+
+    Amplify.configure({
+      Auth: {
+        mandatorySignIn: true,
+        region: config.cognito.REGION,
+        userPoolId: config.cognito.USER_POOL_ID,
+        // identityPoolId: config.cognito.IDENTITY_POOL_ID,
+        userPoolWebClientId: config.cognito.APP_CLIENT_ID
+      }
+    });
+
     return (
       <div className="App">
         <Header currentPage={renderPage} handleNavigation={this.handleNavigation}/>

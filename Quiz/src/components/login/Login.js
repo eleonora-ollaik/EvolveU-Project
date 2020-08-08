@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Login.css";
-// import { Auth } from "aws-amplify";
+import { Auth } from "aws-amplify";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,21 +10,23 @@ export default function Login() {
     return email.length > 0 && password.length > 0;
   }
 
-//   async function handleSubmit(event) {
-//     event.preventDefault();
-  
-//     try {
-//       await Auth.signIn(email, password);
-//       alert("Logged in");
-//     } catch (e) {
-//       alert(e.message);
-//     }
-//   }
+  async function handleSubmit(event) {
+    event.preventDefault();
+    console.log("Before try", event)
+    try {
+      console.log("Within try", event)
+      await Auth.signIn(email, password);
+      alert("Logged in");
+    } catch (e) {
+      console.log("Catch", event)
+      alert(e.message);
+    }
+  }
 
   return (
       <div>
         <form class="login-form">
-            <h1>Login or Register</h1>
+            <h1>Login</h1>
             <div>
                 <label for="login">Username or email</label>
                 <input 
@@ -43,7 +45,7 @@ export default function Login() {
                 /> 
             </div>
             <div>
-                <button type="submit" disabled={!validateForm()}>Continue</button>
+                <button type="submit" disabled={!validateForm()} onClick={(e) => handleSubmit(e)}>Continue</button>
             </div>       
         </form>
       </div>

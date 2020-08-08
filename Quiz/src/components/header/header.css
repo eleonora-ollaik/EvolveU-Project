@@ -1,14 +1,29 @@
 @import url(https://fonts.googleapis.com/css2?family=Acme&display=swap>);
 
 .appHeader {
-    height: 100px;
-    margin-top: 10px;
     font-size: 4rem;
+    font-family: 'Acme', sans-serif;
     display: flex;
     background-color: #e46821;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    justify-content: space-between;
+    height: 100px;
+
+}
+
+.Q-logo {
+  border: none;
+  outline: none;
+  width: 10%;
+  font-family: 'Acme', sans-serif;
+
+  font-size: 4rem;
+  font-weight: bold;
+  background: -webkit-linear-gradient(90deg, rgba(50,4,4,1) 0%, rgba(110,7,7,1) 32%, rgba(196,199,100,1) 86%, rgba(229,230,189,1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .tablink {
@@ -41,12 +56,6 @@
     height: 100%;
   }
 
-  .navbar{
-    display: flex;
-    justify-content: space-between;
-    width: 70vw;
-    height: 100%
-  }
 
 .createButtonActive {
   background-color: rgba(0,212,255,1); 
