@@ -31,10 +31,12 @@ export const getData = async (url = "") => {
 
 // collection is the json file from server.
 export const convertFormat = (serverData) => {
+    console.log(serverData)
     return serverData.map((quizObj) => ({name: quizObj.quiz_name,  quizId: quizObj.quiz_id, theme: quizObj.quiz_theme}))
 }
 
 export const convertQuizDetails = (serverData) => {
+  console.log(serverData);
   const quizDetails = {name: serverData.quiz_name, quizId: serverData.quiz_id, theme: serverData.quiz_theme, questionsAndAnswers: serverData.questions};
   // questionsAndAnswers is now an ARRAY !!!
   return quizDetails;

@@ -1,14 +1,35 @@
 @import url(https://fonts.googleapis.com/css2?family=Acme&display=swap>);
 
 .appHeader {
-    height: 70px;
-    margin-top: 10px;
-    font-size: 3rem;
+    font-size: 4rem;
+    font-family: 'Acme', sans-serif;
+    display: flex;
+    background-color: #e46821;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    justify-content: space-between;
+    height: 100px;
+
+}
+
+.Q-logo {
+  border: none;
+  outline: none;
+  width: 10%;
+  font-family: 'Acme', sans-serif;
+
+  font-size: 4rem;
+  font-weight: bold;
+  background: -webkit-linear-gradient(90deg, rgba(50,4,4,1) 0%, rgba(110,7,7,1) 32%, rgba(196,199,100,1) 86%, rgba(229,230,189,1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .tablink {
     background-color: #e46821;
     color: white;
+    height: 100%;
     float: left;
     border: none;
     outline: none;
@@ -34,8 +55,25 @@
     padding: 100px 20px;
     height: 100%;
   }
-  
-  #Home {background-color: red;}
-  #News {background-color: green;}
-  #Contact {background-color: blue;}
-  #About {background-color: orange;}
+
+
+.createButtonActive {
+  background-color: rgba(0,212,255,1); 
+  color: rgba(2,0,36,1);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.takeButtonActive {
+  background-color: rgba(197,185,247,1);
+  color: rgba(56,31,111,1);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.qmButtonActive {
+  background-color: rgba(229,230,189,1); 
+  color: rgba(82,84,12,1);
+  cursor: not-allowed;
+  pointer-events: none;
+}
