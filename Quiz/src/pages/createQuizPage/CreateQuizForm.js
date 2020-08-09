@@ -83,7 +83,7 @@ export class CreateQuizForm extends Component {
     let listdata = [];
     for (let i=0; i<list.length; i++) {
       dictdata[list[i]["questiontype_id"]] = {"caNumer": list[i]["correct_answer_num"], "iaNumber": list[i]["wrong_answer_num"], 
-      "inputType": list[i]["questiontype_input"], "question_label": list[i]["questiontype_label"], "correctansw_label": list[i]["correctanswer_label"],
+      "inputType": list[i]["questiontype_id"], "question_label": list[i]["questiontype_label"], "correctansw_label": list[i]["correctanswer_label"],
        "wrongansw_label": list[i]["wronganswer_label"]};      
       listdata.push(<option value={list[i]["questiontype_id"]} key={i}>{list[i]["questiontype_name"]}</option>);    
       // console.log(list[i]["questiontype_input"])
@@ -256,7 +256,7 @@ export class CreateQuizForm extends Component {
     for (let i = 0; i < WAarray.length; i++) {
       QA.wrong_answers.push(WAarray[i].value);
     }
-
+    console.log('question object:', QA)
     this.clearInputs();
 
     this.setState({ quizes: quizObj });
