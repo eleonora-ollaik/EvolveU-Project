@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import populateAnswers from './createquiz_util.js';
-
+import populateAnswers from './create-quiz-util.js';
 
 export class QAentry extends Component {
-
 
   render() {
     let ansDisplay = [];

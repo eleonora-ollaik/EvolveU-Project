@@ -8,8 +8,6 @@ import net from "../../business/netcomm";
 import CreateQuizNav from "../../components/create-quiz-navigation/create-quiz-nav";
 import './CreateQuizForm.css';
 
-
-
 export class CreateQuizForm extends Component {
   constructor(props) {
     super(props);
@@ -31,10 +29,6 @@ export class CreateQuizForm extends Component {
     };
   }
 
-
-
-
-
   componentDidMount() {
     if(this.state.qaTypeList == null) {
       this.getQAtypeList();
@@ -49,28 +43,15 @@ export class CreateQuizForm extends Component {
     }        
   }
 
-
-
-
-
   onClickEntryHandler = (e) => {
     // qaID = null resets the edit panel display
     // qaType = qaDefaultType resets the edit panel display independent from Preview Edit panel
     this.setState({quizNav: "Create Quiz", qaID: null, qaType: this.state.qaDefaultType, qaCategory: this.state.qaDefaultCategory});
   };
 
-
-
-
-
   onClickPreviewHandler = (e) => {
     this.setState({quizNav: "Preview Quiz"});
   };
-
-
-
-
-
 
   async getQAtypeList () {
     const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/questiontype";
@@ -86,14 +67,9 @@ export class CreateQuizForm extends Component {
       "inputType": list[i]["questiontype_id"], "question_label": list[i]["questiontype_label"], "correctansw_label": list[i]["correctanswer_label"],
        "wrongansw_label": list[i]["wronganswer_label"]};      
       listdata.push(<option value={list[i]["questiontype_id"]} key={i}>{list[i]["questiontype_name"]}</option>);    
-      // console.log(list[i]["questiontype_input"])
-
     }    
     this.setState({qaType: defaultType, qaTypeCheck: dictdata, qaTypeList: listdata, qaDefaultType: defaultType});    
   }
-
-
-
 
   async getQACategoryList () {
 
@@ -112,10 +88,6 @@ export class CreateQuizForm extends Component {
     this.setState({ qaCategoryList: listdata, qaDefaultCategory: defaultCategory});    
   }
 
-
-
-
-
   async getQuizThemeList () {
     const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/theme";
     let responsedata = await net.getData(url);
@@ -130,11 +102,6 @@ export class CreateQuizForm extends Component {
 
     this.setState({quizThemeList: listdata, quizDefaultTheme: defaultTheme});
   }
-
-
-
-
-
 
   async saveQuiz () {
 
@@ -178,7 +145,6 @@ export class CreateQuizForm extends Component {
         }    
 
         responsedata = await net.postData(url, webdata);
-        console.log(webdata.questions)
 
         if (responsedata.status >= 500) {
             throw (new Error(`${responsedata.status} ${responsedata.message}`));
@@ -201,12 +167,6 @@ export class CreateQuizForm extends Component {
     }
   }
 
-
-
-
-
-
-
   onClickQuizSumbit = (e) => {
     
     let quizname = document.getElementById("idQuizName")
@@ -222,10 +182,6 @@ export class CreateQuizForm extends Component {
     }
   };
 
-
-
-
-
   onClickQuestionHandler = (e) => {
     const quizObj = new logic.Quiz();
     quizObj.name = document.getElementById("idQuizName").value;
@@ -235,15 +191,12 @@ export class CreateQuizForm extends Component {
     let key = this.state.quizes.addQuestionsAndAnswers();
     let QA = this.state.quizes.getQuestionAndAnswers(key);
     const sel = document.getElementById("idQuestionType");
-    console.log('type value: ', sel.value)    
     QA.type = sel.value;
     QA.typename = sel.options[sel.selectedIndex].text;
 
     const category = document.getElementById("idQuestionCategory");
-    console.log('category value:', category.value); 
     QA.category_id = category.value;
     QA.category = category.options[category.selectedIndex].text;
-    console.log(QA.category);
 
     QA.question = document.getElementById("idQuestion").value;
 
@@ -256,29 +209,18 @@ export class CreateQuizForm extends Component {
     for (let i = 0; i < WAarray.length; i++) {
       QA.wrong_answers.push(WAarray[i].value);
     }
-    console.log('question object:', QA)
+
     this.clearInputs();
 
     this.setState({ quizes: quizObj });
   };
 
-
-
-
-
-
   onChangeQuestionHandler = (e) => {
     let type = document.getElementById("idQuestionType").value;
-    // console.log('type from onchangequestionhandler:', type)
     let category = document.getElementById("idQuestionCategory").value;
-    // console.log('category from onchangequestionhandler:', category)
 
     this.setState({qaType: type, qaCategory: category });
   };
-
-
-
-
 
   onClickEdit = (e) => {
     let key = e.target.getAttribute("uuid");
@@ -290,9 +232,6 @@ export class CreateQuizForm extends Component {
     this.setState({qaType: obj.type, qaCategory: obj.category_id, qaID: key, quizEdit: true});
   };
 
-
-
-
   onClickCloseModal = (e) => {
     const modal = e.target.parentNode.parentNode;
     modal.setAttribute("class", "modalhide");
@@ -303,18 +242,10 @@ export class CreateQuizForm extends Component {
     this.setState({noticeMsg: ""});    
   };
 
-
-
-
-
   onClickSave = (e) => {
     const quiz = this.state.quizes;
     let key = this.state.qaID;
-
-    // console.log("onClickSave key", key);
     let obj = this.state.quizes.getQuestionAndAnswers(key);
-    // console.log(obj);
-
     const QA = new logic.QuestionsAndAnswers();
     QA.question = document.getElementById("idQuestion").value;
 
@@ -342,13 +273,9 @@ export class CreateQuizForm extends Component {
     QA.wrong_answers = Warray;
     quiz.QuestionsAndAnswers[key] = QA;
 
+    this.onClickCloseModal(e);
     this.setState({ quizes: quiz, qaType: QA.type, qaCategory: QA.category_id });
-    // console.log(this.state.qaCategory)
   };
-
-
-
-
 
   onClickDelete = (e) => {
     const quizObj = this.state.quizes;
@@ -359,9 +286,6 @@ export class CreateQuizForm extends Component {
     this.setState({ quizes: quizObj, quizNav: "Preview Quiz", qaID: null });
   };
 
-
-
-
   clearQuizHeader() {
     let quizname = document.getElementById("idQuizName")
     let quiztheme = document.getElementById("idQuizTheme")
@@ -369,10 +293,6 @@ export class CreateQuizForm extends Component {
 
     quiztheme.value = this.state.quizDefaultTheme;
   }
-
-
-
-
 
   clearInputs = () => {
     document.getElementById("idQuestion").value = "";
@@ -386,10 +306,6 @@ export class CreateQuizForm extends Component {
       WAarray[i].value = "";
     }
   };
-
-
-
-
 
   render() {
     const entry = (
