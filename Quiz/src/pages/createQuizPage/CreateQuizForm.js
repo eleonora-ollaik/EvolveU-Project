@@ -214,7 +214,7 @@ export class CreateQuizForm extends Component {
     this.setState({ quizes: quizObj });
   };
 
-  onChangeQuestionHandler = (e) => {
+  onChangeQuestionType = (e) => {
     let type = document.getElementById("idQuestionType").value;
     let category = document.getElementById("idQuestionCategory").value;
 
@@ -241,7 +241,7 @@ export class CreateQuizForm extends Component {
     this.setState({noticeMsg: ""});    
   };
 
-  onClickSave = (e) => {
+  onClickSaveModal = (e) => {
     const quiz = this.state.quizes;
     let key = this.state.qaID;
     let obj = this.state.quizes.getQuestionAndAnswers(key);
@@ -314,7 +314,7 @@ export class CreateQuizForm extends Component {
         qaTypeObj={this.state.qaTypeObj}
         qaTypeList={this.state.qaTypeList}
         onClick={this.onClickSubmitQuestion}
-        onChange={this.onChangeQuestionHandler}
+        onChange={this.onChangeQuestionType}
         qaCategoryList={this.state.qaCategoryList}        
       />
     );
@@ -341,8 +341,8 @@ export class CreateQuizForm extends Component {
                   qaTypeObj={this.state.qaTypeObj}
                   qaTypeList={this.state.qaTypeList}
                   qaCategoryList={this.state.qaCategoryList}
-                  onChange={this.onChangeQuestionHandler}
-                  onClickSave={this.onClickSave}     
+                  onChange={this.onChangeQuestionType}
+                  onClickSave={this.onClickSaveModal}     
                 />}
         onClickModalClose={this.onClickCloseModal}      
       />
