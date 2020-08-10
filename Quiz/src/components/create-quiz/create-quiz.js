@@ -8,9 +8,9 @@ export class QAentry extends Component {
     const type = this.props.qaType;
 
     const displayOption = this.props.qaTypeList;
-    const qaTypeCheck = this.props.qaTypeCheck;
+    const qaTypeObj = this.props.qaTypeObj;
     const categoryList = this.props.qaCategoryList;
-    ansDisplay = populateAnswers(type, qaTypeCheck)
+    ansDisplay = populateAnswers(type, qaTypeObj)
 
     return (
       <div>

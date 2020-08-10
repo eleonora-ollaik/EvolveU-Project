@@ -14,7 +14,7 @@ export class QAedit extends Component {
 
     const displayOption = this.props.qaTypeList;
     const qaCategoryList = this.props.qaCategoryList;
-    const qaTypeCheck = this.props.qaTypeCheck;
+    const qaTypeObj = this.props.qaTypeObj;
 
     if (key !== null) {   // A question and answer object provided
       const QA = quiz.QuestionsAndAnswers[key];
@@ -22,7 +22,7 @@ export class QAedit extends Component {
       const wrong_answers = QA.wrong_answers;
       question = QA.question;
 
-      ansDisplay = populateAnswers(qaType, qaTypeCheck);
+      ansDisplay = populateAnswers(qaType, qaTypeObj);
       ansDisplay = populateDefaultValues(correct_answers, wrong_answers, ansDisplay);     
     }
 

@@ -15,7 +15,7 @@ export class CreateQuizForm extends Component {
       quizThemeList: null,
       quizDefaultTheme: null,
       qaTypeList: null,
-      qaTypeCheck: null,
+      qaTypeObj: null,
       qaType: null,
       qaDefaultType: null,
       quizEdit: false,
@@ -63,19 +63,18 @@ export class CreateQuizForm extends Component {
     let defaultType = list[0]["questiontype_id"];
     let listdata = [];
     for (let i=0; i<list.length; i++) {
-      dictdata[list[i]["questiontype_id"]] = {"caNumer": list[i]["correct_answer_num"], "iaNumber": list[i]["wrong_answer_num"], 
-      "inputType": list[i]["questiontype_id"], "question_label": list[i]["questiontype_label"], "correctansw_label": list[i]["correctanswer_label"],
-       "wrongansw_label": list[i]["wronganswer_label"]};      
+      dictdata[list[i]["questiontype_id"]] = {
+      "caNumer": list[i]["correct_answer_num"], "iaNumber": list[i]["wrong_answer_num"], 
+      "comp": list[i]["questiontype_anscomp"]};
       listdata.push(<option value={list[i]["questiontype_id"]} key={i}>{list[i]["questiontype_name"]}</option>);    
     }    
-    this.setState({qaType: defaultType, qaTypeCheck: dictdata, qaTypeList: listdata, qaDefaultType: defaultType});    
+    this.setState({qaType: defaultType, qaTypeObj: dictdata, qaTypeList: listdata, qaDefaultType: defaultType});    
   }
 
   async getQACategoryList () {
 
     const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/questioncategory";
     let responsedata = await net.getData(url);
-
 
     // Convert into dictionary format for generating drop down list by other components (create-quiz)
     const list = responsedata["payload"];
@@ -182,7 +181,7 @@ export class CreateQuizForm extends Component {
     }
   };
 
-  onClickQuestionHandler = (e) => {
+  onClickSubmitQuestion = (e) => {
     const quizObj = new logic.Quiz();
     quizObj.name = document.getElementById("idQuizName").value;
     quizObj.theme = document.getElementById("idQuizTheme").value;
@@ -312,13 +311,11 @@ export class CreateQuizForm extends Component {
       <CreateQuiz
         quiz={this.state.quizes}
         qaType={this.state.qaType}
-        qaTypeCheck={this.state.qaTypeCheck}
+        qaTypeObj={this.state.qaTypeObj}
         qaTypeList={this.state.qaTypeList}
-        onClick={this.onClickQuestionHandler}
+        onClick={this.onClickSubmitQuestion}
         onChange={this.onChangeQuestionHandler}
-        qaCategoryList={this.state.qaCategoryList}
-
-        
+        qaCategoryList={this.state.qaCategoryList}        
       />
     );
 
@@ -341,7 +338,7 @@ export class CreateQuizForm extends Component {
                   qaID={this.state.qaID}
                   qaType={this.state.qaType}
                   qaCategory={this.state.qaCategory}
-                  qaTypeCheck={this.state.qaTypeCheck}
+                  qaTypeObj={this.state.qaTypeObj}
                   qaTypeList={this.state.qaTypeList}
                   qaCategoryList={this.state.qaCategoryList}
                   onChange={this.onChangeQuestionHandler}
