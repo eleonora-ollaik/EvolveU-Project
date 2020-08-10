@@ -143,7 +143,6 @@ class QandA extends Component {
 
   render() {
     const { currentQuestion, questionsAndAnswers } = this.props;
-    console.log(this.state.value)
     return (
       <div>
         <div>Question {currentQuestion}</div>

@@ -3,7 +3,7 @@ import React from 'react';
 import './select-quiz.css';
 import QuizTable from "../QuizTable/QuizTable";
 
-const SelectQuiz = ({ value, handleChange, handleSearch, responseData, selectQuiz }) => (
+const SelectQuiz = ({ value, handleChange, responseData, selectQuiz }) => (
   <div>
     <h1>TAKE QUIZ</h1>
     <br />
@@ -16,9 +16,7 @@ const SelectQuiz = ({ value, handleChange, handleSearch, responseData, selectQui
       placeholder="Search"
       onChange={handleChange}
     />
-    <button onClick={handleSearch}>Search</button>
-    <br />
-    {responseData.length ? (
+    {responseData ? (
       <QuizTable quizData={responseData} selectQuiz={selectQuiz}/>
     ) : (
       <div>no data found</div>

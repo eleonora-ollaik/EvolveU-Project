@@ -14,40 +14,30 @@ class TakeQuiz extends PureComponent {
     this.state = {
       value: "",
       selectedQuiz: null,
-      responseData: null
+      responseData: null,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
     this.selectQuiz = this.selectQuiz.bind(this);
   }
 
   componentDidMount(){
-    getData(serverUrl + 'quizzes').then(data => convertFormat(data.payload)).then(arr => this.setState({responseData: arr}));
+    getData(serverUrl + 'quiz').then(data => convertFormat(data.payload)).then(arr => this.setState({responseData: arr}));
   }
   
   selectQuiz(quizId) {
-    getData(serverUrl + `quiz/${quizId}`).then(data =>  convertQuizDetails(data)).then(quiz => this.setState({ selectedQuiz: quiz }));
+    getData(serverUrl + `quiz?quizid=${quizId}`).then(data =>  convertQuizDetails(data.payload[0])).then(quiz => this.setState({ selectedQuiz: quiz }));
   }
 
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
 
-  async handleSearch() {
-    try {
-      const response = await postData(serverUrl, this.state.value).then(
-        (data) => data
-      );
-      this.setState({ responseData: response });
-      console.log("fetch success");
-    } catch (error) {
-      console.log(error);
-    }
-    console.log("Search button clicked");
-  }
-
   render() {
-    // console.log(this.state.selectedQuiz);
+    let filteredQuizzes = this.state.responseData;
+    if(this.state.responseData){
+      filteredQuizzes = this.state.responseData.filter((quizObj)=> quizObj.name.toLowerCase().includes(this.state.value.toLowerCase()));
+    }
+     
     return (
       <div className="takeQuizContainer">
         {this.state.selectedQuiz ? (
@@ -56,16 +46,15 @@ class TakeQuiz extends PureComponent {
               this.state.selectedQuiz
             }
             reselectQuiz={
-              () => this.setState({selectedQuiz:  null })
+              () => this.setState({selectedQuiz: null })
             }
           />
         ) : (
-            this.state.responseData?
+          filteredQuizzes?
             <SelectQuiz
             value={this.state.value}
             handleChange={this.handleChange}
-            handleSearch={this.handleSearch}
-            responseData={this.state.responseData}
+            responseData={filteredQuizzes}
             selectQuiz={this.selectQuiz}
           /> : null
         )}

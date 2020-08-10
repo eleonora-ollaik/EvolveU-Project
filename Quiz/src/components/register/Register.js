@@ -46,28 +46,28 @@ export default function Register() {
 
   return (
       <div>
-        <form class="login-form">
+        <form className="login-form">
             <h1>Register</h1>
             <div>
-                <label for="login">Email</label>
+                <label htmlFor="login">Email</label>
                 <input 
-                    type="text" controlId="email" name="login" placeholder="Email" required
+                    type="text" name="login" placeholder="Email" required
                     value={email}
                     onChange={e => setEmail(e.target.value)} 
                 />
             </div>
             <div>
-                <label for="nickname">Nickname</label>
+                <label htmlFor="nickname">Nickname</label>
                 <input 
-                    type="text" controlId="nickname" name="nickname" placeholder="Nickname" required
+                    type="text" name="nickname" placeholder="Nickname" required
                     value={nickname}
                     onChange={e => setNickname(e.target.value)} 
                 />
             </div>
             <div>
-                <label for="password">Password</label>
+                <label htmlFor="password">Password</label>
                 <input 
-                    type="password" controlId="password" name='password' placeholder="Password" required 
+                    type="password" name='password' placeholder="Password" required 
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                 /> 
@@ -80,9 +80,9 @@ export default function Register() {
           {confirmEmail? 
             <div>
                 <div>Confirm Email</div>
-                <label for="confirmEmail">Confirmation Code</label>
+                <label htmlFor="confirmEmail">Confirmation Code</label>
                 <input 
-                    type="number" controlId="confirmationCode" name="confirmationCode" placeholder="Enter your confirmation code" required
+                    type="number" name="confirmationCode" placeholder="Enter your confirmation code" required
                     autoFocus
                     value={confirmationCode}
                     onChange={e => setConfirmationCode(e.target.value)} 
