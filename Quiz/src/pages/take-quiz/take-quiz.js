@@ -52,6 +52,7 @@ class TakeQuiz extends PureComponent {
         ) : (
           filteredQuizzes?
             <SelectQuiz
+            subHeader = {'Please select a quiz to play!'}
             value={this.state.value}
             handleChange={this.handleChange}
             responseData={filteredQuizzes}
