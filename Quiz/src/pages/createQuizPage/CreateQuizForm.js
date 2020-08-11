@@ -376,8 +376,8 @@ export class CreateQuizForm extends Component {
         {quizNavPanel}
         {quizEdit}
 
-        <button type="Submit" onClick={this.onClickQuizSumbit}>
-          Submit
+        <button type="Submit" className='submitBtn' onClick={this.onClickQuizSumbit}>
+          Submit Quiz
         </button>
         
         <ModalBox content={this.state.noticeMsg} onClickModalClose={this.onClickCloseModal} hide={hidemsg}/>        
