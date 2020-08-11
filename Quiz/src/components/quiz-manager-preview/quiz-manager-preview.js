@@ -1,6 +1,6 @@
 import React from 'react'
 
-const QuizManagerPreview = ({ quiz, handleEdit, handleRemove }) => {
+const QuizManagerPreview = ({ quiz, handleEdit, handleRemove, handleAddNewQuestion }) => {
 
     return (
         <div>
@@ -23,6 +23,9 @@ const QuizManagerPreview = ({ quiz, handleEdit, handleRemove }) => {
                         </div>
                 )
             }
+            <button onClick={handleAddNewQuestion}> Add New Question </button>
+            <button> Submit all changes </button>
+
         </div>
 
     )

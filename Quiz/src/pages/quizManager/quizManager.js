@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import SelectQuiz from "../../components/select-quiz/select-quiz";
 import QuizManagerPreview from "../../components/quiz-manager-preview/quiz-manager-preview";
+import QuestionModal from "../../components/quiz-manager-preview/QuestionModal"
 
 import {
     getData,
@@ -25,6 +26,35 @@ class QuizManager extends Component {
             questionTypeList: null,
             questionCategoryList: null,
             currentEditQuestion: null,
+            newQuestionObj: {
+                question_category: "Movies",
+                questioncategory_id: 3,
+                question_statement: "",
+                question_correct_entries: 0,
+                question_wrong_entries: 0,
+                questiontype_id: 1,
+                questiontype_name: "Multiple Choice",
+                correct_answer_num: 1,
+                wrong_answer_num: 3,
+                answers: [
+                    {
+                        answer_is_correct: true,
+                        answer_statement: ""
+                    },
+                    {
+                        answer_is_correct: false,
+                        answer_statement: ""
+                    },
+                    {
+                        answer_is_correct: false,
+                        answer_statement: ""
+                    },
+                    {
+                        answer_is_correct: false,
+                        answer_statement: ""
+                    }
+                ]
+            }
         };
         this.handleChange = this.handleChange.bind(this);
         this.selectQuiz = this.selectQuiz.bind(this);
@@ -80,19 +110,42 @@ class QuizManager extends Component {
         this.setState({ selectedQuiz: tempQuiz })
     };
 
+    handleAddNewQuestion = () => {
+        this.setState({ isModalOpen: true, currentEditQuestion: { ...this.state.newQuestionObj } });
+    }
+
     handleCurrentQuestionChange = (e) => {
         // some part not updating as expected
         let tempQuestion = { ...this.state.currentEditQuestion };
-        if (isNaN(e.target.name)) {
-            console.log('question_statement')
-            tempQuestion.question_statement = e.target.value
-        } else {
-            if (e.target.type === 'text') {
-                console.log('answer_statement')
-                tempQuestion.answers[e.target.name].answer_statement = e.target.value;
+        if (tempQuestion.questiontype_id === 1) {
+            if (isNaN(e.target.name)) {
+                tempQuestion.question_statement = e.target.value
             } else {
-                tempQuestion.answers[e.target.name].answer_is_correct = true;
-                tempQuestion.answers = tempQuestion.answers.map((answerObj, idx) => Number(e.target.name) !== idx ? { ...answerObj, answer_is_correct: false } : answerObj)
+                if (e.target.type === 'text') {
+                    tempQuestion.answers[e.target.name].answer_statement = e.target.value;
+                } else {
+                    tempQuestion.answers[e.target.name].answer_is_correct = true;
+                    tempQuestion.answers = tempQuestion.answers.map((answerObj, idx) => Number(e.target.name) !== idx ? { ...answerObj, answer_is_correct: false } : answerObj)
+                }
+            }
+        } else if (tempQuestion.questiontype_id === 2) {
+            if (isNaN(e.target.name)) {
+                tempQuestion.question_statement = e.target.value
+            } else {
+                if (e.target.value === "true") {
+                    tempQuestion.answers[0].answer_is_correct = true;
+                    tempQuestion.answers[1].answer_is_correct = false;
+                } else {
+                    tempQuestion.answers[0].answer_is_correct = false;
+                    tempQuestion.answers[1].answer_is_correct = true;
+                }
+            }
+        } else {
+            if (isNaN(e.target.name)) {
+                console.log('question_statement')
+                tempQuestion.question_statement = e.target.value
+            } else {
+                tempQuestion.answers[e.target.name].answer_statement = e.target.value;
             }
         }
 
@@ -100,15 +153,37 @@ class QuizManager extends Component {
     }
 
     saveToSelectQuiz = () => {
-        console.log(this.state.selectedQuiz)
         let tempQuiz = { ...this.state.selectedQuiz }
         tempQuiz.questionsAndAnswers = tempQuiz.questionsAndAnswers.map((questionObj) => questionObj.question_id === this.state.currentEditQuestion.question_id ? this.state.currentEditQuestion : questionObj);
+        let newQuestionArr = tempQuiz.questionsAndAnswers.filter((questionObj) => !questionObj.hasOwnProperty("question_id"))
+        tempQuiz.questionsAndAnswers.concat(newQuestionArr);
         this.setState({ selectedQuiz: tempQuiz })
     }
 
     changeQuestionType = (e) => {
-        console.log(e.target.value)
         let tempQuestion = { ...this.state.currentEditQuestion };
+        tempQuestion.questiontype_name = e.target.value;
+        tempQuestion.questiontype_id = e.target.value === "Multiple Choice" ? 1 : e.target.value === "True or False" ? 2 : 3;
+        let newAnswerObj = { answer_statement: '', answer_is_correct: false };
+        if (tempQuestion.questiontype_id === 1) {
+            tempQuestion.answers = new Array(4).fill(null).map((e) => ({ ...newAnswerObj }))
+            console.log(tempQuestion.answers)
+            tempQuestion.answers[0].answer_is_correct = true;
+        } else if (tempQuestion.questiontype_id === 2) {
+            tempQuestion.answers = new Array(2).fill(null).map((e) => ({ ...newAnswerObj }))
+            tempQuestion.answers[0].answer_statement = "True";
+            tempQuestion.answers[1].answer_statement = "False";
+            tempQuestion.answers[0].answer_is_correct = true;
+        } else {
+            tempQuestion.answers = new Array(4).fill(null).map((e) => ({ ...newAnswerObj, answer_is_correct: true }))
+        }
+        // if(tempQuestion.questiontype_id === 1){
+        //     tempQuestion.answers = tempQuestion.answers.map((answerObj) => ({...answerObj, answer_is_correct: false}));
+        //     tempQuestion.answers[0].answer_is_correct = true;
+        // } else if(tempQuestion.questiontype_id === 3) {
+        //     tempQuestion.answers = tempQuestion.answers.map((answerObj) => ({...answerObj, answer_is_correct: true}))
+        // }
+        this.setState({ currentEditQuestion: tempQuestion })
     }
 
     render() {
@@ -126,6 +201,7 @@ class QuizManager extends Component {
                         quiz={this.state.selectedQuiz}
                         handleEdit={this.handleEdit}
                         handleRemove={this.handleRemove}
+                        handleAddNewQuestion={this.handleAddNewQuestion}
                     />
                 ) : filteredQuizzes ? (
                     <SelectQuiz
@@ -137,60 +213,13 @@ class QuizManager extends Component {
                     />
                 ) : null}
                 {this.state.isModalOpen ? (
-                    <div className="modal">
-                        <div>
-                            <input
-                                type="text"
-                                name="question_statement"
-                                value={this.state.currentEditQuestion.question_statement}
-                                onChange={this.handleCurrentQuestionChange}
-                            />
-                            <div>
-                                <div>question type</div>
-                                <select onChange={this.changeQuestionType}>
-                                    {
-                                        this.state.questionTypeList.map((questionTypeObj => <option key={questionTypeObj.questiontype_id} value={questionTypeObj.questiontype_id}>{questionTypeObj.questiontype_name}</option>))
-                                    }
-                                </select>
-                            </div>
-                            {this.state.currentEditQuestion.questiontype_id === 1 ?
-
-                                this.state.currentEditQuestion.answers.map((answerObj, idx) => (
-                                    <div key={idx}>
-                                        <input type="text" name={idx} value={answerObj.answer_statement} onChange={this.handleCurrentQuestionChange} />
-
-                                        <input type="radio" name={idx} value={true} checked={answerObj.answer_is_correct} onChange={this.handleCurrentQuestionChange} />
-                                        <label htmlFor="true">Correct</label>
-                                        <input type="radio" name={idx} checked={!answerObj.answer_is_correct} readOnly />
-                                        <label htmlFor="false">Incorrect</label>
-                                    </div>
-                                )) : this.state.currentEditQuestion.questiontype_id === 2 ?
-                                    this.state.currentEditQuestion.answers.map((answerObj, idx) => (
-                                        <div key={idx}>
-                                            <label>
-                                                <input type="radio" name={idx} value={true} checked={answerObj.answer_is_correct} onChange={this.handleCurrentQuestionChange} />
-                                            True
-                                            </label>
-                                            <label>
-                                                <input type="radio" name={idx} value={false} checked={!answerObj.answer_is_correct} onChange={this.handleCurrentQuestionChange} />
-                                            False
-                                            </label>
-                            
-                                            {/* <input type="radio" name={idx} value={true} checked={answerObj.answer_is_correct} onChange={this.handleCurrentQuestionChange} />
-                                            <label htmlFor="true">Correct</label>
-                                            <input type="radio" name={idx} checked={!answerObj.answer_is_correct} readOnly />
-                                            <label htmlFor="false">Incorrect</label> */}
-                                        </div> 
-                                    )) :null   
-                                
-                        }
-
-                            {/* <select onChange={}>
-                                 {this.state.qaTypeList.map((questionObj, idx) => <option key={questionObj.questiontype_name + idx}>{questionObj.questiontype_name}</option>)}
-                                </select> */}
-                            <button onClick={this.saveToSelectQuiz}>Save Changes</button>
-                        </div>
-                    </div>
+                    <QuestionModal
+                        currentEditQuestion={this.state.currentEditQuestion}
+                        questionTypeList={this.state.questionTypeList}
+                        handleCurrentQuestionChange={this.handleCurrentQuestionChange}
+                        changeQuestionType={this.changeQuestionType}
+                        saveToSelectQuiz={this.saveToSelectQuiz}
+                    />
                 ) : null}
             </div>
         );
