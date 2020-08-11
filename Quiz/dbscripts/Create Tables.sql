@@ -26,10 +26,7 @@ DROP TABLE IF EXISTS questiontype;
 CREATE TABLE questiontype (
    questiontype_id serial PRIMARY KEY,
    questiontype_name VARCHAR,
-   questiontype_input VARCHAR NOT NULL,
-   questiontype_label VARCHAR,
-   correctanswer_label VARCHAR,
-   wronganswer_label VARCHAR,
+   questiontype_anscomp VARCHAR NOT NULL,
    correct_answer_num INT,
    wrong_answer_num INT,
    questiontype_creation TIMESTAMPTZ,

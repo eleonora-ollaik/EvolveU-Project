@@ -1,47 +1,25 @@
 import React from "react";
-import RadioAnswerInput from "../answerInput/RadioAnswerInput.js";
-import TextAnswerInput from "../answerInput/TextAnswerInput.js";
+import QuizComp from "../comp-map.js";
 
-function populateAnswers (type, qaTypeCheck) {
+function populateAnswers (type, qatypeObj) {
   const ansDisplay = [];
-  const correctTextInput = <TextAnswerInput correctAnswer={true} />;
-  const correctRadioInput = <RadioAnswerInput correctAnswer={true} defaultValue=''/>;
-  const wrongTextInput = <TextAnswerInput correctAnswer={false} />;
-  const wrongRadioInput = <RadioAnswerInput correctAnswer={false} />;
+
   let el = null;
+  let comp = null;
   
-  const answertypes = [
-    {
-      questiontype_id: 1,
-      component: correctTextInput,
-      wrongComponent: wrongTextInput,
-    },
-    {
-      questiontype_id: 2,
-      component: correctRadioInput,
-      wrongComponent: wrongRadioInput,
-    },
-    {
-      questiontype_id: 3,
-      component: correctTextInput,
-      wrongComponent: wrongTextInput,
-    },
-  ];
+  if (qatypeObj !== null) {          
+    // Generate correct answer inputs  
+    for (let j = 0; j < qatypeObj[type]["caNumer"]; j++) {
+      comp = QuizComp[qatypeObj[type]["comp"]];
+      el = React.cloneElement(comp, {"correctAnswer": true, "key": `ca${j}`});
+      ansDisplay.push(el);
+    }
 
-  if (qaTypeCheck !== null) {
-    // Generate correct and wrong answer inputs  
-    for (let i = 0; i < answertypes.length; i++) {
-      if (qaTypeCheck[type]["inputType"] === answertypes[i]["questiontype_id"]) {  
-        for (let j = 0; j < qaTypeCheck[type]["caNumer"]; j++) {
-          el = React.cloneElement(answertypes[i]["component"], {"key": `ca${j}`});
-          ansDisplay.push(el);
-        }
-
-        for (let j = 0; j < qaTypeCheck[type]["iaNumber"]; j++) {
-          el = React.cloneElement(answertypes[i]["wrongComponent"], {"key": `wa${j}`});
-          ansDisplay.push(el);
-        }
-      }
+    // Generate wrong answer inputs  
+    for (let j = 0; j < qatypeObj[type]["iaNumber"]; j++) {
+      comp = QuizComp[qatypeObj[type]["comp"]];
+      el = React.cloneElement(comp, {"correctAnswer": false, "key": `wa${j}`});
+      ansDisplay.push(el);
     }
   }
 
