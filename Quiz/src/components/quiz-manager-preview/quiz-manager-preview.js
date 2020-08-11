@@ -1,7 +1,7 @@
 import React from 'react'
 
 const QuizManagerPreview = ({ quiz, handleEdit, handleRemove }) => {
-    console.log(quiz)
+
     return (
         <div>
             <div>{quiz.name}</div>
@@ -19,7 +19,7 @@ const QuizManagerPreview = ({ quiz, handleEdit, handleRemove }) => {
                                 )}
                             </ul>
                             <button onClick={() => handleEdit(question)}>Edit</button>
-                            <button onClick={() => handleRemove(question)}>Remove</button>
+                            <button onClick={() => handleRemove(idx)}>Remove</button>
                         </div>
                 )
             }

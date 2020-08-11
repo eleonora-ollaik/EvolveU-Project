@@ -68,12 +68,14 @@ class QuizManager extends Component {
     this.setState({ currentEditQuestion: question, isModalOpen: true });
   };
 
-  handleRemove = (e) => {
-    console.log("this delete the question in the selected quiz");
+  handleRemove = (idx) => {
+    let tempQuiz = {...this.state.selectedQuiz}
+    tempQuiz.questionsAndAnswers.splice(idx,1);
+    this.setState({selectedQuiz: tempQuiz})
   };
 
   handleCurrentQuestionChange = (e) => {
-      console.log(e.target.value)
+    // some part not updating as expected
     let tempQuestion = {...this.state.currentEditQuestion};
     if(isNaN(e.target.name)){
         console.log('question_statement')
@@ -91,6 +93,13 @@ class QuizManager extends Component {
     this.setState({currentEditQuestion: tempQuestion});
   }
 
+  saveToSelectQuiz = () => {
+      console.log(this.state.selectedQuiz)
+      let tempQuiz = {...this.state.selectedQuiz}
+      tempQuiz.questionsAndAnswers = tempQuiz.questionsAndAnswers.map((questionObj) => questionObj.question_id === this.state.currentEditQuestion.question_id? this.state.currentEditQuestion: questionObj);
+      this.setState({selectedQuiz: tempQuiz})
+  }
+
   render() {
     let filteredQuizzes = this.state.responseData;
     if (this.state.responseData) {
@@ -98,7 +107,7 @@ class QuizManager extends Component {
         quizObj.name.toLowerCase().includes(this.state.value.toLowerCase())
       );
     }
-    console.log(this.state.currentEditQuestion);
+    
     return (
       <div className="quizManagerContainer background">
         {this.state.selectedQuiz ? (
@@ -139,6 +148,7 @@ class QuizManager extends Component {
               {/* <select onChange={}>
                                  {this.state.qaTypeList.map((questionObj, idx) => <option key={questionObj.questiontype_name + idx}>{questionObj.questiontype_name}</option>)}
                                 </select> */}
+                <button onClick={this.saveToSelectQuiz}>Save Changes</button>
             </div>
           </div>
         ) : null}
