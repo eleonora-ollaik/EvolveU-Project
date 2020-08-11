@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import SelectQuiz from "../../components/select-quiz/select-quiz";
 import QuizManagerPreview from "../../components/quiz-manager-preview/quiz-manager-preview";
-import net from "../../business/netcomm";
 
 import {
   getData,
@@ -84,8 +83,8 @@ class QuizManager extends Component {
             console.log('answer_statement')
             tempQuestion.answers[e.target.name].answer_statement = e.target.value;
         }else {
-
-            tempQuestion.answers[e.target.name].answer_is_correct = e.target.value === 'true'? true: false;
+            tempQuestion.answers[e.target.name].answer_is_correct = true;
+            tempQuestion.answers = tempQuestion.answers.map((answerObj, idx) => Number(e.target.name) !== idx? {...answerObj, answer_is_correct: false}: answerObj )
         }
     }
 
@@ -132,7 +131,7 @@ class QuizManager extends Component {
 
                   <input type="radio" name={idx} value={true} checked={answerObj.answer_is_correct} onChange={this.handleCurrentQuestionChange}/>
                         <label htmlFor="true">Correct</label>
-                  <input type="radio" name={idx} value={false} checked={!answerObj.answer_is_correct} onChange={this.handleCurrentQuestionChange}/>
+                  <input type="radio" name={idx} checked={!answerObj.answer_is_correct} readOnly/>
                         <label htmlFor="false">Incorrect</label>
                 </div>
               ))}

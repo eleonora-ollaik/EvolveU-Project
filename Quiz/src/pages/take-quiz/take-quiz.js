@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 import SelectQuiz from "../../components/select-quiz/select-quiz";
 import PlayQuiz from "../../components/play-quiz/play-quiz";
 
-import { postData, getData, convertFormat, convertQuizDetails } from "../../fetch-data.util";
+import { getData, convertFormat, convertQuizDetails } from "../../fetch-data.util";
 import "./take-quiz.css";
 
 const serverUrl = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/";
