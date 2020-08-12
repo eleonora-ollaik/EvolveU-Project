@@ -1,0 +1,11 @@
+.previewContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.previewContainer > div {
+    margin: 1em;
+}

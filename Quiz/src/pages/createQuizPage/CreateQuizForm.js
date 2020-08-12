@@ -44,6 +44,7 @@ export class CreateQuizForm extends Component {
   }
 
   onClickEntryHandler = (e) => {
+    
     // qaID = null resets the edit panel display
     // qaType = qaDefaultType resets the edit panel display independent from Preview Edit panel
     this.setState({quizNav: "Create Quiz", qaID: null, qaType: this.state.qaDefaultType, qaCategory: this.state.qaDefaultCategory});
@@ -354,30 +355,34 @@ export class CreateQuizForm extends Component {
 
     return (
       <div className="createQuizContainer">
-        <CreateQuizNav
-          quizNav={this.state.quizNav}
-          onEntryClick={this.onClickEntryHandler}
-          onPreviewClick={this.onClickPreviewHandler}
-        />
-        <input
-          type="text"
-          name="quizName"
-          placeholder="Quiz name"
-          id="idQuizName"
-        />
+        <div className='createQuizpage'>
+          <CreateQuizNav
+            quizNav={this.state.quizNav}
+            onEntryClick={this.onClickEntryHandler}
+            onPreviewClick={this.onClickPreviewHandler}
+          />
+          <div className="createFormContainer tabActive">
+            <input
+              type="text"
+              name="quizName"
+              placeholder="Quiz name"
+              id="idQuizName"
+            />
 
-        <select name="theme" id="idQuizTheme">
-          {this.state.quizThemeList}
-        </select>
+            <select name="theme" id="idQuizTheme">
+              {this.state.quizThemeList}
+            </select>
 
-        {quizNavPanel}
-        {quizEdit}
+            {quizNavPanel}
+            {quizEdit}
 
-        <button type="Submit" className='submitBtn' onClick={this.onClickQuizSumbit}>
-          Submit Quiz
-        </button>
-        
-        <ModalBox content={this.state.noticeMsg} onClickModalClose={this.onClickCloseModal} hide={hidemsg}/>        
+            <button type="Submit" className='submitBtn' onClick={this.onClickQuizSumbit}>
+              Submit Quiz
+            </button>
+          </div>
+          <ModalBox content={this.state.noticeMsg} onClickModalClose={this.onClickCloseModal} hide={hidemsg}/>  
+          
+        </div>      
       </div>
     );
   }
