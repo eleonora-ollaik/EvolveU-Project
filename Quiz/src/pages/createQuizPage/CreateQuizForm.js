@@ -216,15 +216,15 @@ export class CreateQuizForm extends Component {
   };
 
   onChangeQuestionType = (e) => {
-    let type = document.getElementById("idQuestionType").value;
-    let category = document.getElementById("idQuestionCategory").value;
+    const type = document.getElementById("idQuestionType").value;
+    const category = document.getElementById("idQuestionCategory").value;
 
     this.setState({qaType: type, qaCategory: category });
   };
 
   onClickEdit = (e) => {
-    let key = e.target.getAttribute("uuid");
-    let obj = this.state.quizes.getQuestionAndAnswers(key);
+    const key = e.target.getAttribute("uuid");
+    const obj = this.state.quizes.getQuestionAndAnswers(key);
 
     // Open edit modal box
     document.getElementById("idEditQAModal").setAttribute("class", "modalshow");
@@ -244,8 +244,7 @@ export class CreateQuizForm extends Component {
 
   onClickSaveModal = (e) => {
     const quiz = this.state.quizes;
-    let key = this.state.qaID;
-    let obj = this.state.quizes.getQuestionAndAnswers(key);
+    const key = this.state.qaID;
     const QA = new logic.QuestionsAndAnswers();
     QA.question = document.getElementById("idQuestion").value;
 
@@ -280,7 +279,7 @@ export class CreateQuizForm extends Component {
   onClickDelete = (e) => {
     const quizObj = this.state.quizes;
     const key = e.target.getAttribute("uuid");
-    const qAndAPair = quizObj.deleteQuestionsAndAnswers(key);
+    quizObj.deleteQuestionsAndAnswers(key);
 
     // qaID = null resets the edit panel display
     this.setState({ quizes: quizObj, quizNav: "Preview Quiz", qaID: null });

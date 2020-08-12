@@ -5,96 +5,114 @@ export class QApreview extends Component {
 
   render() {
     const QAobject = this.props.quiz.QuestionsAndAnswers;
-    let QAentries = [];
+    const QAentries = [];
+    let FootNote = [];
     let maxColNum = 0;
     
-    for (const [key, QA] of Object.entries(QAobject)) {
-      let num = QA.correct_answers.length + QA.wrong_answers.length;
+    // Get the max number of columns required for different question types
+    // to ensure the correct number of cells is created to align the table content
+    for (const QA of Object.values(QAobject)) {
+      const num = QA.correct_answers.length + QA.wrong_answers.length;
       if (num > maxColNum){
         maxColNum = num;
       }
     }
-    QAentries.push(
-        <PreviewColNum  maxColNum={maxColNum}/>
 
-    )
-    
-    for (const [key, QA] of Object.entries(QAobject)) {
+    // Only generate table when there is at least one question and answer pair
+    if (Object.keys(QAobject).length > 0) {
+      QAentries.push(<PreviewRowTitle key="prt" maxColNum={maxColNum}/>)
 
-      QAentries.push(<PreviewRow maxColNum = {maxColNum} key={key} QA={QA} onClickDelete={this.props.onClickDelete} onClickEdit={this.props.onClickEdit}/>)
-
+      // Generate table rows
+      for (const [key, QA] of Object.entries(QAobject)) {
+        QAentries.push(<PreviewRow key={`pr${key}`} maxColNum={maxColNum} uuid={key} QA={QA} onClickDelete={this.props.onClickDelete} onClickEdit={this.props.onClickEdit}/>);
+      }      
+      
+      FootNote.push(<PreviewFootNote key="pfn"/>)
     }
 
     return (
-      <div >
+      <div className="previewContainer">
         <table>
-          {QAentries}
+          <tbody>
+            {QAentries}
+          </tbody>
         </table>
+        {FootNote}               
       </div>
     );
   }
 }
 
+class PreviewFootNote extends Component {
+  render() {
+    return (
+      <div className="previewFootNote">
+        <br/>
+        <p>Answer in <span className="correctAnswerColor">green</span> represents <span className="correctAnswerColor">correct answer</span></p>
+        <p>Answer in <span className="wrongAnswerColor">red</span> represents <span className="wrongAnswerColor">wrong answer</span></p>
+        <br/>
+      </div> 
+    )
+  }
+}
 
 class PreviewRow extends Component {
   render() {
 
-    let QA = this.props.QA
-    const correct = []
-    const wrong = []
+    const QA = this.props.QA;
+    const uuid = this.props.uuid;
+    const correct = [];
+    const wrong = [];
 
-      for (let i=0; i<QA.correct_answers.length; i++) {
-        correct.push(<td key={`CA${this.props.key}${i}`}>Correct answer: {QA.correct_answers[i]}</td>);
+    for (let i=0; i<QA.correct_answers.length; i++) {
+      correct.push(<td key={`CA${uuid}${i}`} className="correctAnswerColor">{QA.correct_answers[i]}</td>);
+    }
+
+    for (let i=0; i<QA.wrong_answers.length; i++) {
+      wrong.push(<td key={`IA${uuid}${i}`} className="wrongAnswerColor">{QA.wrong_answers[i]}</td>);
+    }
+    const ansLength = QA.correct_answers.length + QA.wrong_answers.length;
+    if (this.props.maxColNum > ansLength) {
+      for (let i=0; i<(this.props.maxColNum-ansLength); i++){
+        wrong.push(<td key={`EA${uuid}${i}`}></td>)
       }
-
-      for (let i=0; i<QA.wrong_answers.length; i++) {
-        wrong.push(<td key={`IA${this.props.key}${i}`}>Wrong answer: {QA.wrong_answers[i]}</td>);
-      }
-      let ansLength = QA.correct_answers.length + QA.wrong_answers.length;
-      if (this.props.maxColNum > ansLength) {
-        for (let i=0; i<(this.props.maxColNum-ansLength); i++){
-          wrong.push(<td key={`EA${this.props.key}${i}`}></td>)
-        }
-      }
-    
-
-
-
+    }
+  
     return (
-
-    <tr>
-      <td key={`K${this.props.key}`}>{this.props.key}</td>
-      <td key={`Q${this.props.key}`}>{this.props.QA.question}</td>
-      <td key={`T${this.props.key}`}>{this.props.QA.type}</td>
-      <td key={`TN${this.props.key}`}>{this.props.QA.typename}</td>
-      <td key={`C${this.props.key}`}>{this.props.QA.category_id}</td>
-      <td key={`CN${this.props.key}`}>{this.props.QA.category} </td>
-      {correct}
-      {wrong}
-      <button key={`BEdit${this.props.key}`} uuid={this.props.key} onClick={this.props.onClickEdit}>Edit</button>
-      <button key={`BDel${this.props.key}`} uuid={this.props.key} onClick={this.props.onClickDelete}>Delete</button>
-    </tr>
-
+      <tr>
+        {/* <td key={`K${uuid}`}>{uuid}</td> */}
+        <td key={`Q${uuid}`}>{this.props.QA.question}</td>
+        {/* <td key={`T${uuid}`}>{this.props.QA.type}</td> */}
+        <td key={`TN${uuid}`}>{this.props.QA.typename}</td>
+        {/* <td key={`C${uuid}`}>{this.props.QA.category_id}</td> */}
+        <td key={`CN${uuid}`}>{this.props.QA.category} </td>
+        {correct}
+        {wrong}
+        <td key={`BE${uuid}`}>
+          <button key={`BEdit${uuid}`} uuid={uuid} onClick={this.props.onClickEdit}>Edit</button>
+        </td>
+        <td key={`BD${uuid}`}>
+          <button key={`BDel${uuid}`} uuid={uuid} onClick={this.props.onClickDelete}>Delete</button>
+        </td>
+      </tr>
     )
   }
-
 }
 
-
-class PreviewColNum extends Component {
+class PreviewRowTitle extends Component {
   render() {
     const answerTitle = [];
     for (let i=0; i<this.props.maxColNum; i++){
-      answerTitle.push(<th>Answer {i+1}</th>)
+      answerTitle.push(<th key={`tha${i}`}>Answer {i+1}</th>)
     }
     return(
       <tr>
-        <th>Key</th>
-        <th>Question</th>
-        <th>Type ID</th>
-        <th>Type</th>
-        <th>Category ID</th>
-        <th>Category</th>
+        {/* <th key="thk">Key</th> */}
+        <th key="thq">Question</th>
+        {/* <th key="thtid">Type ID</th> */}
+        <th key="thtn">Type</th>
+        {/* <th key="thcid">Category ID</th> */}
+        <th key="thcn">Category</th>
         {answerTitle}
       </tr>
     )

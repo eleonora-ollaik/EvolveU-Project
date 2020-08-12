@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Login from '../../components/login/Login';
 import Register from '../../components/register/Register';
-import './landingpage.css';
+// import './landingpage.css';
 
 
 class LandingPage extends Component {
