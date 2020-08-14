@@ -45,41 +45,4 @@ body, html {
   }
 }
 
-input[type=text], select {
-  width: 25%;
-  padding: 12px 20px;
-  margin: 8px 8px;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
 
-.button {
-  background-color: white; 
-  color: black; 
-  border: 2px solid #008CBA;
-  font-size: 16px;
-  margin: 4px 2px;
-  padding: 16px 32px;
-  text-align: center;
-  border-radius: 8px;
-}
-
-.button:hover {
-  background-color: #008CBA;
-  color: white;
-}
-
-.submitBtn {
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 8px;
-
-}

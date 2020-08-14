@@ -63,6 +63,10 @@ class PreviewRow extends Component {
     const uuid = this.props.uuid;
     const correct = [];
     const wrong = [];
+    const styleBtn = {
+      border: 0 
+
+    }
 
     for (let i=0; i<QA.correct_answers.length; i++) {
       correct.push(<td key={`CA${uuid}${i}`} className="correctAnswerColor">{QA.correct_answers[i]}</td>);
@@ -88,11 +92,11 @@ class PreviewRow extends Component {
         <td key={`CN${uuid}`}>{this.props.QA.category} </td>
         {correct}
         {wrong}
-        <td key={`BE${uuid}`}>
-          <button key={`BEdit${uuid}`} uuid={uuid} onClick={this.props.onClickEdit}>Edit</button>
+        <td key={`BE${uuid}`} style={styleBtn}>
+          <button key={`BEdit${uuid}`} className='rowBtnEdit' uuid={uuid} onClick={this.props.onClickEdit}>Edit</button>
         </td>
-        <td key={`BD${uuid}`}>
-          <button key={`BDel${uuid}`} uuid={uuid} onClick={this.props.onClickDelete}>Delete</button>
+        <td key={`BD${uuid}`} style={styleBtn}>
+          <button key={`BDel${uuid}`} className='rowBtnDelete' uuid={uuid} onClick={this.props.onClickDelete}>Delete</button>
         </td>
       </tr>
     )
