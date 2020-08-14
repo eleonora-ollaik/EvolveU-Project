@@ -39,7 +39,7 @@ export class QAedit extends Component {
         
         {ansDisplay}
 
-        <button onClick={this.props.onClickSave}>Save</button>
+        <button className='editSaveBtn' onClick={this.props.onClickSave}>Save</button>
       </div>
     );
   }
