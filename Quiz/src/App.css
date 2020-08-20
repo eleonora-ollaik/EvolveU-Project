@@ -6,6 +6,7 @@ body, html {
 }
 
 .App {
+  overflow: hidden;
   text-align: center;
   font-family: 'Acme', sans-serif;
 }

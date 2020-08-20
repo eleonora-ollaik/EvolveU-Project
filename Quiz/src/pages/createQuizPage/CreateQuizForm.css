@@ -1,17 +1,18 @@
+@import url(https://fonts.googleapis.com/css2?family=Acme&display=swap>
+);
+
 .createQuizContainer {
+    padding: 0;
     min-height: 100vh;
     padding-top: 10vh;
-    overflow: auto;
     background: rgb(2,0,36);
     background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(88,82,170,1) 26%, rgba(162,162,170,1) 61%, rgba(0,212,255,1) 96%, rgba(0,212,255,1) 100%);
-
 }
 
 .createQuizpage {
     height: 150vh;
     width: 100%;
     margin-left: 10vw; /*fix later*/
-
 }
 
 .createQuizNavContainer{
@@ -22,9 +23,10 @@
 }
 
 .createQuizTab{
-    color: aliceblue;
+    font-family: "Acme" sans-serif;
     padding: 1rem 1rem 0.25rem 1rem;
     border-radius: 1em 1em 0 0;
+    font-size: 1.5rem;
 
 }
 
@@ -32,10 +34,12 @@
     color: aliceblue;
     padding: 1rem 1rem 0.25rem 1rem;
     border-radius: 1em 1em 0 0;
+    font-size: 1.5rem;
 }
 
 .createFormContainer{
-    padding: 2em 0 2em 0;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 2rem 0 1rem 0;
     width: 80%;
     justify-content: center;
     align-items: center;
@@ -46,11 +50,13 @@
 
 .tabActive{
     /* background-color: rgb(32, 108, 128); */
+    color: rgb(4, 57, 70);
     background: inherit;
     box-shadow: inset 0 0 0 500px rgba(255,255,255,0.2);
 }
 
 .tabInactive{
+    color: aliceblue;
     background-color: rgb(74, 166, 192);
 }
 
@@ -61,23 +67,23 @@
     border: 2px solid #008CBA;
     font-size: 16px;
     margin: 4px 2px;
-    padding: 16px 32px;
+    padding: 15px 32px;
     text-align: center;
     border-radius: 8px;
-    width: 10em;
+    width: 12em;
   }
   
   .submitBtn {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
+    background-color: white; 
+    border: 2px solid #4CAF50;
+    color: black;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     border-radius: 8px;
-    width: 10em;
+    width: 12em;
 
   }
 
@@ -97,5 +103,17 @@
     color: white;
   }
   
+  .submitBtn:hover {
+    background-color: #4CAF50;;
+    color: white;
+  }
+  
+  .label-input {
+      /* float: left; */
+      display: flex;
+      flex-direction: column;
+        justify-content: center;
+        align-items: left;
+  }
  
  

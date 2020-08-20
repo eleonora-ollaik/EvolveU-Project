@@ -31,7 +31,7 @@ export class QAentry extends Component {
 
         {ansDisplay}
 
-        <button  className='button' onClick={this.props.onClick}>Submit question</button>
+        <button  className='button' onClick={this.props.onClick}>Submit Question</button>
       </div>
     );
   }

@@ -1,8 +1,6 @@
-body, html {
-    overflow: visible;
-}
 
 .takeQuizContainer {
+    overflow: auto;
     min-height: 800px;
     padding-top: 50px;
     background: rgb(0,3,36);

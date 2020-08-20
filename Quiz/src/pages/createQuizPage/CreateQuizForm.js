@@ -361,12 +361,14 @@ export class CreateQuizForm extends Component {
             onPreviewClick={this.onClickPreviewHandler}
           />
           <div className="createFormContainer tabActive">
+          <div className="label-input">
             <input
               type="text"
               name="quizName"
               placeholder="Quiz name"
               id="idQuizName"
             />
+          </div>
 
             <select name="theme" id="idQuizTheme">
               {this.state.quizThemeList}

@@ -32,7 +32,7 @@ export class QApreview extends Component {
 
     return (
       <div className="previewContainer">
-        <table>
+        <table className="center">
           <tbody>
             {QAentries}
           </tbody>
@@ -48,8 +48,8 @@ class PreviewFootNote extends Component {
     return (
       <div className="previewFootNote">
         <br/>
-        <p>Answer in <span className="correctAnswerColor">green</span> represents <span className="correctAnswerColor">correct answer</span></p>
-        <p>Answer in <span className="wrongAnswerColor">red</span> represents <span className="wrongAnswerColor">wrong answer</span></p>
+        <p>Answer in <span className="correctAnswerColor">green</span> represents <span className="correctAnswerColor">correct answer.</span></p>
+        <p>Answer in <span className="wrongAnswerColor">red</span> represents <span className="wrongAnswerColor">wrong answer.</span></p>
         <br/>
       </div> 
     )
@@ -63,17 +63,13 @@ class PreviewRow extends Component {
     const uuid = this.props.uuid;
     const correct = [];
     const wrong = [];
-    const styleBtn = {
-      border: 0 
-
-    }
 
     for (let i=0; i<QA.correct_answers.length; i++) {
-      correct.push(<td key={`CA${uuid}${i}`} className="correctAnswerColor">{QA.correct_answers[i]}</td>);
+      correct.push(<td key={`CA${uuid}${i}`} className="correctAnswerColor cellsNormal">{QA.correct_answers[i]}</td>);
     }
 
     for (let i=0; i<QA.wrong_answers.length; i++) {
-      wrong.push(<td key={`IA${uuid}${i}`} className="wrongAnswerColor">{QA.wrong_answers[i]}</td>);
+      wrong.push(<td key={`IA${uuid}${i}`} className="wrongAnswerColor cellsNormal">{QA.wrong_answers[i]}</td>);
     }
     const ansLength = QA.correct_answers.length + QA.wrong_answers.length;
     if (this.props.maxColNum > ansLength) {
@@ -85,17 +81,17 @@ class PreviewRow extends Component {
     return (
       <tr>
         {/* <td key={`K${uuid}`}>{uuid}</td> */}
-        <td key={`Q${uuid}`}>{this.props.QA.question}</td>
+        <td key={`Q${uuid}`} className="tdQuestion cellsNormal">{this.props.QA.question}</td>
         {/* <td key={`T${uuid}`}>{this.props.QA.type}</td> */}
-        <td key={`TN${uuid}`}>{this.props.QA.typename}</td>
+        <td key={`TN${uuid}`} className="cellsNormal">{this.props.QA.typename}</td>
         {/* <td key={`C${uuid}`}>{this.props.QA.category_id}</td> */}
-        <td key={`CN${uuid}`}>{this.props.QA.category} </td>
+        <td key={`CN${uuid}`} className="cellsNormal">{this.props.QA.category} </td>
         {correct}
         {wrong}
-        <td key={`BE${uuid}`} style={styleBtn}>
+        <td key={`BE${uuid}`} className="cellsButtons">
           <button key={`BEdit${uuid}`} className='rowBtnEdit' uuid={uuid} onClick={this.props.onClickEdit}>Edit</button>
         </td>
-        <td key={`BD${uuid}`} style={styleBtn}>
+        <td key={`BD${uuid}`} className="cellsButtons">
           <button key={`BDel${uuid}`} className='rowBtnDelete' uuid={uuid} onClick={this.props.onClickDelete}>Delete</button>
         </td>
       </tr>

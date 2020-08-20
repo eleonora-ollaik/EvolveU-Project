@@ -45,6 +45,7 @@ class App extends Component {
       }
     });
 
+    // style={renderPage.type.name=="LandingPage" ? {overflow: "hidden"} : {overflow: "visible"}}
     return (
       <div className="App">
         <Header currentPage={renderPage} handleNavigation={this.handleNavigation}/>
