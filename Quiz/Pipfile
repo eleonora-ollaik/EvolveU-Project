@@ -8,6 +8,7 @@ pytest = "*"
 pylint = "*"
 aws-psycopg2 = "*"
 boto3 = "*"
+psycopg2 = "*"
 
 [packages]
 flask = "*"

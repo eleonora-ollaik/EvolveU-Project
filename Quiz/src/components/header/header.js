@@ -17,33 +17,31 @@ class Header extends Component {
     let currentComponent = currentPage.type.name;
     return (
       <div className="appHeader">
-        <a onClick={() => handleNavigation(<LandingPage />)}>Q</a>
-        <div className="navbar">
-          <button
-            className={`tablink ${
-              currentComponent === "CreateQuizForm" ? "createButtonActive" : ""
-            }`}
-            onClick={() => handleNavigation(<CreateQuizForm />)}
-          >
-            Create Quiz
-          </button>
-          <button
-            className={`tablink ${
-              currentComponent === "TakeQuiz" ? "takeButtonActive" : ""
-            }`}
-            onClick={() => handleNavigation(<TakeQuiz />)}
-          >
-            Take Quiz
-          </button>
-          <button
-            className={`tablink ${
-              currentComponent === "QuizManager" ? "qmButtonActive" : ""
-            }`}
-            onClick={() => handleNavigation(<QuizManager />)}
-          >
-            Quiz Manager
-          </button>
-        </div>
+        <button className="Q-logo" onClick={() => handleNavigation(<LandingPage />)}>Q</button>
+        <button
+          className={`tablink ${
+            currentComponent === "CreateQuizForm" ? "createButtonActive" : ""
+          }`}
+          onClick={() => handleNavigation(<CreateQuizForm />)}
+        >
+          Create Quiz
+        </button>
+        <button
+          className={`tablink ${
+            currentComponent === "TakeQuiz" ? "takeButtonActive" : ""
+          }`}
+          onClick={() => handleNavigation(<TakeQuiz />)}
+        >
+          Take Quiz
+        </button>
+        <button
+          className={`tablink ${
+            currentComponent === "QuizManager" ? "qmButtonActive" : ""
+          }`}
+          onClick={() => handleNavigation(<QuizManager />)}
+        >
+          Quiz Manager
+        </button>
       </div>
     );
   }

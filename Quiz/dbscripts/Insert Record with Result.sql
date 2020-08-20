@@ -21,13 +21,13 @@ VALUES
 (2, false, 'chemistry', now(), now()),
 (2, false, 'engish', now(), now());
 
-INSERT INTO questiontype (questiontype_name, 
+INSERT INTO questiontype (questiontype_name, questiontype_anscomp,
 					      correct_answer_num, wrong_answer_num,
 					      questiontype_creation, questiontype_update) 
 VALUES
-('Multiple Choice', 1, 3, now(), now()),
-('True or False', 1, 1, now(), now()),
-('Open Ended', 4, 0, now(), now());
+('Multiple Choice', 'TextAnswerInput', 1, 3, now(), now()),
+('True or False', 'RadioAnswerInput', 1, 1, now(), now()),
+('Open Ended', 'TextAnswerInput', 4, 0, now(), now());
 
 INSERT INTO theme (theme_name, 
 					theme_creation, theme_update) 

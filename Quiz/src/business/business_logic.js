@@ -3,6 +3,7 @@ class QuestionsAndAnswers {
     
     constructor () {
         this.category = null;
+        this.category_id = null;
         this.type = null;
         this.typename = null;
         this.question = null;

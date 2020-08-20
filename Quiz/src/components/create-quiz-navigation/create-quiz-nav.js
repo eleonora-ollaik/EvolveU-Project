@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 
 export class CreateQuizNav extends Component {
 
-    render() {        
+    render() {   
+        const createQuizTabColor = this.props.quizNav === "Create Quiz" ? "tabActive" : "tabInactive";
+        const previewQuizTabColor = this.props.quizNav !== "Create Quiz" ? "tabActive" : "tabInactive";
+
         return (
-            <div>
-                <div onClick={this.props.onEntryClick}>Create Quiz</div>
-                <div onClick={this.props.onPreviewClick}>Preview Quiz</div>
+            <div className='createQuizNavContainer'>
+                <div className={`createQuizTab ${createQuizTabColor}`} onClick={this.props.onEntryClick}>Create Quiz</div>
+                <div className={`previewQuizTab ${previewQuizTabColor}`} onClick={this.props.onPreviewClick}>Preview Quiz</div>
             </div>
         )
     }

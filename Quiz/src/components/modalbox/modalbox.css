@@ -5,7 +5,7 @@
   
 .modalshow {
   display: block; /* Hidden by default */
-  position: absolute; /* Stay in place */
+  position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;
   top: 0;
@@ -23,10 +23,23 @@
   padding: 50px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
+  border-radius: 0.5em;
+  color: rgb(32, 108, 128);
 }
 
+.editSaveBtn {
+  padding: 10px 30px;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.5em;
+}
 /* The Close Button */
 .close {
+  /* position:absolute;
+  top:10px;
+  right: 10px; */
   color: #aaa;
   float: right;
   font-size: 28px;

@@ -1,17 +1,20 @@
 import React, { Component } from "react";
+import populateDefaultValues from './edit-quiz-util.js'
+import populateAnswers from './../create-quiz/create-quiz-util.js'
 
 export class QAedit extends Component {
 
   render() {
-    console.log(this.props)
     const quiz = this.props.quiz;
     const key = this.props.qaID;
     const qaType = this.props.qaType;
+    const qaCategory = this.props.qaCategory;
     let ansDisplay=[];
     let question = null;
 
     const displayOption = this.props.qaTypeList;
-    const qaTypeCheck = this.props.qaTypeCheck;
+    const qaCategoryList = this.props.qaCategoryList;
+    const qaTypeObj = this.props.qaTypeObj;
 
     if (key !== null) {   // A question and answer object provided
       const QA = quiz.QuestionsAndAnswers[key];
@@ -19,15 +22,8 @@ export class QAedit extends Component {
       const wrong_answers = QA.wrong_answers;
       question = QA.question;
 
-      // Generate correct answer inputs      
-      for (let i=0; i<qaTypeCheck[qaType]["caNumer"]; i++) {
-        ansDisplay.push(<input type="text" placeholder="Correct Answer" className='CorrectAnswer' key={`'ca'${i}`} defaultValue={correct_answers[i]}/>);
-      }
-
-      // Generate wrong answer inputs
-      for (let i=0; i<qaTypeCheck[qaType]["iaNumber"]; i++) {
-        ansDisplay.push(<input type="text" placeholder="Wrong Answer" className='WrongAnswer' key={`'ia'${i}`} defaultValue={wrong_answers[i]}/>);
-      }        
+      ansDisplay = populateAnswers(qaType, qaTypeObj);
+      ansDisplay = populateDefaultValues(correct_answers, wrong_answers, ansDisplay);     
     }
 
     return (
@@ -37,13 +33,16 @@ export class QAedit extends Component {
         <select name="type" id="idQuestionType" onChange={this.props.onChange} value={qaType}>
           {displayOption}
         </select>
+        <select name="type" id="idQuestionCategory" onChange={this.props.onChange} value={qaCategory}>
+          {qaCategoryList}
+        </select>
         
         {ansDisplay}
 
-        <button onClick={this.props.onClickSave}>Save</button>
+        <button className='editSaveBtn' onClick={this.props.onClickSave}>Save</button>
       </div>
     );
   }
 }
 
-export default QAedit;
+export default QAedit
