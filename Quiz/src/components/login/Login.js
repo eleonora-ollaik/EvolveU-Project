@@ -25,21 +25,21 @@ export default function Login() {
 
   return (
       <div>
-        <form class="login-form">
+        <form className="login-form">
             <h1>Login</h1>
             <div>
-                <label for="login">Username or email</label>
+                <label htmlFor="login">Username or email</label>
                 <input 
-                    type="text" controlId="email" name="login" placeholder="Username or email" required
+                    type="text" name="login" placeholder="Username or email" required
                     autoFocus
                     value={email}
                     onChange={e => setEmail(e.target.value)} 
                 />
             </div>
             <div>
-                <label for="password">Password</label>
+                <label htmlFor="password">Password</label>
                 <input 
-                    type="password" controlId="password" name='password' placeholder="Password" required 
+                    type="password" name='password' placeholder="Password" required 
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                 /> 
