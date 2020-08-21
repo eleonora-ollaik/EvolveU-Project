@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import LandingPage from './pages/homepage/landingpage';
-import Header from './components/header/header';
+import HeaderPublic from './components/header/headerPublic';
+import HeaderPrivate from './components/header/headerPrivate';
 import { Amplify } from 'aws-amplify';
 import config from './config';
 
@@ -11,9 +12,15 @@ class App extends Component {
     super(props)
 
     this.state = {
-      renderPage: <LandingPage />,
+      renderPage: <LandingPage handleLoggedIn={() => this.handleLoggedIn()} isLoggedIn={false}/>,
+      isLoggedIn: false,
       alertChangePage: false,
     }
+  }
+
+  handleLoggedIn = () => {
+    console.log("Are we logged in? ", this.state.isLoggedIn)
+    this.setState({isLoggedIn: true})
   }
 
   setAlertChangePageToTrue = () => {
@@ -48,7 +55,7 @@ class App extends Component {
     // style={renderPage.type.name=="LandingPage" ? {overflow: "hidden"} : {overflow: "visible"}}
     return (
       <div className="App">
-        <Header currentPage={renderPage} handleNavigation={this.handleNavigation}/>
+        {this.state.isLoggedIn? <HeaderPrivate currentPage={renderPage} handleNavigation={this.handleNavigation}/> : <HeaderPublic currentPage={renderPage} handleNavigation={this.handleNavigation}/>}
         {renderPage}
       </div>
     );

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import { Auth } from "aws-amplify";
 
-export default function Login() {
+export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,6 +16,7 @@ export default function Login() {
     try {
       console.log("Within try", event)
       await Auth.signIn(email, password);
+      props.handleLoggedIn();
       alert("Logged in");
     } catch (e) {
       console.log("Catch", event)
@@ -28,7 +29,7 @@ export default function Login() {
         <form className="login-form">
             <h1>Login</h1>
             <div>
-                <label htmlFor="login">Username or email</label>
+                {/* <label htmlFor="login">Username or email</label> */}
                 <input 
                     type="text" name="login" placeholder="Username or email" required
                     autoFocus
@@ -37,7 +38,7 @@ export default function Login() {
                 />
             </div>
             <div>
-                <label htmlFor="password">Password</label>
+                {/* <label htmlFor="password">Password</label> */}
                 <input 
                     type="password" name='password' placeholder="Password" required 
                     value={password}

@@ -361,7 +361,9 @@ export class CreateQuizForm extends Component {
             onPreviewClick={this.onClickPreviewHandler}
           />
           <div className="createFormContainer tabActive">
+
           <div className="label-input">
+            <div>Enter a name for your quiz</div>
             <input
               type="text"
               name="quizName"
@@ -370,12 +372,17 @@ export class CreateQuizForm extends Component {
             />
           </div>
 
+          <div className="label-input">
+            <div>Select a quiz theme</div>
             <select name="theme" id="idQuizTheme">
               {this.state.quizThemeList}
             </select>
+          </div>
 
+          <div className="label-input">
             {quizNavPanel}
             {quizEdit}
+          </div>
 
             <button type="Submit" className='submitBtn' onClick={this.onClickQuizSumbit}>
               Submit Quiz

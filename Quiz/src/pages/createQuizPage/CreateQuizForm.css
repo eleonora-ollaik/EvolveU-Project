@@ -87,7 +87,7 @@
 
   }
 
-  input[type=text], select {
+  .label-input input[type=text], select, .CorrectAnswer, .WrongAnswer {
     width: 25%;
     padding: 12px 25px;
     margin: 8px 8px;
@@ -108,12 +108,99 @@
     color: white;
   }
   
-  .label-input {
+/* .label-input {
       /* float: left; */
-      display: flex;
+      /* display: flex;
       flex-direction: column;
         justify-content: center;
         align-items: left;
-  }
- 
- 
+} */
+  
+.label-input {
+  /* Size and position */
+  width: 300px;
+  max-width: 320px;
+  margin: 0 0 0 0;
+  padding: 10px;
+  position: relative;
+
+  /* Font styles */
+  /* font-family: 'Raleway', 'Lato', Arial, sans-serif; */
+  color: white;
+  /* text-shadow: 0 2px 1px rgba(0,0,0,0.3); */
+
+  /* background-color: moccasin; */
+}
+
+.label-input div {
+  text-align: left;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgb(97, 97, 97);
+  padding-bottom: 0px;
+}
+
+
+.label-input input[type=text], .label-input select {
+    /* Size and position */
+    width: 100%;
+    padding: 8px 4px 8px 10px;
+    margin-bottom: 10px;
+    margin-left: 0;
+
+    /* Styles */
+    border: 1px solid #4e3043; /* Fallback */
+    border: 1px solid rgba(78,48,67, 0.8);
+    background: rgba(246, 247, 242, 0.795);
+    border-radius: 2px;
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.2), 
+        inset 0 1px 1px rgba(0,0,0,0.1);
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+
+    /* Font styles */
+    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+    /* color: #fff; */
+    font-size: 18px;
+}
+
+.label-input-QA div {
+  text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+  color: rgb(78, 62, 62);
+  padding-bottom: 0px;
+}
+
+
+.label-input-QA input[type=text], .label-input-QA select {
+    /* Size and position */
+    width: 100%;
+    padding: 8px 4px 8px 10px;
+    margin-bottom: 10px;
+    margin-left: 0;
+
+    /* Styles */
+    border: 1px solid #4e3043; /* Fallback */
+    border: 1px solid rgba(78,48,67, 0.8);
+    background: rgba(246, 247, 242, 0.932);
+    border-radius: 2px;
+    box-shadow: 
+        0 1px 0 rgba(255, 255, 255, 0.2), 
+        inset 0 1px 1px rgba(0,0,0,0.1);
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+
+    /* Font styles */
+    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+    /* color: #fff; */
+    font-size: 16px;
+}
+
