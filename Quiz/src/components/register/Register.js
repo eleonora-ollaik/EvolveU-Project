@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import "./Register.css";
+import "../login/Login.css";
 import { Auth } from "aws-amplify";
 
 export default function Register() {
-  const [email, setEmail] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailR, setEmailR] = useState("");
+  const [nicknameR, setNicknameR] = useState("");
+  const [passwordR, setPasswordR] = useState("");
   const [confirmEmail, setConfirmEmail] = useState(false);
   const [confirmationCode, setConfirmationCode] = useState(null);
 
   function validateForm() {
-    return email.length > 0 && password.length > 0;
+    return emailR.length > 0 && passwordR.length > 0;
   }
 
   function validateCode() {
@@ -19,11 +19,12 @@ export default function Register() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    console.log("Works", email, nickname, password)
+    console.log("Works", emailR, nicknameR, passwordR)
     try {
       const newUser = await Auth.signUp({
-        username: email,
-        password: password,
+        username: emailR,
+        nickname: nicknameR,
+        password: passwordR,
       });
       alert("Registered successfully!")
       setConfirmEmail(true);
@@ -36,8 +37,8 @@ export default function Register() {
     event.preventDefault();
   
     try {
-      await Auth.confirmSignUp(email, confirmationCode);
-      await Auth.signIn(email, password);
+      await Auth.confirmSignUp(emailR, confirmationCode);
+      await Auth.signIn(emailR, passwordR);
       alert("Your registration has been successfully confirmed!")
     } catch (e) {
       alert("Registration failed! ", e);
@@ -49,27 +50,24 @@ export default function Register() {
         <form className="login-form">
             <h1>Register</h1>
             <div>
-                <label htmlFor="login">Email</label>
                 <input 
                     type="text" name="login" placeholder="Email" required
-                    value={email}
-                    onChange={e => setEmail(e.target.value)} 
+                    value={emailR}
+                    onChange={e => setEmailR(e.target.value)} 
                 />
             </div>
             <div>
-                <label htmlFor="nickname">Nickname</label>
                 <input 
                     type="text" name="nickname" placeholder="Nickname" required
-                    value={nickname}
-                    onChange={e => setNickname(e.target.value)} 
+                    value={nicknameR}
+                    onChange={e => setNicknameR(e.target.value)} 
                 />
             </div>
             <div>
-                <label htmlFor="password">Password</label>
                 <input 
                     type="password" name='password' placeholder="Password" required 
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    value={passwordR}
+                    onChange={e => setPasswordR(e.target.value)}
                 /> 
             </div>
             <div>
