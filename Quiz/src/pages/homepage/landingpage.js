@@ -10,13 +10,15 @@ class LandingPage extends Component {
     }
     
     render(){
-        console.log("Logged in on LandingPage? ", this.props.isLoggedIn)
         const loginRegister = (!this.props.isLoggedIn? 
             <div>
                 <div className="boxes"><Login handleLoggedIn={()=> this.props.handleLoggedIn()}/></div>
                 <div className="boxes"><Register /></div>
             </div> :
-            <div>Hello</div>
+            <div>
+                <br/>
+                <div style={{color: "orange"}}>Welcome!  You are now logged in.</div>
+            </div>
         )
         return(
             <div className="landingPage background">

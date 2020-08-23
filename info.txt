@@ -1,0 +1,34 @@
+Pool Id ca-central-1_hmsm4GPdE
+Pool ARN arn:aws:cognito-idp:ca-central-1:712789485255:userpool/ca-central-1_hmsm4GPdE
+
+App client id
+216ffkdp1r6g8m8r8shbig5m82
+
+Amazon Cognito domain
+quiz-app/auth.ca-central-1.amazoncognito.com
+
+
+Access key ID
+AKIA2L5MQM3DZZNQHK4T 
+Secret key: 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
+
+
+aws cognito-idp sign-up --region ca-central-1 --client-id 216ffkdp1r6g8m8r8shbig5m82 --username cornelius.rott@gmail.com --password Chocolate2020
+
+aws cognito-idp admin-confirm-sign-up --region ca-central-1 --user-pool-id ca-central-1_hmsm4GPdE --username cornelius.rott@gmail.com
+
+
+
+
+aws cognito-idp admin-update-user-attributes --user-pool-id ca-central-1_hmsm4GPdE --username 313d6731-1665-4dac-964e-27796dfe4a58  --user-attributes Name="email_verified",Value="true"
+
+aws cognito-idp admin-delete-user --user-pool-id ca-central-1_hmsm4GPdE --username 4b9bcb4a-5aaf-4bd0-8185-42eb3d7adbee
+
+
+
+IDENTITY POOL - Sample Code (Get AWS Credentials)
+// Initialize the Amazon Cognito credentials provider (JavaScript)
+AWS.config.region = 'ca-central-1'; // Region
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: 'ca-central-1:79d7e5c7-fc04-4922-97af-17ca1d0a7e36',
+});

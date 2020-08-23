@@ -12,12 +12,10 @@ export default function Login(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    console.log("Before try", event)
     try {
-      console.log("Within try", event)
       await Auth.signIn(email, password);
       props.handleLoggedIn();
-      alert("Logged in");
+      // alert("Logged in");
     } catch (e) {
       console.log("Catch", event)
       alert(e.message);

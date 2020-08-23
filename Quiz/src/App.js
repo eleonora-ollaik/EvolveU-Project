@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import LandingPage from './pages/homepage/landingpage';
+import TakeQuiz from "./pages/take-quiz/take-quiz";
+import CreateQuizForm from "./pages/createQuizPage/CreateQuizForm";
+import QuizManager from "./pages/quizManager/quizManager";
 import HeaderPublic from './components/header/headerPublic';
 import HeaderPrivate from './components/header/headerPrivate';
 import { Amplify } from 'aws-amplify';
@@ -12,7 +15,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-      renderPage: <LandingPage handleLoggedIn={() => this.handleLoggedIn()} isLoggedIn={false}/>,
+      currentPageNumber: 1,
       isLoggedIn: false,
       alertChangePage: false,
     }
@@ -30,18 +33,22 @@ class App extends Component {
   handleNavigation = (component) => {
     if (this.alertChangePage) {
       if (window.confirm('Are you sure you want to leave the current page?')) {
-        this.setState({renderPage: component})
+        this.setState({currentPageNumber: component})
       } else {
         return;
       }
     } else {
-      this.setState({renderPage: component})
+      this.setState({currentPageNumber: component})
     }
   }  
-
+  
   render() {
-    const { renderPage } = this.state;
-
+    let renderPage;
+    if (this.state.currentPageNumber === 1) { renderPage = <LandingPage handleLoggedIn={() => this.handleLoggedIn()} isLoggedIn={this.state.isLoggedIn}/>} 
+    else if (this.state.currentPageNumber === 2) { renderPage = <CreateQuizForm />} 
+    else if (this.state.currentPageNumber === 3) { renderPage = <TakeQuiz />} 
+    else if (this.state.currentPageNumber === 4) { renderPage = <QuizManager />} 
+    
     Amplify.configure({
       Auth: {
         mandatorySignIn: true,
@@ -52,10 +59,9 @@ class App extends Component {
       }
     });
 
-    // style={renderPage.type.name=="LandingPage" ? {overflow: "hidden"} : {overflow: "visible"}}
     return (
       <div className="App">
-        {this.state.isLoggedIn? <HeaderPrivate currentPage={renderPage} handleNavigation={this.handleNavigation}/> : <HeaderPublic currentPage={renderPage} handleNavigation={this.handleNavigation}/>}
+        {this.state.isLoggedIn? <HeaderPrivate currentPageNumber={this.state.currentPageNumber} handleNavigation={this.handleNavigation}/> : <HeaderPublic currentPageNumber={this.state.currentPageNumber} handleNavigation={this.handleNavigation}/>}
         {renderPage}
       </div>
     );
