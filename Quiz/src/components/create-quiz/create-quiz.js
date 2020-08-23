@@ -14,27 +14,36 @@ export class QAentry extends Component {
     ansDisplay = populateAnswers(type, qaTypeObj)
 
     return (
-      <div className="label-input-QA">
-        <div>Enter question</div>
-        <input type="text" placeholder="Question" id="idQuestion" />
-        <div>Select a question type</div>
-        <select name="type" id="idQuestionType" onChange={this.props.onChange}>
-          {displayOption}
-        </select>
+      <div>
+          <div className="quizInfo">
+          <div className="label-input">
+              <div>Enter question</div>
+              <input type="text" placeholder="Question" id="idQuestion" />
+            </div>
+            <div className="label-input">
+              <div>Select a question type</div>
+              <select name="type" id="idQuestionType" onChange={this.props.onChange}>
+                {displayOption}
+              </select>
+            </div>
+            <div className="label-input">
+              <div>Select a category for the question</div>
+              <select
+                name="type"
+                id="idQuestionCategory"
+                onChange={this.props.onChange}
+              >
+                {categoryList}
+              </select>
+            </div>
 
-        <div>Select a category for the question</div>
-        <select
-          name="type"
-          id="idQuestionCategory"
-          onChange={this.props.onChange}
-        >
-          {categoryList}
-        </select>
-        <br />
+          </div>
 
-        {ansDisplay}
 
-        <button  className='button' onClick={this.props.onClick}>Submit Question</button>
+          <div className="label-input answers">
+            {ansDisplay}
+          </div>
+          <button  className='button' onClick={this.props.onClick}>Submit Question</button>
       </div>
     );
   }

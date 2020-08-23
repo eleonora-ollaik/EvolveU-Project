@@ -117,7 +117,7 @@
 } */
   
 .label-input {
-  /* Size and position */
+  /* Size and position */ 
   width: 300px;
   max-width: 320px;
   margin: 0 0 0 0;
@@ -130,7 +130,7 @@
   /* text-shadow: 0 2px 1px rgba(0,0,0,0.3); */
 
   /* background-color: moccasin; */
-}
+} 
 
 .label-input div {
   text-align: left;
@@ -203,4 +203,25 @@
     /* color: #fff; */
     font-size: 16px;
 }
+
+.quizInfo{
+  display: flex;
+  flex-direction: row;
+}
+
+.answers {
+  /* Size and position */ 
+  width: auto;
+  /* max-width: 320px; */
+  margin: 0 0 0 0;
+  padding: 10px;
+  position: relative;
+
+  /* Font styles */
+  /* font-family: 'Raleway', 'Lato', Arial, sans-serif; */
+  color: white;
+  /* text-shadow: 0 2px 1px rgba(0,0,0,0.3); */
+
+  /* background-color: moccasin; */
+} 
 

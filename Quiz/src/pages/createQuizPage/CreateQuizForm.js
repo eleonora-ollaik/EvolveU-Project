@@ -362,24 +362,28 @@ export class CreateQuizForm extends Component {
           />
           <div className="createFormContainer tabActive">
 
-          <div className="label-input">
-            <div>Enter a name for your quiz</div>
-            <input
-              type="text"
-              name="quizName"
-              placeholder="Quiz name"
-              id="idQuizName"
-            />
+          <div className='quizInfo'>
+              <div className="label-input">
+                <div>Enter a name for your quiz</div>
+                <input
+                  type="text"
+                  name="quizName"
+                  placeholder="Quiz name"
+                  id="idQuizName"
+                />
+              </div>
+
+            <div className="label-input">
+              <div>Select a quiz theme</div>
+              <select name="theme" id="idQuizTheme">
+                {this.state.quizThemeList}
+              </select>
+            </div>
           </div>
 
-          <div className="label-input">
-            <div>Select a quiz theme</div>
-            <select name="theme" id="idQuizTheme">
-              {this.state.quizThemeList}
-            </select>
-          </div>
+          <hr/>
 
-          <div className="label-input">
+          <div>
             {quizNavPanel}
             {quizEdit}
           </div>

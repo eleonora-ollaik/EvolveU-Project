@@ -3,14 +3,14 @@ import "../login/Login.css";
 import { Auth } from "aws-amplify";
 
 export default function Register() {
-  const [emailR, setEmailR] = useState("");
-  const [nicknameR, setNicknameR] = useState("");
-  const [passwordR, setPasswordR] = useState("");
+  const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmEmail, setConfirmEmail] = useState(false);
   const [confirmationCode, setConfirmationCode] = useState(null);
 
   function validateForm() {
-    return emailR.length > 0 && passwordR.length > 0;
+    return email.length > 0 && password.length > 0;
   }
 
   function validateCode() {
@@ -19,12 +19,12 @@ export default function Register() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    console.log("Works", emailR, nicknameR, passwordR)
+    console.log("Works", email, nickname, password)
     try {
       const newUser = await Auth.signUp({
-        username: emailR,
-        nickname: nicknameR,
-        password: passwordR,
+        username: email,
+        // nickname: nickname,
+        password: password,
       });
       alert("Registered successfully!")
       setConfirmEmail(true);
@@ -37,8 +37,8 @@ export default function Register() {
     event.preventDefault();
   
     try {
-      await Auth.confirmSignUp(emailR, confirmationCode);
-      await Auth.signIn(emailR, passwordR);
+      await Auth.confirmSignUp(email, confirmationCode);
+      await Auth.signIn(email, password);
       alert("Your registration has been successfully confirmed!")
     } catch (e) {
       alert("Registration failed! ", e);
@@ -52,22 +52,22 @@ export default function Register() {
             <div>
                 <input 
                     type="text" name="login" placeholder="Email" required
-                    value={emailR}
-                    onChange={e => setEmailR(e.target.value)} 
+                    value={email}
+                    onChange={e => setEmail(e.target.value)} 
                 />
             </div>
             <div>
                 <input 
                     type="text" name="nickname" placeholder="Nickname" required
-                    value={nicknameR}
-                    onChange={e => setNicknameR(e.target.value)} 
+                    value={nickname}
+                    onChange={e => setNickname(e.target.value)} 
                 />
             </div>
             <div>
                 <input 
                     type="password" name='password' placeholder="Password" required 
-                    value={passwordR}
-                    onChange={e => setPasswordR(e.target.value)}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                 /> 
             </div>
             <div>
@@ -77,17 +77,19 @@ export default function Register() {
         <div>
           {confirmEmail? 
             <div>
-                <div>Confirm Email</div>
-                <label htmlFor="confirmEmail">Confirmation Code</label>
-                <input 
-                    type="number" name="confirmationCode" placeholder="Enter your confirmation code" required
-                    autoFocus
-                    value={confirmationCode}
-                    onChange={e => setConfirmationCode(e.target.value)} 
-                />
+              <br/>
+              <form className="login-form">
+                <h2>Confirm Email</h2>
+                  <input 
+                      type="number" name="confirmationCode" placeholder="Enter your confirmation code" required
+                      autoFocus
+                      value={confirmationCode}
+                      onChange={e => setConfirmationCode(e.target.value)} 
+                  />
                 <div>
                     <button type="submit" disabled={!validateCode()} onClick={(e) => handleConfirmCode(e)}>Continue</button>
-                </div>       
+                </div>   
+              </form>    
             </div>
           : null}
         </div>

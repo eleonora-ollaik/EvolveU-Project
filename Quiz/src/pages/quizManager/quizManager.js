@@ -2,7 +2,8 @@ import React, { Component } from "react";
 
 import SelectQuiz from "../../components/select-quiz/select-quiz";
 import QuizManagerPreview from "../../components/quiz-manager-preview/quiz-manager-preview";
-import QuestionModal from "../../components/quiz-manager-preview/QuestionModal"
+import QuestionModal from "../../components/quiz-manager-preview/QuestionModal";
+import { Auth } from "aws-amplify"
 
 import {
     getData,
@@ -72,6 +73,20 @@ class QuizManager extends Component {
         getData(serverUrl + "questioncategory")
             .then((data) => data.payload)
             .then((arr) => this.setState({ questionCategoryList: arr }));
+
+        const loadUser = () =>(
+            Auth.currentUserInfo()
+        )
+        async function onLoad() {
+            try {
+                const user = await loadUser();
+                console.log(user)
+            }catch(e){
+                console.log(e)
+            }
+        }
+
+        onLoad();
 
         // getData(serverUrl + "quizes")
         //     .then((data) => convertFormat(data.quizes))

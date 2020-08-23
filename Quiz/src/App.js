@@ -22,8 +22,8 @@ class App extends Component {
   }
 
   handleLoggedIn = () => {
-    console.log("Are we logged in? ", this.state.isLoggedIn)
     this.setState({isLoggedIn: true})
+    console.log("Are we logged in? ", this.state.isLoggedIn)
   }
 
   setAlertChangePageToTrue = () => {
