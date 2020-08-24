@@ -3,14 +3,14 @@
 
 .createQuizContainer {
     padding: 0;
-    min-height: 100vh;
-    padding-top: 10vh;
+    min-height: 84vh;
+    padding-top: 3vh;
     background: rgb(2,0,36);
     background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(88,82,170,1) 26%, rgba(162,162,170,1) 61%, rgba(0,212,255,1) 96%, rgba(0,212,255,1) 100%);
 }
 
 .createQuizpage {
-    height: 150vh;
+    height: auto;
     width: 100%;
     margin-left: 10vw; /*fix later*/
 }
@@ -66,8 +66,8 @@
     color: black; 
     border: 2px solid #008CBA;
     font-size: 16px;
-    margin: 4px 2px;
-    padding: 15px 32px;
+    margin: 5px 20px 0 0;
+    padding: 12px 32px;
     text-align: center;
     border-radius: 8px;
     width: 12em;
@@ -77,14 +77,14 @@
     background-color: white; 
     border: 2px solid #4CAF50;
     color: black;
-    padding: 15px 32px;
+    padding: 12px 32px;
+    margin: 5px 0 0 0;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     border-radius: 8px;
     width: 12em;
-
   }
 
   .label-input input[type=text], select, .CorrectAnswer, .WrongAnswer {
@@ -141,7 +141,7 @@
 }
 
 
-.label-input input[type=text], .label-input select {
+.label-input input[type=text], .label-input select, .CorrectAnswer, .WrongAnswer {
     /* Size and position */
     width: 100%;
     padding: 8px 4px 8px 10px;
@@ -209,19 +209,58 @@
   flex-direction: row;
 }
 
-.answers {
+.CorrectAnswer {
   /* Size and position */ 
-  width: auto;
+  width: 400px;
   /* max-width: 320px; */
-  margin: 0 0 0 0;
+  margin: 0 0 10px 5px;
   padding: 10px;
-  position: relative;
+  /* position: relative; */
 
   /* Font styles */
   /* font-family: 'Raleway', 'Lato', Arial, sans-serif; */
-  color: white;
+  color: rgb(0, 0, 0)
   /* text-shadow: 0 2px 1px rgba(0,0,0,0.3); */
 
   /* background-color: moccasin; */
 } 
+
+.WrongAnswer {
+  /* Size and position */ 
+  width: 400px;
+  /* max-width: 320px; */
+  margin: 0 0 10px 10px;
+  padding: 10px;
+  /* position: relative; */
+
+  /* Font styles */
+  /* font-family: 'Raleway', 'Lato', Arial, sans-serif; */
+  color: rgb(0, 0, 0)
+  /* text-shadow: 0 2px 1px rgba(0,0,0,0.3); */
+
+  /* background-color: moccasin; */
+} 
+
+.answers label{
+  /* display: inline-block; */
+  text-align: left;
+  color: rgb(78, 62, 62);
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.answers input[type=radio] {
+  /* display: inline-block; */
+  width: 18px;
+  height: 18px;
+  margin: 0 80px 0 0;
+  /* margin-right: 80px;
+  margin-bottom: 0; */
+  cursor: pointer;
+}
+
+.answers {
+  text-align: left;
+  margin-left: 10px;
+}
 

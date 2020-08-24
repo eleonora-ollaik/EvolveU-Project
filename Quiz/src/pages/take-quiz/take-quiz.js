@@ -40,25 +40,27 @@ class TakeQuiz extends PureComponent {
      
     return (
       <div className="takeQuizContainer">
-        {this.state.selectedQuiz ? (
-          <PlayQuiz
-            selectedQuiz={
-              this.state.selectedQuiz
-            }
-            reselectQuiz={
-              () => this.setState({selectedQuiz: null })
-            }
-          />
-        ) : (
-          filteredQuizzes?
-            <SelectQuiz
-            subHeader = {'Please select a quiz to play!'}
-            value={this.state.value}
-            handleChange={this.handleChange}
-            responseData={filteredQuizzes}
-            selectQuiz={this.selectQuiz}
-          /> : null
-        )}
+        <div className="box-container">
+          {this.state.selectedQuiz ? (
+            <PlayQuiz
+              selectedQuiz={
+                this.state.selectedQuiz
+              }
+              reselectQuiz={
+                () => this.setState({selectedQuiz: null })
+              }
+            />
+          ) : (
+            filteredQuizzes?
+              <SelectQuiz
+              subHeader = {'Please select a quiz to play!'}
+              value={this.state.value}
+              handleChange={this.handleChange}
+              responseData={filteredQuizzes}
+              selectQuiz={this.selectQuiz}
+            /> : null
+          )}
+        </div>
       </div>
     );
   }

@@ -40,10 +40,12 @@ export class QAentry extends Component {
           </div>
 
 
-          <div className="label-input answers">
+          <div className="answers">
             {ansDisplay}
           </div>
-          <button  className='button' onClick={this.props.onClick}>Submit Question</button>
+
+          <hr/>
+
       </div>
     );
   }

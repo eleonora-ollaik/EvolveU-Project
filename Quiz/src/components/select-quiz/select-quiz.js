@@ -5,10 +5,11 @@ import QuizTable from "../QuizTable/QuizTable";
 
 const SelectQuiz = ({ subHeader, value, handleChange, responseData, selectQuiz }) => (
   <div>
-    <h3>{subHeader}</h3>
+    <div className="subHeader">{subHeader}</div>
     <br />
-    <div>Quiz name:</div>
+    <div className="quizName">Quiz name:</div>
     <input
+      className="quizNameInput"
       type="text"
       value={value}
       placeholder="Search"

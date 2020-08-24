@@ -387,6 +387,7 @@ export class CreateQuizForm extends Component {
             {quizNavPanel}
             {quizEdit}
           </div>
+            <button  className='button' onClick={this.onClickSubmitQuestion}>Submit Question</button>
 
             <button type="Submit" className='submitBtn' onClick={this.onClickQuizSumbit}>
               Submit Quiz
