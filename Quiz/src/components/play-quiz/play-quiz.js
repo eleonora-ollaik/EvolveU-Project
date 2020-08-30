@@ -106,6 +106,7 @@ class QandA extends Component {
       value: "",
       submitted: false,
       isAnswerCorrect: false,
+      selectedAnswer: null,
     };
     // this.handleChange = this.handleChange.bind(this);
   }
@@ -115,25 +116,14 @@ class QandA extends Component {
   }
 
   handleCheckbox(e, input) {
-    if (!e.target.checked) {
-      //uncheck the checkbox
-      if (this.state.value.length === 1) {
-        this.setState({ value: "" });
-      } else {
-        this.setState({
-          value: this.state.value.filter((answer) => answer !== input),
-        });
-      }
-    } else {
-      if (!this.state.value) {
-        this.setState({ value: [input] });
-      } else {
-        this.setState({ value: [...this.state.value, input] });
-      }
-    }
+      this.setState({ value: [input] });
+      this.setState({ selectedAnswer: input.answer_statement})
   }
 
   onAnswerSubmit() {
+    if(!this.state.value) {
+      return;
+    } else {
     this.setState({ submitted: true });
     let isAnswerCorrect = checkIfAnswerCorrect(
       this.state.value,
@@ -143,6 +133,7 @@ class QandA extends Component {
       this.props.addToCorrectAnswers();
     }
     this.setState({ isAnswerCorrect: isAnswerCorrect });
+    }
   }
 
   onNext() {
@@ -154,7 +145,7 @@ class QandA extends Component {
     const { currentQuestion, questionsAndAnswers } = this.props;
     return (
       <div className='questionContainer'>
-        <div>Question <span className="question-number">{currentQuestion}</span></div>
+        <div className="question-number">Question <span style={{color: "rgb(245, 27, 27)"}}>{currentQuestion}</span></div>
         <hr style={{'width': '10em'}} />
         <div>Question: <span className="question-text">{questionsAndAnswers.question_statement}</span></div>
         <br/>
@@ -163,6 +154,7 @@ class QandA extends Component {
             <input
               placeholder="Please enter your answer here"
               type="text"
+              size="40"
               value={this.state.value}
               onChange={(e) => this.handleChange(e)}
               disabled={this.state.submitted ? true : false}
@@ -173,9 +165,10 @@ class QandA extends Component {
             <button
               style={{
                 backgroundColor:
-                  this.state.value === "true" ? "green" : "white",
+                  this.state.value==="True" ? "#f6b93b" : null,
               }}
-              onClick={() => this.setState({ value: "true" })}
+              className={this.state.submitted? "trueOrFalseBtnDisabled" : "trueOrFalseBtn"}
+              onClick={() => this.setState({ value: "True" })}
               disabled={this.state.submitted ? true : false}
             >
               True
@@ -183,9 +176,10 @@ class QandA extends Component {
             <button
               style={{
                 backgroundColor:
-                  this.state.value === "false" ? "green" : "white",
+                  this.state.value==="False" ? "#f6b93b" : null,
               }}
-              onClick={() => this.setState({ value: "false" })}
+              className={this.state.submitted? "trueOrFalseBtnDisabled" : "trueOrFalseBtn"}
+              onClick={() => this.setState({ value: "False" })}
               disabled={this.state.submitted ? true : false}
             >
               False
@@ -200,9 +194,11 @@ class QandA extends Component {
                 <div key={answer.answer_statement} className="answers-multiple-choice">
                   <input
                     type="checkbox"
+                    style={{marginRight: "10px"}}
                     value={answer.answer_statement}
+                    checked={this.state.selectedAnswer===answer.answer_statement ? true : false}
                     onChange={(e) => this.handleCheckbox(e, answer)}
-                    disabled={this.state.submitted ? true : false}
+                    // disabled={!this.state.selectedAnswer===answer.answer_statement ? true : false}
                   />
                   {answer.answer_statement}
                 </div>
