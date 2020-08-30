@@ -44,6 +44,8 @@ class QuizTableM extends Component {
                     </tbody>
                 </table>
             </div>
+            
+            
     
         )
 

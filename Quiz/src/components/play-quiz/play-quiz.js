@@ -54,15 +54,24 @@ class PlayQuiz extends Component {
     }
 
     return (
-      <div>
-        <h3>Play Quiz</h3>
-        <div>{name}</div>
-        <button
-          onClick={this.handlePlayQuiz}
-          disabled={this.state.currentQuestion ? true : false}
-        >
-          Play
-        </button>
+      <div className='playQuiz'>
+        <div className="quiz-text">Quiz: <span className="quiz-name">{name}</span></div>
+        <br/>
+        <hr/>
+        {this.state.currentQuestion ? null : (
+        <div>
+          <div className="get-ready-text">Get ready to play!</div>
+          <br/>
+          <hr/>
+          <button
+            className='rowBtnEdit'
+            onClick={this.handlePlayQuiz}
+            // disabled={this.state.currentQuestion ? true : false}
+          >
+            Play
+          </button>
+        </div>
+        )}
         {this.state.currentQuestion && !this.state.isTestOver ? (
           <QandA
             addToCorrectAnswers={() =>
@@ -82,9 +91,9 @@ class PlayQuiz extends Component {
             correctlyAnsweredQuestions={this.state.correctlyAnsweredQuestions}
             quizDataArray={questionsAndAnswers}
           />
-        ) : (
-          <div>Welcome to the quiz!</div>
-        )}
+        ) : 
+          null
+        }
       </div>
     );
   }
@@ -144,10 +153,11 @@ class QandA extends Component {
   render() {
     const { currentQuestion, questionsAndAnswers } = this.props;
     return (
-      <div>
-        <div>Question {currentQuestion}</div>
-        <div>Question:</div>
-        <div>{questionsAndAnswers.question_statement}</div>
+      <div className='questionContainer'>
+        <div>Question <span className="question-number">{currentQuestion}</span></div>
+        <hr style={{'width': '10em'}} />
+        <div>Question: <span className="question-text">{questionsAndAnswers.question_statement}</span></div>
+        <br/>
         {questionsAndAnswers.questiontype_id === 3 ? (
           <div>
             <input
@@ -182,42 +192,53 @@ class QandA extends Component {
             </button>
           </div>
         ) : (
-          <div>
-            {questionsAndAnswers.shuffledAnswers.map((answer, idx) => (
-              <div key={answer.answer_statement}>
-                <input
-                  type="checkbox"
-                  value={answer.answer_statement}
-                  onChange={(e) => this.handleCheckbox(e, answer)}
-                  disabled={this.state.submitted ? true : false}
-                />
-                {answer.answer_statement}
-              </div>
-            ))}
+          <div className="answers-box">
+            {this.state.submitted? 
+              null  
+              : (
+              questionsAndAnswers.shuffledAnswers.map((answer, idx) => (
+                <div key={answer.answer_statement} className="answers-multiple-choice">
+                  <input
+                    type="checkbox"
+                    value={answer.answer_statement}
+                    onChange={(e) => this.handleCheckbox(e, answer)}
+                    disabled={this.state.submitted ? true : false}
+                  />
+                  {answer.answer_statement}
+                </div>
+              ))
+            )}
           </div>
         )}
+        <br/>
+        <hr style={{'width': '8em'}} />
+        <br/>
+
+        {this.state.submitted? null : (
         <button
+          className='rowBtnEdit'
           onClick={() => this.onAnswerSubmit()}
-          disabled={this.state.submitted || !this.state.value ? true : false}
+          // disabled={this.state.submitted || !this.state.value ? true : false}
         >
           Submit
         </button>
+        )}
         <br />
         {this.state.submitted ? (
           this.state.isAnswerCorrect ? (
-            <div>Answer is correct!</div>
+            <div className="correct-answer-text">Answer is correct!</div>
           ) : (
             <div>
-              Answer is WRONG!!! The correct answer is:{" "}
+              Sorry, your answer is incorrect. The correct answer is: <span className="correct-answer-text">{" "}
               {questionsAndAnswers.answers.map((answer) => 
                 (answer.answer_is_correct)? answer.answer_statement:null
-              )}
+              )}</span>
             </div>
           )
         ) : null}
         <br />
         {this.state.submitted ? (
-          <button onClick={() => this.onNext()}>Next</button>
+          <button className='nextBtn' onClick={() => this.onNext()}>Next</button>
         ) : null}
       </div>
     );

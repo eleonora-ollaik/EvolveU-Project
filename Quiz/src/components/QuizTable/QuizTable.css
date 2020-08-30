@@ -1,6 +1,7 @@
 table.center {
     margin-left:auto; 
     margin-right:auto;
+    margin-bottom: 3rem;
 }
 
 th {
@@ -16,11 +17,27 @@ tr {
     border-width: 0 0 20px 0;
 }
 
-.cellsNormal {
+.tableCells {
     background-color: rgba(255,255,255,0.2);
+    cursor: pointer;
 }
 
-.cellsButtons {
-    background-color: transparent;
+
+.selectTable {
+    margin-top: 2rem;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: auto;
+    color: rgb(39, 64, 83)
+}
+
+.selectTable  > table {
+    max-width: 80%;
+    max-height: 100%;
+
+}
+
+.quizTableName {
+    text-align: left;
     padding: 0 0 0 5px;
+
 }

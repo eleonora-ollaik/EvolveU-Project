@@ -34,7 +34,9 @@ def lambda_handler(event, context):
                         ON ct3.questiontype_id = questiontype.questiontype_id) as ct2 \
                     ON ct1.quiz_id = ct2.quiz_id;"            
         else:         
-            query ="SELECT * FROM quiz"
+            query ="SELECT * FROM quiz\
+                INNER JOIN theme\
+                    ON quiz.theme_id = theme.theme_id"
         
         inputParams = {
             "query": query,
