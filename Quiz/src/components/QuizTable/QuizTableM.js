@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './QuizTable.css'
 
 class QuizTableM extends Component {
     constructor(props) {
@@ -21,22 +22,24 @@ class QuizTableM extends Component {
     
         const list = quizDataArray.map((quiz, i) => {
             return (
-                <tr key={i} onClick={() => this.props.selectQuiz(quiz)}>
-                    <td>{quiz.quizId}</td>
-                    <td>{quiz.name}</td>
+                <tr key={i} onClick={() => this.props.selectQuiz(quiz.quizId)}>
+                    <td className='tableCells'>{quiz.quizId}</td>
+                    <td className='quizTableName tableCells'>{quiz.name}</td>
+                    <td className='tableCells'>{quiz.theme}</td>
                 </tr>
             )
         });
     
         return (
-            <div>
-                <h3>Quiz creator: </h3><div>{quizDataArray[0].creator}</div> 
-                <br/>
-                <table>
+            <div className='selectTable'>
+                {/* <h3>Quiz creator: </h3><div>{quizDataArray[0].creator}</div>  */}
+                {/* <br/> */}
+                <table className='center'>
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Quiz name</th>
+                            <th>Theme</th>
                         </tr>
                     </thead>
                     <tbody>

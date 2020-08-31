@@ -2,14 +2,13 @@ import React, { PureComponent } from "react";
 
 import SelectQuiz from "../../components/select-quiz/select-quiz";
 import PlayQuiz from "../../components/play-quiz/play-quiz";
-
+import "./take-quiz.css";
 
 import {
   getData,
   convertFormat,
   convertQuizDetails,
 } from "../../fetch-data.util";
-import "./take-quiz.css";
 
 const serverUrl =
   "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/";
@@ -68,6 +67,7 @@ class TakeQuiz extends PureComponent {
               handleChange={this.handleChange}
               responseData={filteredQuizzes}
               selectQuiz={this.selectQuiz}
+              origin={"TakeQuiz"}
             />
           ) : null}
         </div>

@@ -211,31 +211,34 @@ class QuizManager extends Component {
 
         return (
             <div className="quizManagerContainer background">
-                {this.state.selectedQuiz ? (
-                    <QuizManagerPreview
-                        quiz={this.state.selectedQuiz}
-                        handleEdit={this.handleEdit}
-                        handleRemove={this.handleRemove}
-                        handleAddNewQuestion={this.handleAddNewQuestion}
-                    />
-                ) : filteredQuizzes ? (
-                    <SelectQuiz
-                        subHeader={"Please select a quiz to edit!"}
-                        value={this.state.value}
-                        handleChange={this.handleChange}
-                        responseData={filteredQuizzes}
-                        selectQuiz={this.selectQuiz}
-                    />
-                ) : null}
-                {this.state.isModalOpen ? (
-                    <QuestionModal
-                        currentEditQuestion={this.state.currentEditQuestion}
-                        questionTypeList={this.state.questionTypeList}
-                        handleCurrentQuestionChange={this.handleCurrentQuestionChange}
-                        changeQuestionType={this.changeQuestionType}
-                        saveToSelectQuiz={this.saveToSelectQuiz}
-                    />
-                ) : null}
+                <div className='box-container'>
+                    {this.state.selectedQuiz ? (
+                        <QuizManagerPreview
+                            quiz={this.state.selectedQuiz}
+                            handleEdit={this.handleEdit}
+                            handleRemove={this.handleRemove}
+                            handleAddNewQuestion={this.handleAddNewQuestion}
+                        />
+                    ) : filteredQuizzes ? (
+                        <SelectQuiz
+                            subHeader={"Please select a quiz to edit!"}
+                            value={this.state.value}
+                            handleChange={this.handleChange}
+                            responseData={filteredQuizzes}
+                            selectQuiz={this.selectQuiz}
+                            origin={"QuizManager"}
+                        />
+                    ) : null}
+                    {this.state.isModalOpen ? (
+                        <QuestionModal
+                            currentEditQuestion={this.state.currentEditQuestion}
+                            questionTypeList={this.state.questionTypeList}
+                            handleCurrentQuestionChange={this.handleCurrentQuestionChange}
+                            changeQuestionType={this.changeQuestionType}
+                            saveToSelectQuiz={this.saveToSelectQuiz}
+                        />
+                    ) : null}
+            </div>
             </div>
         );
     }
