@@ -28,6 +28,7 @@ export default function Register() {
       });
       alert("Registered successfully!")
       setConfirmEmail(true);
+      console.log("newUser from Register", newUser)
     } catch (e) {
       alert("Failed", e)
     }

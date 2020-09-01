@@ -5,6 +5,8 @@ import "./play-quiz.css";
 import { randomizeAnswerArray, checkIfAnswerCorrect } from "./util";
 import TestCompleted from "../TestCompleted";
 
+let newCurrentQuestion;
+
 class PlayQuiz extends Component {
   constructor(props) {
     super(props);
@@ -12,46 +14,52 @@ class PlayQuiz extends Component {
       currentQuestion: 0,
       correctlyAnsweredQuestions: 0,
       isTestOver: false,
+      newCurrentQuestion: null,
     };
   }
 
-  handlePlayQuiz = () => {
+  handlePlayQuiz = (questionsAndAnswers) => {
     this.setState({ currentQuestion: 1 });
+    if (questionsAndAnswers[0].questiontype_id === 1) {
+        const currentQ = questionsAndAnswers[0];
+        const shuffledAnswers = randomizeAnswerArray(currentQ.answers);
+        newCurrentQuestion = { ...currentQ, shuffledAnswers: shuffledAnswers };
+      } else {
+        newCurrentQuestion = questionsAndAnswers[this.state.currentQuestion];
+      }
+    this.setState({ newCurrentQuestion: newCurrentQuestion })
   };
 
-  onNext = () => {
-    const { questionsAndAnswers } = this.props.selectedQuiz;
+  onNext = (questionsAndAnswers) => {
+    // const { questionsAndAnswers } = this.props.selectedQuiz;
     if (this.state.currentQuestion + 1 > questionsAndAnswers.length) {
       this.setState({ isTestOver: true });
     } else {
       this.setState({ currentQuestion: this.state.currentQuestion + 1 });
+
+      if (questionsAndAnswers[this.state.currentQuestion].questiontype_id === 1) {
+        const currentQ = questionsAndAnswers[this.state.currentQuestion];
+        const shuffledAnswers = randomizeAnswerArray(currentQ.answers);
+        newCurrentQuestion = { ...currentQ, shuffledAnswers: shuffledAnswers };
+      } else {
+        newCurrentQuestion = questionsAndAnswers[this.state.currentQuestion];
+      }
+      this.setState({ newCurrentQuestion: newCurrentQuestion })
     }
   };
 
   resetPlayQuiz = () => {
     this.setState({
-      currentQuestion: 1,
+      currentQuestion: 0,
       correctlyAnsweredQuestions: 0,
       isTestOver: false,
-    });
+      newCurrentQuestion: null,
+     });
   };
 
   render() {
     const { name } = this.props.selectedQuiz;
     const { questionsAndAnswers } = this.props.selectedQuiz;
-    let newCurrentQuestion;
-    if (!this.state.isTestOver) {
-      if (
-        this.state.currentQuestion > 0 &&
-        questionsAndAnswers[this.state.currentQuestion - 1].questiontype_id === 1
-      ) {
-        const currentQ = questionsAndAnswers[this.state.currentQuestion - 1];
-        const shuffledAnswers = randomizeAnswerArray(currentQ.answers);
-        newCurrentQuestion = { ...currentQ, shuffledAnswers: shuffledAnswers };
-      } else {
-        newCurrentQuestion = questionsAndAnswers[this.state.currentQuestion - 1];
-      }
-    }
 
     return (
       <div className='playQuiz'>
@@ -65,7 +73,7 @@ class PlayQuiz extends Component {
           <hr/>
           <button
             className='rowBtnEdit'
-            onClick={this.handlePlayQuiz}
+            onClick={() => this.handlePlayQuiz(questionsAndAnswers)}
             // disabled={this.state.currentQuestion ? true : false}
           >
             Play
@@ -80,8 +88,8 @@ class PlayQuiz extends Component {
                   this.state.correctlyAnsweredQuestions + 1,
               })
             }
-            onNext={this.onNext}
-            questionsAndAnswers={newCurrentQuestion}
+            onNext={() => this.onNext(questionsAndAnswers)}
+            questionsAndAnswers={this.state.newCurrentQuestion}
             currentQuestion={this.state.currentQuestion}
           />
         ) : this.state.isTestOver ? (
@@ -124,15 +132,15 @@ class QandA extends Component {
     if(!this.state.value) {
       return;
     } else {
-    this.setState({ submitted: true });
-    let isAnswerCorrect = checkIfAnswerCorrect(
-      this.state.value,
-      this.props.questionsAndAnswers
-    );
-    if (isAnswerCorrect) {
-      this.props.addToCorrectAnswers();
-    }
-    this.setState({ isAnswerCorrect: isAnswerCorrect });
+      this.setState({ submitted: true });
+      let isAnswerCorrect = checkIfAnswerCorrect(
+        this.state.value,
+        this.props.questionsAndAnswers
+      );
+      if (isAnswerCorrect) {
+        this.props.addToCorrectAnswers();
+      }
+      this.setState({ isAnswerCorrect: isAnswerCorrect });
     }
   }
 
@@ -147,11 +155,12 @@ class QandA extends Component {
       <div className='questionContainer'>
         <div className="question-number">Question <span style={{color: "rgb(245, 27, 27)"}}>{currentQuestion}</span></div>
         <hr style={{'width': '10em'}} />
-        <div>Question: <span className="question-text">{questionsAndAnswers.question_statement}</span></div>
+        <div className="question-text">{questionsAndAnswers.question_statement}</div>
         <br/>
         {questionsAndAnswers.questiontype_id === 3 ? (
           <div>
             <input
+              autoFocus
               placeholder="Please enter your answer here"
               type="text"
               size="40"
@@ -178,7 +187,7 @@ class QandA extends Component {
                 backgroundColor:
                   this.state.value==="False" ? "#f6b93b" : null,
               }}
-              className={this.state.submitted? "trueOrFalseBtnDisabled" : "trueOrFalseBtn"}
+              className={this.state.submitted ? "trueOrFalseBtnDisabled" : "trueOrFalseBtn"}
               onClick={() => this.setState({ value: "False" })}
               disabled={this.state.submitted ? true : false}
             >
@@ -187,10 +196,7 @@ class QandA extends Component {
           </div>
         ) : (
           <div className="answers-box">
-            {this.state.submitted? 
-              null  
-              : (
-              questionsAndAnswers.shuffledAnswers.map((answer, idx) => (
+            {questionsAndAnswers.shuffledAnswers.map((answer, idx) => (
                 <div key={answer.answer_statement} className="answers-multiple-choice">
                   <input
                     type="checkbox"
@@ -198,16 +204,17 @@ class QandA extends Component {
                     value={answer.answer_statement}
                     checked={this.state.selectedAnswer===answer.answer_statement ? true : false}
                     onChange={(e) => this.handleCheckbox(e, answer)}
+                    disabled={this.state.submitted ? true : false}
                     // disabled={!this.state.selectedAnswer===answer.answer_statement ? true : false}
                   />
                   {answer.answer_statement}
                 </div>
               ))
-            )}
+            }
           </div>
         )}
         <br/>
-        <hr style={{'width': '8em'}} />
+        <hr style={{'width': '10em', 'marginTop': '15px'}} />
         <br/>
 
         {this.state.submitted? null : (
@@ -219,20 +226,21 @@ class QandA extends Component {
           Submit
         </button>
         )}
-        <br />
-        {this.state.submitted ? (
-          this.state.isAnswerCorrect ? (
-            <div className="correct-answer-text">Answer is correct!</div>
-          ) : (
-            <div>
-              Sorry, your answer is incorrect. The correct answer is: <span className="correct-answer-text">{" "}
-              {questionsAndAnswers.answers.map((answer) => 
-                (answer.answer_is_correct)? answer.answer_statement:null
-              )}</span>
-            </div>
-          )
-        ) : null}
-        <br />
+        <div style={{"marginTop": "-20px"}}>
+          {this.state.submitted ? (
+            this.state.isAnswerCorrect ? (
+              <div className="correct-answer-text">Answer is correct!</div>
+            ) : (
+              <div>
+                Sorry, your answer is incorrect. The correct answer is: <span className="correct-answer-text">{" "}
+                {questionsAndAnswers.answers.map((answer) => 
+                  (answer.answer_is_correct)? answer.answer_statement:null
+                )}</span>
+              </div>
+            )
+          ) : null}
+        </div>
+        <br/>
         {this.state.submitted ? (
           <button className='nextBtn' onClick={() => this.onNext()}>Next</button>
         ) : null}

@@ -29,6 +29,7 @@ hr {
 
 .question-text {
     color: rgb(253, 247, 159);
+    font-size: 1.1em;
 }
 
 .questionContainer {
@@ -51,6 +52,7 @@ hr {
 .answers-box {
     display: inline-block;
     margin: 0 auto;
+    font-size: 1.1em;
 }
 
 .nextBtn{
