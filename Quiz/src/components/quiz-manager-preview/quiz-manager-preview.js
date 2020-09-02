@@ -1,108 +1,139 @@
-import React, { Component } from 'react'
+import React from "react";
+import "../../pages/quizManager/quizManager.css";
 
-const QuizManagerPreview = ({ quiz, handleEdit, handleRemove, handleAddNewQuestion }) => {
-    let maxColNum = 0;
-    for (let i=0; i<quiz.questionsAndAnswers.length; i++) {
-        if (quiz.questionsAndAnswers[i].answers.length > maxColNum) {
-            maxColNum = quiz.questionsAndAnswers[i].answers.length;
-        };
+const QuizManagerPreview = ({
+  quiz,
+  handleEdit,
+  handleRemove,
+  handleAddNewQuestion,
+}) => {
+  console.log("length:", quiz.questionsAndAnswers.length);
+  let maxColNum = 0;
+  for (let i = 0; i < quiz.questionsAndAnswers.length; i++) {
+    if (quiz.questionsAndAnswers[i].answers.length > maxColNum) {
+      maxColNum = quiz.questionsAndAnswers[i].answers.length;
     }
-    
-    const answerTitle = [];
-    for (let i=0; i<maxColNum; i++){
-      answerTitle.push(<th key={`tha${i}`}>Answer {i+1}</th>)
-    }
+  }
 
-    let entries = []
-    for (let i=0; i<quiz.questionsAndAnswers.length; i++) {
-        entries.push(<TableRow quiz={quiz.questionsAndAnswers[i]} handleEdit={handleEdit} handleRemove={handleRemove}/>)
-}
-    // for (let i=0; i<QA.wrong_answers.length; i++) {
-    //   wrong.push(<td key={`IA${uuid}${i}`} className="wrongAnswerColor cellsNormal">{QA.wrong_answers[i]}</td>);
-    // }
-    // const ansLength = QA.correct_answers.length + QA.wrong_answers.length;
-    // if (this.props.maxColNum > ansLength) {
-    //   for (let i=0; i<(this.props.maxColNum-ansLength); i++){
-    //     wrong.push(<td key={`EA${uuid}${i}`}></td>)
-    //   }
-    // }
-    console.log("questionsandanswers", quiz.questionsAndAnswers)
+  const answerTitle = [];
+  for (let i = 0; i < maxColNum; i++) {
+    answerTitle.push(<th key={`tha${i}`}>Answer {i + 1}</th>);
+  }
 
-    return (
+  let entries = [];
+  // console.log(quiz.questionsAndAnswers)
+  for (let i = 0; i < quiz.questionsAndAnswers.length; i++) {
+    console.log("answers", quiz.questionsAndAnswers[i].answers);
+
+    // console.log('i:', quiz.questionsAndAnswers.length);
+    // console.log("question_statement", quiz.questionsAndAnswers[i].question_statement)
+    entries.push(
+      <TableRow
+        maxColNum={maxColNum}
+        qAndAPair={quiz.questionsAndAnswers[i]}
+        handleEdit={handleEdit}
+        handleRemove={handleRemove}
+      />
+    );
+  }
+  console.log("entries:", entries);
+  console.log("questionsandanswers", quiz.questionsAndAnswers);
+
+  return (
+    <div>
+      <div>{quiz.name}</div>
+      <div>{quiz.Id}</div>
+
+      <div className="previewContainer">
+        <table className="center">
+          <tbody>
+            <tr>
+              <th key="thq">Question</th>
+              <th key="thtn">Type</th>
+              <th key="thcn">Category</th>
+              {answerTitle}
+            </tr>
+            {entries}
+
+          </tbody>
+        </table>
+
+        <br />
         <div>
-            <div>{quiz.name}</div>
-            <div>{quiz.Id}</div>
-
-            <div className="previewContainer">
-                <table className="center">
-                    <tbody>
-                        <tr>
-                            {/* <th key="thk">Key</th> */}
-                            <th key="thq">Question</th>
-                            {/* <th key="thtid">Type ID</th> */}
-                            <th key="thtn">Type</th>
-                            {/* <th key="thcid">Category ID</th> */}
-                            <th key="thcn">Category</th>
-                            {answerTitle}
-                        </tr>
-                        {entries}
-                          
-                                     {/* /* <div key={idx}>
-                                        <div>{question.question_statement}</div>
-                                        <ul>
-                                            {question.answers.map((answer, idx) =>
-                                                <li key={answer.answer_statement + idx}>
-                                                    <div>{answer.answer_statement} {String(answer.answer_is_correct)}</div>
-                                                </li>
-                                            )}
-                                        </ul>
-                                    </div> 
-                          */}
-                    </tbody>
-                </table>
-                {/* {FootNote}                */}
-            </div>
-
-            <button onClick={handleAddNewQuestion}> Add New Question </button>
-            <button> Submit all changes </button>
-
+          Answer in <span className="correctAnswerColor">green</span> represents{" "}
+          <span className="correctAnswerColor">correct answer.</span>
         </div>
+        <div>
+          Answer in <span className="incorrectAnswerColor">red</span> represents{" "}
+          <span className="incorrectAnswerColor">wrong answer.</span>
+        </div>
+        <br />
+      </div>
 
-    )
-}
+      <button onClick={handleAddNewQuestion}> Add New Question </button>
+      <button> Submit all changes </button>
+    </div>
+  );
+};
 
+const TableRow = (props) => {
+  const correct = [];
+  // const wrong = [];
 
-
-
-export class TableRow extends Component {
-    
-    render() {
-        const correct = [];
-        // const wrong = [];
-    
-        for (let i=0; i<this.props.quiz.answers.length; i++) {
-            correct.push(<td key={`CA${i}`} className="correctAnswerColor cellsNormal">{this.props.quiz.answers[i].answer_statement}</td>);
-            console.log("answer_statement", this.props.quiz.answers[i].answer_statement)
-            }
-    
-    return (
-        Object.keys(this.props.quiz).map(
-            (question, idx) =>
-                    <tr>
-                        <td key={`Q${idx}`} className="tdQuestion cellsNormal">{question.question_statement}</td>
-                        <td key={`TN${idx}`} className="cellsNormal">{question.questiontype_name}</td>
-                        <td key={`CN${idx}`} className="cellsNormal">{question.question_category}</td>
-                        {correct} 
-                        {/* {wrong} */} 
-                        <td key={`BE${idx}`} className="cellsButtons">
-                        <button key={`BEdit${idx}`} className='rowBtnEdit' uuid={idx} onClick={() => this.props.handleEdit(question)}>Edit</button>
-                        </td>
-                        <td key={`BD${idx}`} className="cellsButtons">
-                        <button key={`BDel${idx}`} className='rowBtnDelete' uuid={idx} onClick={() => this.props.handleRemove(idx)}>Delete</button>
-                        </td>
-                    </tr>
-    ))
+  for (let i = 0; i < props.qAndAPair.answers.length; i++) {
+    if (props.qAndAPair.answers[i].answer_statement !== "") {
+      correct.push(
+        <td
+          key={`CA${i}`}
+          className={
+            props.qAndAPair.answers[i].answer_is_correct
+              ? "correctAnswerColor cellsNormal"
+              : "incorrectAnswerColor cellsNormal"
+          }
+        >
+          {props.qAndAPair.answers[i].answer_statement}
+        </td>
+      );
+      console.log(
+        "answer_statement",
+        props.qAndAPair.answers[i].answer_statement
+      );
+    } else {
+      correct.push(<td key={`EA${i}`}></td>);
     }
-}
+  }
+
+  const ansLength = correct.length;
+  if (props.maxColNum > ansLength) {
+    for (let i = 0; i < props.maxColNum - ansLength; i++) {
+      correct.push(<td key={`EA${i}`}></td>);
+    }
+  }
+
+  return (
+    <tr>
+      <td className="tdQuestion cellsNormal">
+        {props.qAndAPair.question_statement}
+      </td>
+      <td className="cellsNormal">{props.qAndAPair.questiontype_name}</td>
+      <td className="cellsNormal">{props.qAndAPair.question_category}</td>
+      {correct}
+      {/* {wrong} */}
+      <td className="cellsButtons">
+        <button
+          className="rowBtnEdit"
+          onClick={() => props.handleEdit(props.qAndAPair)}
+        >
+          Edit
+        </button>
+      </td>
+      <td className="cellsButtons">
+        <button className="rowBtnDelete" onClick={() => props.handleRemove()}>
+          Delete
+        </button>
+      </td>
+    </tr>
+  );
+};
 
 export default QuizManagerPreview;

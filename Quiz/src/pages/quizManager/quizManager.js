@@ -80,7 +80,7 @@ class QuizManager extends Component {
         async function onLoad() {
             try {
                 const user = await loadUser();
-                console.log(user)
+                console.log(user.username)
             }catch(e){
                 console.log(e)
             }
@@ -210,7 +210,7 @@ class QuizManager extends Component {
         }
 
         return (
-            <div className="quizManagerContainer background">
+            <div className="quizManagerContainer">
                 <div className='box-container'>
                     {this.state.selectedQuiz ? (
                         <QuizManagerPreview
