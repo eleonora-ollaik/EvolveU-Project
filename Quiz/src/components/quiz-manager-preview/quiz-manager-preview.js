@@ -1,46 +1,71 @@
-import React from "react";
-import "../../pages/quizManager/quizManager.css";
+import React, { Component } from "react";
+import "./quiz-manager-preview.css";
+import net from "../../business/netcomm";
 
-const QuizManagerPreview = ({
-  quiz,
-  handleEdit,
-  handleRemove,
-  handleAddNewQuestion,
-  submitAllChanges,
-  quizThemeList,
-}) => {
-  console.log("length:", quiz.questionsAndAnswers.length);
-  let maxColNum = 0;
-  for (let i = 0; i < quiz.questionsAndAnswers.length; i++) {
-    if (quiz.questionsAndAnswers[i].answers.length > maxColNum) {
-      maxColNum = quiz.questionsAndAnswers[i].answers.length;
+
+class QuizManagerPreview extends Component {
+  constructor(props) {
+    super(props); 
+    this.state = {
+        quizThemeList: null, 
+        quizDefaultTheme: null,
     }
   }
-
-  const answerTitle = [];
-  for (let i = 0; i < maxColNum; i++) {
-    answerTitle.push(<th key={`tha${i}`}>Answer {i + 1}</th>);
+  
+  componentDidMount() {
+    // Get quiz theme list 
+    const getQuizThemeList = async () => {
+      const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/theme";
+      let responsedata = await net.getData(url);
+  
+      const list = responsedata["payload"];
+      let listdata = [];
+      for (let i=0; i<list.length; i++) {      
+        listdata.push(<option value={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</option>);    
+      }    
+    
+      // let defaultTheme = list[0]["theme_id"]; 
+  
+      console.log("quizThemeList from async getQuizThemeList", listdata);
+      this.setState({ quizThemeList: listdata });
+    };
+    getQuizThemeList();
   }
 
-  let entries = [];
-  // console.log(quiz.questionsAndAnswers)
-  for (let i = 0; i < quiz.questionsAndAnswers.length; i++) {
-    // console.log("answers", quiz.questionsAndAnswers[i].answers);
+  render() {
+    const { quiz, handleEdit, handleRemove, handleAddNewQuestion, submitAllChanges, quizThemeList } = this.props;
 
-    // console.log('i:', quiz.questionsAndAnswers.length);
-    // console.log("question_statement", quiz.questionsAndAnswers[i].question_statement)
-    entries.push(
-      <TableRow
-        maxColNum={maxColNum}
-        qAndAPair={quiz.questionsAndAnswers[i]}
-        index={i}
-        handleEdit={handleEdit}
-        handleRemove={handleRemove}
-      />
-    );
-  }
-  // console.log("entries:", entries);
-  // console.log("questionsandanswers", quiz.questionsAndAnswers);
+    let maxColNum = 0;
+    for (let i = 0; i < quiz.questionsAndAnswers.length; i++) {
+      if (quiz.questionsAndAnswers[i].answers.length > maxColNum) {
+        maxColNum = quiz.questionsAndAnswers[i].answers.length;
+      }
+    }
+
+    const answerTitle = [];
+    for (let i = 0; i < maxColNum; i++) {
+      answerTitle.push(<th key={`tha${i}`}>Answer {i + 1}</th>);
+    }
+
+    let entries = [];
+    // console.log(quiz.questionsAndAnswers)
+    for (let i = 0; i < quiz.questionsAndAnswers.length; i++) {
+      // console.log("answers", quiz.questionsAndAnswers[i].answers);
+
+      // console.log('i:', quiz.questionsAndAnswers.length);
+      // console.log("question_statement", quiz.questionsAndAnswers[i].question_statement)
+      entries.push(
+        <TableRow
+          maxColNum={maxColNum}
+          qAndAPair={quiz.questionsAndAnswers[i]}
+          index={i}
+          handleEdit={handleEdit}
+          handleRemove={handleRemove}
+        />
+      );
+    }
+
+    console.log("default theme id", quiz.theme_id)
 
   return (
     <div>
@@ -66,8 +91,8 @@ const QuizManagerPreview = ({
 
               <div className="label-input">
                 <div>Quiz theme</div>
-                <select name="theme" id="idQuizTheme">
-                  {quizThemeList}
+                <select value={quiz.theme_id} name="theme" id="idQuizTheme">
+                  {this.state.quizThemeList}
                 </select>
               </div>
             </div>
@@ -101,11 +126,12 @@ const QuizManagerPreview = ({
       </div>
 
       <button onClick={handleAddNewQuestion}> Add New Question </button>
-      <button onClick={() => submitAllChanges(document.getElementById("idQuizName"))}> Submit all changes </button>
+      <button onClick={() => submitAllChanges(quiz.name)}> Submit all changes </button>
       <br/>
     </div>
   );
 };
+}
 
 const TableRow = (props) => {
   const correct = [];
@@ -125,10 +151,6 @@ const TableRow = (props) => {
           {props.qAndAPair.answers[i].answer_statement}
         </td>
       );
-      // console.log(
-      //   "answer_statement",
-      //   props.qAndAPair.answers[i].answer_statement
-      // );
     } else {
       correct.push(<td key={`EA${i}`}></td>);
     }

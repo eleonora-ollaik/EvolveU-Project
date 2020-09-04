@@ -101,23 +101,23 @@ class QuizManager extends Component {
         onLoad();
 
         // Get quiz theme list 
-        async function getQuizThemeList () {
-            const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/theme";
-            let responsedata = await net.getData(url);
+        // const getQuizThemeList = async () => {
+        //     const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/theme";
+        //     let responsedata = await net.getData(url);
         
-            const list = responsedata["payload"];
-            let listdata = [];
-            for (let i=0; i<list.length; i++) {      
-              listdata.push(<option value={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</option>);    
-            }    
+        //     const list = responsedata["payload"];
+        //     let listdata = [];
+        //     for (let i=0; i<list.length; i++) {      
+        //       listdata.push(<option value={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</option>);    
+        //     }    
           
-            let defaultTheme = list[0]["theme_id"]; 
+        //     let defaultTheme = list[0]["theme_id"]; 
         
-            console.log("quizThemeList from async getQuizThemeList", listdata);
-            this.setState({ quizThemeList: listdata, quizDefaultTheme: defaultTheme });
-          };
+        //     console.log("quizThemeList from async getQuizThemeList", listdata);
+        //     this.setState({ quizThemeList: listdata, quizDefaultTheme: defaultTheme });
+        // };
         
-        getQuizThemeList();
+        // getQuizThemeList();
     
 
 
@@ -357,7 +357,7 @@ class QuizManager extends Component {
                         {questiontype_id: 3}  // A number not a string
                 ]
                 }
-    
+            
               QAjson.push({
                 "question_id": value.question_id,
                 "question_category": value.question_category,
@@ -370,7 +370,6 @@ class QuizManager extends Component {
                 "answers": answers
               });          
             }
-
 
             let webdata = {
               "quiz_name": quizname, 
@@ -414,13 +413,19 @@ class QuizManager extends Component {
     
     submitAllChanges = (quizname) => {
         // Only allow save when there is a quiz name
-        if (quizname.length > 0) {
-          // Save Quiz to the server      
-          // Clear current Quiz controller
-          this.updateQuiz(quizname);            
+        try {
+            if (quizname.length > 0) {
+            // Save Quiz to the server      
+            // Clear current Quiz controller
+            this.updateQuiz(quizname);            
+            }
+            else {
+            this.setState({ noticeMsg: "Please enter a quiz name" });
+            }
         }
-        else {
-          this.setState({ noticeMsg: "Please enter a quiz name" });
+        catch(ex) {
+            console.log("Error:", ex.message);
+            throw ex;
         }
     };
 
