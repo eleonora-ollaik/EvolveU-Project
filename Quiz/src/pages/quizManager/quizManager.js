@@ -4,6 +4,11 @@ import SelectQuiz from "../../components/select-quiz/select-quiz";
 import QuizManagerPreview from "../../components/quiz-manager-preview/quiz-manager-preview";
 import QuestionModal from "../../components/quiz-manager-preview/QuestionModal";
 import { Auth } from "aws-amplify"
+import ModalBox from "../../components/modalbox/modalbox";
+import logic from "../../business/business_logic";
+import net from "../../business/netcomm";
+
+
 
 import {
     getData,
@@ -20,10 +25,16 @@ class QuizManager extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isModalOpen: false,
+            noticeMsg: "",
+            quizes: new logic.Quiz(),
+            questionDeleted: false,
+            quizThemeList: null, 
+            quizDefaultTheme: null, 
+      
             value: "",
             selectedQuiz: null,
             responseData: null,
-            isModalOpen: false,
             questionTypeList: null,
             questionCategoryList: null,
             currentEditQuestion: null,
@@ -65,6 +76,7 @@ class QuizManager extends Component {
         getData(serverUrl + "quiz")
             .then((data) => convertFormat(data.payload))
             .then((arr) => this.setState({ responseData: arr }));
+            
 
         getData(serverUrl + "questiontype")
             .then((data) => data.payload)
@@ -87,6 +99,27 @@ class QuizManager extends Component {
         }
 
         onLoad();
+
+        // Get quiz theme list 
+        async function getQuizThemeList () {
+            const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/theme";
+            let responsedata = await net.getData(url);
+        
+            const list = responsedata["payload"];
+            let listdata = [];
+            for (let i=0; i<list.length; i++) {      
+              listdata.push(<option value={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</option>);    
+            }    
+          
+            let defaultTheme = list[0]["theme_id"]; 
+        
+            console.log("quizThemeList from async getQuizThemeList", listdata);
+            this.setState({ quizThemeList: listdata, quizDefaultTheme: defaultTheme });
+          };
+        
+        getQuizThemeList();
+    
+
 
         // getData(serverUrl + "quizes")
         //     .then((data) => convertFormat(data.quizes))
@@ -123,10 +156,15 @@ class QuizManager extends Component {
         let tempQuiz = { ...this.state.selectedQuiz }
         tempQuiz.questionsAndAnswers.splice(idx, 1);
         this.setState({ selectedQuiz: tempQuiz })
+
+        // Set questionDeleted state to true 
+        this.setState({ questionDeleted: true })
     };
 
     handleAddNewQuestion = () => {
         this.setState({ isModalOpen: true, currentEditQuestion: { ...this.state.newQuestionObj } });
+        
+        console.log("currentEditQuestion in QM", this.state.currentEditQuestion)
     }
 
     handleCurrentQuestionChange = (e) => {
@@ -157,7 +195,6 @@ class QuizManager extends Component {
             }
         } else {
             if (isNaN(e.target.name)) {
-                console.log('question_statement')
                 tempQuestion.question_statement = e.target.value
             } else {
                 tempQuestion.answers[e.target.name].answer_statement = e.target.value;
@@ -166,13 +203,25 @@ class QuizManager extends Component {
 
         this.setState({ currentEditQuestion: tempQuestion });
     }
+    onClickModalClose = (e) => {
+        const modal = e.target.parentNode.parentNode;
+        modal.setAttribute("class", "modalhide");
+        e.stopPropagation();
+        // Handle edit modal box
+        this.setState({isModalOpen: false});
+        // Handle submit modal box
+        this.setState({noticeMsg: ""});    
+      };
 
     saveToSelectQuiz = () => {
         let tempQuiz = { ...this.state.selectedQuiz }
         tempQuiz.questionsAndAnswers = tempQuiz.questionsAndAnswers.map((questionObj) => questionObj.question_id === this.state.currentEditQuestion.question_id ? this.state.currentEditQuestion : questionObj);
         let newQuestionArr = tempQuiz.questionsAndAnswers.filter((questionObj) => !questionObj.hasOwnProperty("question_id"))
         tempQuiz.questionsAndAnswers.concat(newQuestionArr);
-        this.setState({ selectedQuiz: tempQuiz })
+        console.log("currentEditQuestion from saveToSelectQuiz", this.state.currentEditQuestion)
+        console.log("tempQuiz from saveToSelectQuiz", tempQuiz)
+        
+        this.setState({ selectedQuiz: tempQuiz, isModalOpen: false })
     }
 
     changeQuestionType = (e) => {
@@ -182,7 +231,6 @@ class QuizManager extends Component {
         let newAnswerObj = { answer_statement: '', answer_is_correct: false };
         if (tempQuestion.questiontype_id === 1) {
             tempQuestion.answers = new Array(4).fill(null).map((e) => ({ ...newAnswerObj }))
-            console.log(tempQuestion.answers)
             tempQuestion.answers[0].answer_is_correct = true;
         } else if (tempQuestion.questiontype_id === 2) {
             tempQuestion.answers = new Array(2).fill(null).map((e) => ({ ...newAnswerObj }))
@@ -201,6 +249,181 @@ class QuizManager extends Component {
         this.setState({ currentEditQuestion: tempQuestion })
     }
 
+    async updateQuiz (quizname) {
+
+        const quiz = this.state.selectedQuiz;
+
+        console.log("quiz", quiz)
+        console.log("responseData", this.state.responseData)
+    
+        const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/quiz";  
+        let responsedata = null;
+
+        // DELETE QUIZ FIRST 
+        if (this.state.questionDeleted) {
+            let quizToDelete = 
+            {"quiz_id": quiz.quizId}
+            let storedQuizId = quiz.quizId; 
+            responsedata = await net.deleteData(url, quizToDelete);
+        
+            if (responsedata.status >= 500) {
+                throw (new Error(`${responsedata.status} ${responsedata.message}`));
+            }
+            else {
+            //   this.clearQuizHeader();
+              console.log("QUIZ DELETED!");
+            }
+        }
+        // ----------------------- 
+    
+        if(quiz.questionsAndAnswers.length > 0) {  // At least one pair of question and answer
+          try {
+            
+            let QAjson = [];
+    
+            for (const [key, value] of Object.entries(quiz.questionsAndAnswers)) {
+              let answers = quiz.questionsAndAnswers[key].answers;
+            //   let correct_answers = quiz.questionsAndAnswers[key].correct_answers;
+            //   let wrong_answers = quiz.questionsAndAnswers[key].wrong_answers;
+                
+            //   for (let i=0; i<correct_answers.length; i++) {
+            //     answers.push({"answer_is_correct": true, "answer_statement": correct_answers[i]})
+            //   }
+      
+            //   for (let i=0; i<wrong_answers.length; i++) {
+            //     answers.push({"answer_is_correct": false, "answer_statement": wrong_answers[i]})
+            // }
+
+            
+            // Correct data structure:
+            let correctDS = {
+                "quiz_id": 14, // DONE
+                "quiz_name": "Quiz 1", // DONE
+                "theme_id": 1, // DONE
+                "theme_name": "History", // DONE
+                "questions": [
+                  {
+                    "question_id": 17,
+                    "question_category": "Food",
+                    "questioncategory_id": 2,
+                    "question_statement": "Who is this",
+                    "question_correct_entries": 0,
+                    "question_wrong_entries": 0,
+                    "questiontype_id": 1,
+                    "questiontype_name": "Multiple Choice",
+                    "correct_answer_num": 1,
+                    "wrong_answer_num": 3,
+                    "answers": [
+                      {
+                        "answer_id": 61,
+                        "answer_is_correct": true,
+                        "answer_statement": "chocolate"
+                      },
+                      {
+                        "answer_id": 62,
+                        "answer_is_correct": false,
+                        "answer_statement": "soup"
+                      },
+                      {
+                        "answer_id": 63,
+                        "answer_is_correct": false,
+                        "answer_statement": "rice"
+                      },
+                      {
+                        "answer_id": 64,
+                        "answer_is_correct": false,
+                        "answer_statement": "seafood"
+                      }
+                    ]
+                  },
+                ]
+              }
+            // This is what we are currently sending to the server
+            let webdatawearesendinginQM = { 
+                quiz_name: "Cars", 
+                theme_id: "Science", // A theme name not a theme id
+                questions: [
+                        {answers: [
+                        {answer_id: 109, answer_is_correct: true, answer_statement: "Peugeot"},
+                        {answer_id: 110, answer_is_correct: false, answer_statement: "Mazda"}, 
+                        {answer_id: 111, answer_is_correct: false, answer_statement: "Saab"}, 
+                        {answer_id: 112, answer_is_correct: false, answer_statement: "Vauxhall"} 
+                        ]}, 
+                        {question_category: "Food"}, 
+                        {question_correct_entries: 0},
+                        {question_wrong_entries: 0},
+                        {question_statement: "Which of the following is a French car producer?"},
+                        {questioncategory_id: 1},
+                        {questiontype_id: 3}  // A number not a string
+                ]
+                }
+    
+              QAjson.push({
+                "question_id": value.question_id,
+                "question_category": value.question_category,
+                "questioncategory_id": value.questioncategory_id,
+                "questiontype_id": value.questiontype_id,
+                "questiontype_name": value.questiontype_name,
+                "question_statement": value.question_statement,
+                "question_correct_entries": value.question_correct_entries, 
+                "question_wrong_entries": value.question_wrong_entries,
+                "answers": answers
+              });          
+            }
+
+
+            let webdata = {
+              "quiz_name": quizname, 
+              "quiz_id": quiz.quizId,
+              "theme_id": quiz.theme_id,
+              "theme_name": quiz.theme,
+              "questions": QAjson
+            }     
+            console.log("webdata!", webdata)
+    
+            if (this.state.questionDeleted) {
+                responsedata = await net.postData(url, webdata);
+            } else {
+                responsedata = await net.putData(url, webdata);
+            }
+
+            // Change questionDeleted state back to false 
+            this.setState({ questionDeleted: false })
+    
+            if (responsedata.status >= 500) {
+                throw (new Error(`${responsedata.status} ${responsedata.message}`));
+            }
+            else {
+            //   this.clearQuizHeader();
+              console.log("SUCCESS");
+    
+              // Must reset key when quiz controller is reset          
+              this.setState({noticeMsg: "Data saved.", quizes: new logic.Quiz()});
+            }
+          }
+          catch (error) {
+              console.error ("Failed in saving data to server: ", error);
+              this.setState({noticeMsg: "Failed in saving data to server, please try again."});
+          }      
+        }
+        else
+        {
+          this.setState({noticeMsg: "Please enter at least one question for a quiz and press [Submit question]."}); 
+        }
+      }
+    
+    submitAllChanges = (quizname) => {
+        // Only allow save when there is a quiz name
+        if (quizname.length > 0) {
+          // Save Quiz to the server      
+          // Clear current Quiz controller
+          this.updateQuiz(quizname);            
+        }
+        else {
+          this.setState({ noticeMsg: "Please enter a quiz name" });
+        }
+    };
+
     render() {
         let filteredQuizzes = this.state.responseData;
         if (this.state.responseData) {
@@ -218,6 +441,8 @@ class QuizManager extends Component {
                             handleEdit={this.handleEdit}
                             handleRemove={this.handleRemove}
                             handleAddNewQuestion={this.handleAddNewQuestion}
+                            submitAllChanges={this.submitAllChanges}
+                            quizThemeList={this.state.quizThemeList}
                         />
                     ) : filteredQuizzes ? (
                         <SelectQuiz
@@ -230,12 +455,17 @@ class QuizManager extends Component {
                         />
                     ) : null}
                     {this.state.isModalOpen ? (
-                        <QuestionModal
-                            currentEditQuestion={this.state.currentEditQuestion}
-                            questionTypeList={this.state.questionTypeList}
-                            handleCurrentQuestionChange={this.handleCurrentQuestionChange}
-                            changeQuestionType={this.changeQuestionType}
-                            saveToSelectQuiz={this.saveToSelectQuiz}
+                        <ModalBox
+                            boxID='idEditQAModal'
+                            content={
+                                <QuestionModal
+                                    currentEditQuestion={this.state.currentEditQuestion}
+                                    questionTypeList={this.state.questionTypeList}
+                                    handleCurrentQuestionChange={this.handleCurrentQuestionChange}
+                                    changeQuestionType={this.changeQuestionType}
+                                    saveToSelectQuiz={this.saveToSelectQuiz}
+                                />}
+                            onClickModalClose={this.onClickModalClose}      
                         />
                     ) : null}
             </div>

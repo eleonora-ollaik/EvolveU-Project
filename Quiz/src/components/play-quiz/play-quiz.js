@@ -205,7 +205,6 @@ class QandA extends Component {
                     checked={this.state.selectedAnswer===answer.answer_statement ? true : false}
                     onChange={(e) => this.handleCheckbox(e, answer)}
                     disabled={this.state.submitted ? true : false}
-                    // disabled={!this.state.selectedAnswer===answer.answer_statement ? true : false}
                   />
                   {answer.answer_statement}
                 </div>

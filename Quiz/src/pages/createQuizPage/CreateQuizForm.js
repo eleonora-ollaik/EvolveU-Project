@@ -137,12 +137,14 @@ export class CreateQuizForm extends Component {
             "question_wrong_entries": 0,
             "answers": answers
           });          
+          console.log("QAjson", QAjson)
         }
         let webdata = {
           "quiz_name": quiz.name, 
           "theme_id": quiz.theme,
           "questions": QAjson
         }    
+        console.log("webdata", webdata)
 
         responsedata = await net.postData(url, webdata);
 

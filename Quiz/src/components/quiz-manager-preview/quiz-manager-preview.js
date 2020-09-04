@@ -6,6 +6,8 @@ const QuizManagerPreview = ({
   handleEdit,
   handleRemove,
   handleAddNewQuestion,
+  submitAllChanges,
+  quizThemeList,
 }) => {
   console.log("length:", quiz.questionsAndAnswers.length);
   let maxColNum = 0;
@@ -23,7 +25,7 @@ const QuizManagerPreview = ({
   let entries = [];
   // console.log(quiz.questionsAndAnswers)
   for (let i = 0; i < quiz.questionsAndAnswers.length; i++) {
-    console.log("answers", quiz.questionsAndAnswers[i].answers);
+    // console.log("answers", quiz.questionsAndAnswers[i].answers);
 
     // console.log('i:', quiz.questionsAndAnswers.length);
     // console.log("question_statement", quiz.questionsAndAnswers[i].question_statement)
@@ -31,18 +33,47 @@ const QuizManagerPreview = ({
       <TableRow
         maxColNum={maxColNum}
         qAndAPair={quiz.questionsAndAnswers[i]}
+        index={i}
         handleEdit={handleEdit}
         handleRemove={handleRemove}
       />
     );
   }
-  console.log("entries:", entries);
-  console.log("questionsandanswers", quiz.questionsAndAnswers);
+  // console.log("entries:", entries);
+  // console.log("questionsandanswers", quiz.questionsAndAnswers);
 
   return (
     <div>
-      <div>{quiz.name}</div>
-      <div>{quiz.Id}</div>
+      <br/>
+      <div style={{color: "red", fontSize: "1.4em"}}>{quiz.name}</div>
+      <br/>
+      <hr width={"250px"} color={"red"}/>
+
+      <div className="createQuizContainer">
+        <div className='createQuizpage'>
+          <div className="createFormContainer tabActive">
+            <div className='quizInfo'>
+                <div className="label-input">
+                  <div>Quiz name</div>
+                  <input
+                    value={quiz.name}
+                    type="text"
+                    name="quizName"
+                    placeholder="Quiz name"
+                    id="idQuizName"
+                  />
+                </div>
+
+              <div className="label-input">
+                <div>Quiz theme</div>
+                <select name="theme" id="idQuizTheme">
+                  {quizThemeList}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>      
+      </div>
 
       <div className="previewContainer">
         <table className="center">
@@ -58,7 +89,6 @@ const QuizManagerPreview = ({
           </tbody>
         </table>
 
-        <br />
         <div>
           Answer in <span className="correctAnswerColor">green</span> represents{" "}
           <span className="correctAnswerColor">correct answer.</span>
@@ -71,7 +101,8 @@ const QuizManagerPreview = ({
       </div>
 
       <button onClick={handleAddNewQuestion}> Add New Question </button>
-      <button> Submit all changes </button>
+      <button onClick={() => submitAllChanges(document.getElementById("idQuizName"))}> Submit all changes </button>
+      <br/>
     </div>
   );
 };
@@ -94,10 +125,10 @@ const TableRow = (props) => {
           {props.qAndAPair.answers[i].answer_statement}
         </td>
       );
-      console.log(
-        "answer_statement",
-        props.qAndAPair.answers[i].answer_statement
-      );
+      // console.log(
+      //   "answer_statement",
+      //   props.qAndAPair.answers[i].answer_statement
+      // );
     } else {
       correct.push(<td key={`EA${i}`}></td>);
     }
@@ -128,7 +159,7 @@ const TableRow = (props) => {
         </button>
       </td>
       <td className="cellsButtons">
-        <button className="rowBtnDelete" onClick={() => props.handleRemove()}>
+        <button className="rowBtnDelete" onClick={() => props.handleRemove(props.index)}>
           Delete
         </button>
       </td>

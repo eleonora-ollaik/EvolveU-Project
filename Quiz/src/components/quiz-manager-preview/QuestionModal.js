@@ -11,7 +11,6 @@ const QuestionModal = ({currentEditQuestion, questionTypeList, changeQuestionTyp
                                 onChange={handleCurrentQuestionChange}
                             />
                             <div>
-                                <div>question type</div>
                                 <select onChange={changeQuestionType} value={currentEditQuestion.questiontype_name}>
                                     {
                                     questionTypeList.map((questionTypeObj => <option key={questionTypeObj.questiontype_id} value={questionTypeObj.questiontype_name}>{questionTypeObj.questiontype_name}</option>))
