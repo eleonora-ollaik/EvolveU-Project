@@ -246,7 +246,7 @@ export class CreateQuizForm extends Component {
 
   onClickSaveModal = (e) => {
     const quiz = this.state.quizes;
-    const key = this.state.qaID;
+    const key = this.state.qaID; 
     const QA = new logic.QuestionsAndAnswers();
     QA.question = document.getElementById("idQuestion").value;
 

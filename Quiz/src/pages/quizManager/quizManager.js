@@ -31,6 +31,7 @@ class QuizManager extends Component {
             questionDeleted: false,
             quizThemeList: null, 
             quizDefaultTheme: null, 
+            addingNewQuestion: false,
       
             value: "",
             selectedQuiz: null,
@@ -163,7 +164,7 @@ class QuizManager extends Component {
 
     handleAddNewQuestion = () => {
         this.setState({ isModalOpen: true, currentEditQuestion: { ...this.state.newQuestionObj } });
-        
+        this.setState({ addingNewQuestion: true })
         console.log("currentEditQuestion in QM", this.state.currentEditQuestion)
     }
 
@@ -214,14 +215,28 @@ class QuizManager extends Component {
       };
 
     saveToSelectQuiz = () => {
-        let tempQuiz = { ...this.state.selectedQuiz }
-        tempQuiz.questionsAndAnswers = tempQuiz.questionsAndAnswers.map((questionObj) => questionObj.question_id === this.state.currentEditQuestion.question_id ? this.state.currentEditQuestion : questionObj);
-        let newQuestionArr = tempQuiz.questionsAndAnswers.filter((questionObj) => !questionObj.hasOwnProperty("question_id"))
-        tempQuiz.questionsAndAnswers.concat(newQuestionArr);
-        console.log("currentEditQuestion from saveToSelectQuiz", this.state.currentEditQuestion)
-        console.log("tempQuiz from saveToSelectQuiz", tempQuiz)
+        let tempQuiz = this.state.selectedQuiz
+
+        console.log("tempQuiz at the beginning of saveToSelectQuiz", tempQuiz)
+
         
-        this.setState({ selectedQuiz: tempQuiz, isModalOpen: false })
+        tempQuiz.questionsAndAnswers = tempQuiz.questionsAndAnswers.map((questionObj) => questionObj.question_id === this.state.currentEditQuestion.question_id ? this.state.currentEditQuestion : questionObj);
+
+        if (this.state.addingNewQuestion) {
+            tempQuiz.questionsAndAnswers.push(this.state.currentEditQuestion);
+            console.log("tempQuiz after push", tempQuiz)
+        } else {
+            let newQuestionArr = tempQuiz.questionsAndAnswers.filter((questionObj) => !questionObj.hasOwnProperty("question_id"))
+            tempQuiz.questionsAndAnswers.concat(newQuestionArr);
+        }
+        
+        console.log("currentEditQuestion from saveToSelectQuiz", this.state.currentEditQuestion)
+        console.log("tempQuiz at end of saveToSelectQuiz", tempQuiz)
+        
+        this.setState({ selectedQuiz: tempQuiz });
+        this.setState({ isModalOpen: false })
+        this.setState({ addingNewQuestion: false })
+        console.log("selected quiz", this.state.selectedQuiz)
     }
 
     changeQuestionType = (e) => {
@@ -283,6 +298,12 @@ class QuizManager extends Component {
     
             for (const [key, value] of Object.entries(quiz.questionsAndAnswers)) {
               let answers = quiz.questionsAndAnswers[key].answers;
+              
+              for (let i=0; i<answers.length; i++) {
+                  if (!answers[i].hasOwnProperty("answer_id")) {
+                      answers[i].answer_id = undefined;
+                  }
+              }
             //   let correct_answers = quiz.questionsAndAnswers[key].correct_answers;
             //   let wrong_answers = quiz.questionsAndAnswers[key].wrong_answers;
                 
