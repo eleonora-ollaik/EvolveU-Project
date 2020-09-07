@@ -1,39 +1,99 @@
 import React, { Component } from "react";
 import "./quiz-manager-preview.css";
 import net from "../../business/netcomm";
+import ModalBox from "../modalbox/modalbox";
+import BackToQMConfirmation from '../modalbox/backtoqmconfirmation.js';
 
 
 class QuizManagerPreview extends Component {
   constructor(props) {
-    super(props); 
+    super(props);
     this.state = {
-        quizThemeList: null, 
-        quizDefaultTheme: null,
-    }
+      quizThemeList: null,
+      quizDefaultTheme: null,
+      noticeMsg: "",
+    };
   }
-  
+
   componentDidMount() {
-    // Get quiz theme list 
+    // Get quiz theme list
     const getQuizThemeList = async () => {
-      const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/theme";
+      const url =
+        "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/theme";
       let responsedata = await net.getData(url);
-  
+
       const list = responsedata["payload"];
       let listdata = [];
-      for (let i=0; i<list.length; i++) {      
-        listdata.push(<option value={list[i]["theme_id"]} key={i}>{list[i]["theme_name"]}</option>);    
-      }    
-    
-      // let defaultTheme = list[0]["theme_id"]; 
-  
+      for (let i = 0; i < list.length; i++) {
+        listdata.push(
+          <option value={list[i]["theme_id"]} key={i}>
+            {list[i]["theme_name"]}
+          </option>
+        );
+      }
+
+      // let defaultTheme = list[0]["theme_id"];
+
       console.log("quizThemeList from async getQuizThemeList", listdata);
       this.setState({ quizThemeList: listdata });
     };
     getQuizThemeList();
   }
 
+  handleBackToQM = () => {
+    if (
+      this.props.addingNewQuestion ||
+      this.props.questionDeleted ||
+      this.props.questionEdited
+    ) {
+      console.log("Are you sure?");
+      this.setState({
+        noticeMsg:
+          "Changes have been made to the current quiz and will be lost if you go back to the Quiz Manager. Are you sure you want to proceed?",
+      });
+      // Open verify modal box
+      document
+        .getElementById("idVerifyGoBackToQM")
+        .setAttribute("class", "modalshow");
+    } else {
+      console.log("Going back...")
+      this.props.handleBackToQM();
+    }
+  };
+
+  onClickCloseModal = (e) => {
+    console.log("boo"); 
+    const modal = e.target.parentNode.parentNode;
+    modal.setAttribute("class", "modalhide");
+    e.stopPropagation();
+    // Handle edit modal box
+    // this.setState({quizEdit: false});
+    // Handle submit modal box
+    this.setState({noticeMsg: ""});    
+  };
+
   render() {
-    const { quiz, handleEdit, handleRemove, handleAddNewQuestion, submitAllChanges, quizThemeList } = this.props;
+    const {
+      quiz,
+      handleEdit,
+      handleRemove,
+      handleAddNewQuestion,
+      submitAllChanges,
+    } = this.props;
+
+    const modal = (
+      <ModalBox
+        boxID="idVerifyGoBackToQM"
+        content={<BackToQMConfirmation noticeMsg={this.state.noticeMsg} onClickCancel={this.onClickCloseModal} onClickBackToQM={this.props.handleBackToQM}/>}
+        onClickModalClose={this.onClickCloseModal}
+        hide={this.state.noticeMsg ? false : true}
+      />
+    );
+    const quizModal = this.state.noticeMsg ? (
+      modal
+    ) : (
+      <div id="idVerifyGoBackToQM"></div>
+    );
 
     let maxColNum = 0;
     for (let i = 0; i < quiz.questionsAndAnswers.length; i++) {
@@ -65,19 +125,17 @@ class QuizManagerPreview extends Component {
       );
     }
 
-    console.log("default theme id", quiz.theme_id)
+    return (
+      <div>
+        <br />
+        <div style={{ color: "red", fontSize: "1.4em" }}>{quiz.name}</div>
+        <br />
+        <hr width={"250px"} color={"red"} />
 
-  return (
-    <div>
-      <br/>
-      <div style={{color: "red", fontSize: "1.4em"}}>{quiz.name}</div>
-      <br/>
-      <hr width={"250px"} color={"red"}/>
-
-      <div className="createQuizContainer">
-        <div className='createQuizpage'>
-          <div className="createFormContainer tabActive">
-            <div className='quizInfo'>
+        <div className="createQuizContainer">
+          <div className="createQuizpage">
+            <div className="createFormContainer tabActive">
+              <div className="quizInfo">
                 <div className="label-input">
                   <div>Quiz name</div>
                   <input
@@ -89,48 +147,57 @@ class QuizManagerPreview extends Component {
                   />
                 </div>
 
-              <div className="label-input">
-                <div>Quiz theme</div>
-                <select value={quiz.theme_id} name="theme" id="idQuizTheme">
-                  {this.state.quizThemeList}
-                </select>
+                <div className="label-input">
+                  <div>Quiz theme</div>
+                  <select value={quiz.theme_id} name="theme" id="idQuizTheme">
+                    {this.state.quizThemeList}
+                  </select>
+                </div>
               </div>
             </div>
           </div>
-        </div>      
-      </div>
-
-      <div className="previewContainer">
-        <table className="center">
-          <tbody>
-            <tr>
-              <th key="thq">Question</th>
-              <th key="thtn">Type</th>
-              <th key="thcn">Category</th>
-              {answerTitle}
-            </tr>
-            {entries}
-
-          </tbody>
-        </table>
-
-        <div>
-          Answer in <span className="correctAnswerColor">green</span> represents{" "}
-          <span className="correctAnswerColor">correct answer.</span>
         </div>
-        <div>
-          Answer in <span className="incorrectAnswerColor">red</span> represents{" "}
-          <span className="incorrectAnswerColor">wrong answer.</span>
+
+        <div className="previewContainer">
+          <table className="center">
+            <tbody>
+              <tr>
+                <th key="thq">Question</th>
+                <th key="thtn">Type</th>
+                <th key="thcn">Category</th>
+                {answerTitle}
+              </tr>
+              {entries}
+            </tbody>
+          </table>
+
+          <div>
+            Answer in <span className="correctAnswerColor">green</span>{" "}
+            represents{" "}
+            <span className="correctAnswerColor">correct answer.</span>
+          </div>
+          <div>
+            Answer in <span className="incorrectAnswerColor">red</span>{" "}
+            represents{" "}
+            <span className="incorrectAnswerColor">wrong answer.</span>
+          </div>
+          <br />
         </div>
+
+        <button onClick={handleAddNewQuestion}> Add New Question </button>
+        <button onClick={() => submitAllChanges(quiz.name)}>
+          {" "}
+          Submit all changes{" "}
+        </button>
         <br />
-      </div>
+        <button onClick={this.handleBackToQM}> Back to Quiz Manager </button>
+        <br />
 
-      <button onClick={handleAddNewQuestion}> Add New Question </button>
-      <button onClick={() => submitAllChanges(quiz.name)}> Submit all changes </button>
-      <br/>
-    </div>
-  );
-};
+        {quizModal}
+
+      </div>
+    );
+  }
 }
 
 const TableRow = (props) => {

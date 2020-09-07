@@ -29,6 +29,7 @@ class QuizManager extends Component {
             noticeMsg: "",
             quizes: new logic.Quiz(),
             questionDeleted: false,
+            questionEdited: false,
             quizThemeList: null, 
             quizDefaultTheme: null, 
             addingNewQuestion: false,
@@ -132,6 +133,7 @@ class QuizManager extends Component {
     }
 
     selectQuiz(quizId) {
+        console.log("quizId from selectQuiz in QM", quizId)
         getData(serverUrl + `quiz?quizid=${quizId}`)
             .then((data) => convertQuizDetails(data.payload[0]))
             .then((quiz) => this.setState({ selectedQuiz: quiz }));
@@ -150,6 +152,7 @@ class QuizManager extends Component {
     }
 
     handleEdit = (question) => {
+        this.setState({ questionEdited: true });
         this.setState({ currentEditQuestion: question, isModalOpen: true });
     };
 
@@ -408,8 +411,9 @@ class QuizManager extends Component {
                 responsedata = await net.putData(url, webdata);
             }
 
-            // Change questionDeleted and addingNewQuestion state back to false 
+            // Change questionDeleted questionEdited and addingNewQuestion state back to false 
             this.setState({ questionDeleted: false })
+            this.setState({ questionEdited: false })
             this.setState({ addingNewQuestion: false })
 
     
@@ -453,6 +457,14 @@ class QuizManager extends Component {
         }
     };
 
+    handleBackToQM = () => {
+        this.setState({ selectedQuiz: null, value: "", responseData: null })
+        this.setState({ questionDeleted: false })
+        this.setState({ questionEdited: false })
+        this.setState({ addingNewQuestion: false })
+        this.componentDidMount();
+    }
+
     render() {
         let filteredQuizzes = this.state.responseData;
         if (this.state.responseData) {
@@ -472,6 +484,10 @@ class QuizManager extends Component {
                             handleAddNewQuestion={this.handleAddNewQuestion}
                             submitAllChanges={this.submitAllChanges}
                             quizThemeList={this.state.quizThemeList}
+                            addingNewQuestion={this.state.addingNewQuestion}
+                            questionEdited={this.state.questionEdited}
+                            questionDeleted={this.state.questionDeleted}
+                            handleBackToQM={() => this.handleBackToQM()}
                         />
                     ) : filteredQuizzes ? (
                         <SelectQuiz

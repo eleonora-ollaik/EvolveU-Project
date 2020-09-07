@@ -36,7 +36,7 @@ class QuizTableM extends Component {
         const modal =
                 <ModalBox         
                 boxID="idVerifyDeleteQuizModal"        
-                content={<DeleteConfirmation noticeMsg={this.state.noticeMsg} />}
+                content={<DeleteConfirmation noticeMsg={this.state.noticeMsg} onClickCancel={this.onClickCloseModal}/>}
                 onClickModalClose={this.onClickCloseModal} 
                 hide={hidemsg}/> 
 

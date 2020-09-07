@@ -42,6 +42,7 @@ class App extends Component {
     }
   }  
   
+  
   render() {
     let renderPage;
     if (this.state.currentPageNumber === 1) { renderPage = <LandingPage handleLoggedIn={() => this.handleLoggedIn()} isLoggedIn={this.state.isLoggedIn}/>} 
