@@ -225,17 +225,17 @@ class QuizManager extends Component {
         if (this.state.addingNewQuestion) {
             tempQuiz.questionsAndAnswers.push(this.state.currentEditQuestion);
             console.log("tempQuiz after push", tempQuiz)
-        } else {
-            let newQuestionArr = tempQuiz.questionsAndAnswers.filter((questionObj) => !questionObj.hasOwnProperty("question_id"))
-            tempQuiz.questionsAndAnswers.concat(newQuestionArr);
-        }
+        } 
+        // else {
+        //     let newQuestionArr = tempQuiz.questionsAndAnswers.filter((questionObj) => !questionObj.hasOwnProperty("question_id"))
+        //     tempQuiz.questionsAndAnswers.concat(newQuestionArr);
+        // }
         
         console.log("currentEditQuestion from saveToSelectQuiz", this.state.currentEditQuestion)
         console.log("tempQuiz at end of saveToSelectQuiz", tempQuiz)
         
         this.setState({ selectedQuiz: tempQuiz });
         this.setState({ isModalOpen: false })
-        this.setState({ addingNewQuestion: false })
         console.log("selected quiz", this.state.selectedQuiz)
     }
 
@@ -275,7 +275,7 @@ class QuizManager extends Component {
         let responsedata = null;
 
         // DELETE QUIZ FIRST 
-        if (this.state.questionDeleted) {
+        if (this.state.questionDeleted || this.state.addingNewQuestion) {
             let quizToDelete = 
             {"quiz_id": quiz.quizId}
             let storedQuizId = quiz.quizId; 
@@ -298,12 +298,13 @@ class QuizManager extends Component {
     
             for (const [key, value] of Object.entries(quiz.questionsAndAnswers)) {
               let answers = quiz.questionsAndAnswers[key].answers;
+              console.log("answers in post quiz", answers)
               
-              for (let i=0; i<answers.length; i++) {
-                  if (!answers[i].hasOwnProperty("answer_id")) {
-                      answers[i].answer_id = undefined;
-                  }
-              }
+            //   for (let i=0; i<answers.length; i++) {
+            //       if (!answers[i].hasOwnProperty("answer_id")) {
+            //           answers[i].answer_id = undefined;
+            //       }
+            //   }
             //   let correct_answers = quiz.questionsAndAnswers[key].correct_answers;
             //   let wrong_answers = quiz.questionsAndAnswers[key].wrong_answers;
                 
@@ -401,14 +402,16 @@ class QuizManager extends Component {
             }     
             console.log("webdata!", webdata)
     
-            if (this.state.questionDeleted) {
+            if (this.state.questionDeleted || this.state.addingNewQuestion) {
                 responsedata = await net.postData(url, webdata);
             } else {
                 responsedata = await net.putData(url, webdata);
             }
 
-            // Change questionDeleted state back to false 
+            // Change questionDeleted and addingNewQuestion state back to false 
             this.setState({ questionDeleted: false })
+            this.setState({ addingNewQuestion: false })
+
     
             if (responsedata.status >= 500) {
                 throw (new Error(`${responsedata.status} ${responsedata.message}`));

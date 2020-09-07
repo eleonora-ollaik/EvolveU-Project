@@ -107,6 +107,8 @@ export class CreateQuizForm extends Component {
 
     const quiz = this.state.quizes;
 
+    console.log("quiz from saveQuiz", quiz)
+
     const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/quiz";  
     let responsedata = null;
 
