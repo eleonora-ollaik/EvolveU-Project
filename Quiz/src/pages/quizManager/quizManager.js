@@ -7,7 +7,7 @@ import { Auth } from "aws-amplify"
 import ModalBox from "../../components/modalbox/modalbox";
 import logic from "../../business/business_logic";
 import net from "../../business/netcomm";
-
+import AlertDuplicateAnswers from '../../components/modalbox/alertduplicateanswers.js';
 
 
 import {
@@ -176,6 +176,7 @@ class QuizManager extends Component {
         let tempQuestion = { ...this.state.currentEditQuestion };
         if (tempQuestion.questiontype_id === 1) {
             if (isNaN(e.target.name)) {
+                console.log("e.target.value from handleCurrentQuestionChange", e.target.value)
                 tempQuestion.question_statement = e.target.value
             } else {
                 if (e.target.type === 'text') {
@@ -214,13 +215,39 @@ class QuizManager extends Component {
         // Handle edit modal box
         this.setState({isModalOpen: false});
         // Handle submit modal box
-        this.setState({noticeMsg: ""});    
+        this.setState({noticeMsg: ""});
+        if (this.hasDuplicates(this.state.currentEditQuestion.answers)) {
+            this.handleEdit(this.state.currentEditQuestion);
+        } 
       };
+
+      hasDuplicates = (array) => {
+          var valuesSoFar = Object.create(null);
+          for (var i = 0; i < array.length; ++i) {
+              var value = array[i].answer_statement;
+              if (value in valuesSoFar) {
+                  return true;
+              }
+              valuesSoFar[value] = true;
+          }
+          return false;
+      }
 
     saveToSelectQuiz = () => {
         let tempQuiz = this.state.selectedQuiz
 
         console.log("tempQuiz at the beginning of saveToSelectQuiz", tempQuiz)
+
+        // CHECK IF DUPLICATE ANSWERS ARE PRESENT
+        if (this.hasDuplicates(this.state.currentEditQuestion.answers)) {
+            console.log("True")
+            this.setState({ noticeMsg: "Some of your answers are the same. Please enter only unique answers for each question." });
+            return;
+        } 
+        // ************************************
+
+        console.log("currentEditQuestion length", this.state.currentEditQuestion.answers.length)
+        // tempQuiz.questionsAndAnswers = tempQuiz.questionsAndAnswers.map((questionObj) => console.log(questionObj));
 
         
         tempQuiz.questionsAndAnswers = tempQuiz.questionsAndAnswers.map((questionObj) => questionObj.question_id === this.state.currentEditQuestion.question_id ? this.state.currentEditQuestion : questionObj);
@@ -473,6 +500,21 @@ class QuizManager extends Component {
             );
         }
 
+        const modal = (
+            <ModalBox
+              boxID="idAlertDuplicateAnswers"
+              content={<AlertDuplicateAnswers noticeMsg={this.state.noticeMsg} />}
+              onClickModalClose={this.onClickModalClose}
+              hide={this.state.noticeMsg ? false : true}
+            />
+          );
+        const quizModal = this.state.noticeMsg ? (
+        modal
+        ) : (
+        <div id="idAlertDuplicateAnswers"></div>
+        );
+      
+
         return (
             <div className="quizManagerContainer">
                 <div className='box-container'>
@@ -514,6 +556,7 @@ class QuizManager extends Component {
                         />
                     ) : null}
             </div>
+            {quizModal}
             </div>
         );
     }
