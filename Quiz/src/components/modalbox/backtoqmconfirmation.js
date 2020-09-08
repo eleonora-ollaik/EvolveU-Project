@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import "../quiz-manager-preview/quiz-manager-preview.css";
 
 export class BackToQMConfirmation extends Component {
     constructor(props) {
@@ -11,8 +12,8 @@ export class BackToQMConfirmation extends Component {
             <div>
                 {this.props.noticeMsg}
                 <br/>
-                <button onClick={onClickBackToQM}> Back to Quiz Manager </button>
-                <button onClick={onClickCancel}> Cancel </button>
+                <button onClick={onClickBackToQM} className="buttonBack" style={{marginRight: "20px", marginTop: "35px"}}>Back to Quiz Manager</button>
+                <button onClick={onClickCancel} className="buttonCancel"> Cancel </button>
             </div>
         )
     }

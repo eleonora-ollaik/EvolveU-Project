@@ -6,6 +6,7 @@ const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList,
                         <div>
                             <input
                                 type="text"
+                                style={{ width:"60vw" }}
                                 name="question_statement"
                                 value={currentEditQuestion.question_statement}
                                 onChange={handleCurrentQuestionChange}
@@ -27,7 +28,7 @@ const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList,
                                 // Multiple choice
                                 currentEditQuestion.answers.map((answerObj, idx) => (
                                     <div key={idx}>
-                                        <input type="text" name={idx} value={answerObj.answer_statement} onChange={handleCurrentQuestionChange} />
+                                        <input style={{ width:"35vw", marginRight: "15px" }} type="text" name={idx} value={answerObj.answer_statement} onChange={handleCurrentQuestionChange} />
 
                                         <input type="radio" name={idx} value={true} checked={answerObj.answer_is_correct} onChange={handleCurrentQuestionChange} />
                                         <label htmlFor="true">Correct</label>
@@ -38,12 +39,14 @@ const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList,
                                     // True or False
                                     <div>
                                         <label>
-                                            <input type="radio" name="true or false" value={true} checked={currentEditQuestion.answers[0].answer_is_correct} onChange={handleCurrentQuestionChange} />
+                                            <input style={{ width: "1.2em", height: "1.2em" }} type="radio" name="true or false" value={true} checked={currentEditQuestion.answers[0].answer_is_correct} onChange={handleCurrentQuestionChange} />
                                             True
+                                            {/* <span style={{ fontSize: "1.2em", marginRight: "20px" }}>True</span> */}
                                             </label>
                                         <label>
                                             <input type="radio" name="true or false" value={false} checked={currentEditQuestion.answers[1].answer_is_correct} onChange={handleCurrentQuestionChange} />
                                             False
+                                            {/* <span style={{ fontSize: "1.2em" }}>False</span> */}
                                             </label>
                                     </div>
                                     : (
@@ -67,7 +70,7 @@ const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList,
                             {/* <select onChange={}>
                                  {qaTypeList.map((questionObj, idx) => <option key={questionObj.questiontype_name + idx}>{questionObj.questiontype_name}</option>)}
                                 </select> */}
-                            <button onClick={saveToSelectQuiz}>Save Changes</button>
+                            <button style={{marginTop: "15px", width: "150px"}} onClick={saveToSelectQuiz} className="rowBtnEdit">Save Changes</button>
                         </div>
                     </div>
     )

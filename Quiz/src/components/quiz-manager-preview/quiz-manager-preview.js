@@ -187,13 +187,12 @@ class QuizManagerPreview extends Component {
           <br />
         </div>
 
-        <button onClick={handleAddNewQuestion}> Add New Question </button>
-        <button onClick={() => submitAllChanges(quiz.name)}>
-          {" "}
-          Submit all changes{" "}
+        <button onClick={handleAddNewQuestion} className="buttonAdd" style={{width: "180px"}}>Add New Question</button>
+        <button onClick={() => submitAllChanges(quiz.name)} className="buttonSubmit" style={{width: "180px"}}>
+          Submit all changes
         </button>
         <br />
-        <button onClick={this.handleBackToQM}> Back to Quiz Manager </button>
+        <button onClick={this.handleBackToQM} className="buttonBack" style={{marginBottom: "20px", marginTop: "15px"}}>Back to Quiz Manager</button>
         <br />
 
         {quizModal}
