@@ -33,6 +33,7 @@ class QuizManager extends Component {
             quizThemeList: null, 
             quizDefaultTheme: null, 
             addingNewQuestion: false,
+            dontCloseQuestionModal: false, 
       
             value: "",
             selectedQuiz: null,
@@ -153,6 +154,7 @@ class QuizManager extends Component {
 
     handleEdit = (question) => {
         this.setState({ questionEdited: true });
+        this.setState({ dontCloseQuestionModal: false });
         this.setState({ currentEditQuestion: question, isModalOpen: true });
     };
 
@@ -186,17 +188,13 @@ class QuizManager extends Component {
                     tempQuestion.answers = tempQuestion.answers.map((answerObj, idx) => Number(e.target.name) !== idx ? { ...answerObj, answer_is_correct: false } : answerObj)
                 }
             }
-        } else if (tempQuestion.questiontype_id === 2) {
-            if (isNaN(e.target.name)) {
-                tempQuestion.question_statement = e.target.value
+        } else if (tempQuestion.questiontype_id === 2) { // True or False
+            if (e.target.value === "true") {
+                tempQuestion.answers[0].answer_is_correct = true;
+                tempQuestion.answers[1].answer_is_correct = false;
             } else {
-                if (e.target.value === "true") {
-                    tempQuestion.answers[0].answer_is_correct = true;
-                    tempQuestion.answers[1].answer_is_correct = false;
-                } else {
-                    tempQuestion.answers[0].answer_is_correct = false;
-                    tempQuestion.answers[1].answer_is_correct = true;
-                }
+                tempQuestion.answers[0].answer_is_correct = false;
+                tempQuestion.answers[1].answer_is_correct = true;
             }
         } else {
             if (isNaN(e.target.name)) {
@@ -216,7 +214,7 @@ class QuizManager extends Component {
         this.setState({isModalOpen: false});
         // Handle submit modal box
         this.setState({noticeMsg: ""});
-        if (this.hasDuplicates(this.state.currentEditQuestion.answers)) {
+        if (this.state.dontCloseQuestionModal) {
             this.handleEdit(this.state.currentEditQuestion);
         } 
       };
@@ -238,9 +236,21 @@ class QuizManager extends Component {
 
         console.log("tempQuiz at the beginning of saveToSelectQuiz", tempQuiz)
 
+        // CHECK IF ALL ANSWER FIELDS ARE FILLED IN FOR MULTIPLE CHOICE QUESTIONS
+        if (this.state.currentEditQuestion.questiontype_id === 1) {
+            console.log(this.state.currentEditQuestion)
+            for (let i=0; i<4; i++) {
+                if (!this.state.currentEditQuestion.answers[i].answer_statement) {
+                    this.setState({ dontCloseQuestionModal: true }); // Use hasDuplicates state to flag modal to return to edit window
+                    this.setState({ noticeMsg: "All answer fields must be filled in!" });
+                    return;
+                }
+            }
+        }
+
         // CHECK IF DUPLICATE ANSWERS ARE PRESENT
         if (this.hasDuplicates(this.state.currentEditQuestion.answers)) {
-            console.log("True")
+            this.setState({ dontCloseQuestionModal: true }); // Use this state to flag modal to return to edit window
             this.setState({ noticeMsg: "Some of your answers are the same. Please enter only unique answers for each question." });
             return;
         } 

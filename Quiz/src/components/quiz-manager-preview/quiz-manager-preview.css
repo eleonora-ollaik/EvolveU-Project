@@ -50,12 +50,78 @@
 .incorrectAnswerColor{
     color: red;
 }
-/* 
-.managerContainer{
-    background: inherit;
-    box-shadow: inset 0 0 0 500px rgba(255,255,255,0.2);
-    width: 90%;
-    margin-left: 10vh;
-    border-radius: 1em;
 
-} */
+
+.buttonAdd {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+    font-size: 16px;
+    margin: 5px 20px 0 0;
+    padding: 8px 8px;
+    text-align: center;
+    border-radius: 8px;
+    width: 12em;
+  }
+    .buttonAdd:hover {
+        background-color: #008CBA;
+        color: white;
+    }
+  
+.buttonSubmit {
+    background-color: white; 
+    border: 2px solid #4CAF50;
+    color: black;
+    padding: 8px 8px;
+    margin: 5px 0 0 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+    width: 12em;
+}
+    .buttonSubmit:hover {
+        background-color: #4CAF50;;
+        color: white;
+    }
+
+
+.buttonBack {
+    background-color: white; 
+    border: 2px solid #474747;
+    color: black;
+    padding: 8px 8px;
+    margin: 5px 0 0 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+    width: 12em;
+}
+    .buttonBack:hover {
+        background-color: #474747;;
+        color: white;
+    }
+    
+.buttonCancel {
+    background-color: white; 
+    border: 2px solid #ac0000;
+    color: black;
+    padding: 8px 8px;
+    margin: 5px 0 0 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+    width: 12em;
+}
+    .buttonCancel:hover {
+        background-color: #ac0000;;
+        color: white;
+    }
+
+  
+  

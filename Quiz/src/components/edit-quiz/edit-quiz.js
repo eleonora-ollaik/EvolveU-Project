@@ -28,7 +28,7 @@ export class QAedit extends Component {
 
     return (
       <div>
-        <input type="text" placeholder="Question"  id = 'idQuestion' defaultValue={question}/>
+        <input type="text" placeholder="Question"  id='idQuestion' defaultValue={question}/>
 
         <select name="type" id="idQuestionType" onChange={this.props.onChange} value={qaType}>
           {displayOption}
