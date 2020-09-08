@@ -8,6 +8,8 @@ import HeaderPublic from './components/header/headerPublic';
 import HeaderPrivate from './components/header/headerPrivate';
 import { Amplify } from 'aws-amplify';
 import config from './config';
+import net from "./business/netcomm";
+
 
 
 class App extends Component {
@@ -18,7 +20,11 @@ class App extends Component {
       currentPageNumber: 1,
       isLoggedIn: false,
       alertChangePage: false,
+      qaCategoryList: null,
+      qaDefaultCategory: null
+
     }
+    this.getQACategoryList = this.getQACategoryList.bind(this)
   }
 
   handleLoggedIn = () => {
@@ -41,14 +47,30 @@ class App extends Component {
       this.setState({currentPageNumber: component})
     }
   }  
+
+  async getQACategoryList () {
+
+    const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/questioncategory";
+    let responsedata = await net.getData(url);
+
+    // Convert into dictionary format for generating drop down list by other components (create-quiz)
+    const list = responsedata["payload"];
+    let defaultCategory = list[0]["questioncategory_id"];
+    let listdata = [];
+    for (let i=0; i<list.length; i++) {
+
+      listdata.push(<option value={list[i]["questioncategory_id"]} key={i}>{list[i]["questioncategory_name"]}</option>);    
+    }    
+    this.setState({ qaCategoryList: listdata, qaDefaultCategory: defaultCategory});    
+  }
   
   
   render() {
     let renderPage;
     if (this.state.currentPageNumber === 1) { renderPage = <LandingPage handleLoggedIn={() => this.handleLoggedIn()} isLoggedIn={this.state.isLoggedIn}/>} 
-    else if (this.state.currentPageNumber === 2) { renderPage = <CreateQuizForm />} 
+    else if (this.state.currentPageNumber === 2) { renderPage = <CreateQuizForm getQACategoryList={this.getQACategoryList} qaCategoryList={this.state.qaCategoryList} qaDefaultCategory={this.state.qaDefaultCategory}/>} 
     else if (this.state.currentPageNumber === 3) { renderPage = <TakeQuiz />} 
-    else if (this.state.currentPageNumber === 4) { renderPage = <QuizManager />} 
+    else if (this.state.currentPageNumber === 4) { renderPage = <QuizManager getQACategoryList={this.getQACategoryList} qaCategoryList={this.state.qaCategoryList} qaDefaultCategory={this.state.qaDefaultCategory}/>} 
     
     Amplify.configure({
       Auth: {

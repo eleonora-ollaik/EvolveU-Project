@@ -84,7 +84,10 @@ class QuizManagerPreview extends Component {
     const modal = (
       <ModalBox
         boxID="idVerifyGoBackToQM"
-        content={<BackToQMConfirmation noticeMsg={this.state.noticeMsg} onClickCancel={this.onClickCloseModal} onClickBackToQM={this.props.handleBackToQM}/>}
+        content={<BackToQMConfirmation 
+          noticeMsg={this.state.noticeMsg} 
+          onClickCancel={this.onClickCloseModal} 
+          onClickBackToQM={this.props.handleBackToQM}/>}
         onClickModalClose={this.onClickCloseModal}
         hide={this.state.noticeMsg ? false : true}
       />

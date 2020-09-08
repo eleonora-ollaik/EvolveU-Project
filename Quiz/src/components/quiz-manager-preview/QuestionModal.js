@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import "./QuestionModal.css";
 
-const QuestionModal = ({currentEditQuestion, questionTypeList, changeQuestionType, handleCurrentQuestionChange, saveToSelectQuiz}) => {
+const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList, changeQuestionType, handleCurrentQuestionChange, saveToSelectQuiz}) => {
     return (
         <div className="modal">
             <div className="center">
@@ -25,7 +25,11 @@ const QuestionModal = ({currentEditQuestion, questionTypeList, changeQuestionTyp
                                 </select>
                             </div>
                         </div>
-
+                        <div>
+                            <select id="idQuestionCategory" onChange={handleCurrentQuestionChange} value={currentEditQuestion.questioncategory_id}>
+                                {qaCategoryList}
+                            </select>
+                        </div>
                             {currentEditQuestion.questiontype_id === 1 ?
                                 // Multiple choice
                                 currentEditQuestion.answers.map((answerObj, idx) => (
@@ -75,7 +79,7 @@ const QuestionModal = ({currentEditQuestion, questionTypeList, changeQuestionTyp
                                 </select> */}
                             <button style={{marginTop: "15px", width: "150px"}} onClick={saveToSelectQuiz} className="rowBtnEdit">Save Changes</button>
             </div>
-    </div>
+        </div>
     )
 }
 

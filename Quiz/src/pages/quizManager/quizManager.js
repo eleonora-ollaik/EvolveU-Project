@@ -89,6 +89,10 @@ class QuizManager extends Component {
             .then((data) => data.payload)
             .then((arr) => this.setState({ questionCategoryList: arr }));
 
+        if (this.props.qaCategoryList== null) {
+            this.props.getQACategoryList();
+        }
+
         const loadUser = () =>(
             Auth.currentUserInfo()
         )
@@ -176,14 +180,21 @@ class QuizManager extends Component {
     handleCurrentQuestionChange = (e) => {
         // some part not updating as expected
         let tempQuestion = { ...this.state.currentEditQuestion };
+       
+        let category = document.getElementById('idQuestionCategory')
+        tempQuestion.questioncategory_id = category.options[category.selectedIndex].value;
+        tempQuestion.question_category = category.options[category.selectedIndex].text;
+
         if (tempQuestion.questiontype_id === 1) {
             if (isNaN(e.target.name)) {
-                console.log("e.target.value from handleCurrentQuestionChange", e.target.value)
+                console.log("e.target.value from handleCurrentQuestionChange", e.target.name)
                 tempQuestion.question_statement = e.target.value
+                // console.log(category.options[category.selectedIndex].value)
             } else {
                 if (e.target.type === 'text') {
+                    console.log(tempQuestion.answers[e.target.name].answer_statement)
                     tempQuestion.answers[e.target.name].answer_statement = e.target.value;
-                } else {
+                } else if (e.target.type === 'radio') {
                     tempQuestion.answers[e.target.name].answer_is_correct = true;
                     tempQuestion.answers = tempQuestion.answers.map((answerObj, idx) => Number(e.target.name) !== idx ? { ...answerObj, answer_is_correct: false } : answerObj)
                 }
@@ -279,6 +290,7 @@ class QuizManager extends Component {
         console.log("selected quiz", this.state.selectedQuiz)
     }
 
+
     changeQuestionType = (e) => {
         let tempQuestion = { ...this.state.currentEditQuestion };
         tempQuestion.questiontype_name = e.target.value;
@@ -302,7 +314,7 @@ class QuizManager extends Component {
         //     tempQuestion.answers = tempQuestion.answers.map((answerObj) => ({...answerObj, answer_is_correct: true}))
         // }
         this.setState({ currentEditQuestion: tempQuestion })
-    }
+    } 
 
     async updateQuiz (quizname) {
 
@@ -504,6 +516,7 @@ class QuizManager extends Component {
 
     render() {
         let filteredQuizzes = this.state.responseData;
+        // console.log(this.props.qaCategoryList)
         if (this.state.responseData) {
             filteredQuizzes = this.state.responseData.filter((quizObj) =>
                 quizObj.name.toLowerCase().includes(this.state.value.toLowerCase())
@@ -556,6 +569,8 @@ class QuizManager extends Component {
                             boxID='idEditQAModal'
                             content={
                                 <QuestionModal
+                                    // qaCategory = {this.state.currentEditQuestion.question_category}
+                                    qaCategoryList={this.props.qaCategoryList}
                                     currentEditQuestion={this.state.currentEditQuestion}
                                     questionTypeList={this.state.questionTypeList}
                                     handleCurrentQuestionChange={this.handleCurrentQuestionChange}
