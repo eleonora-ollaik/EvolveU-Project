@@ -13,8 +13,11 @@ class QuizTableM extends Component {
     }
 
     handleDeleteButton = (quizId) => {
+        console.log('quizId:', quizId)
         this.setState({ noticeMsg: "Are you sure you want to delete this quiz?"});
-        
+        this.setState({highlightedQuizID: quizId})
+        // console.log('highlighted id from quiztable1:', this.state.highlightedQuizID)
+        // console.log(this.state.noticeMsg)
         // Open verify modal box
         document.getElementById("idVerifyDeleteQuizModal").setAttribute("class", "modalshow");
         
@@ -27,7 +30,9 @@ class QuizTableM extends Component {
         // Handle edit modal box
         // this.setState({quizEdit: false});
         // Handle submit modal box
-        this.setState({noticeMsg: ""});    
+        this.setState({noticeMsg: ""});
+        console.log('highlighted id from quiztable2:', this.state.highlightedQuizID)
+    
       };
 
     render(){
@@ -36,7 +41,7 @@ class QuizTableM extends Component {
         const modal =
                 <ModalBox         
                 boxID="idVerifyDeleteQuizModal"        
-                content={<DeleteConfirmation noticeMsg={this.state.noticeMsg} onClickCancel={this.onClickCloseModal}/>}
+                content={<DeleteConfirmation highlightedQuizID={this.state.highlightedQuizID} deleteQuiz={this.props.deleteQuiz} noticeMsg={this.state.noticeMsg} onClickCancel={this.onClickCloseModal}/>}
                 onClickModalClose={this.onClickCloseModal} 
                 hide={hidemsg}/> 
 
@@ -49,10 +54,10 @@ class QuizTableM extends Component {
         const list = quizDataArray.map((quiz, i) => {
             return (
                 <tr key={i}>
-                    <td className='tableCells'>{quiz.quizId}</td>
+                    <td className='tableCells'>{i+1}</td>
                     <td className='quizTableName tableCells' onClick={() => this.props.selectQuiz(quiz.quizId)}>{quiz.name}</td>
                     <td className='tableCells'>{quiz.theme}</td>
-                    <td className='tableCells'><span style={{cursor: "pointer"}} onClick={() => this.handleDeleteButton(quiz.quizId)} className="deleteQuizBtn">X</span></td>
+                    <td className='tableCells'><span style={{cursor: "pointer"}} onClick={() => this.handleDeleteButton(quiz.quizId)} key={quiz.quizId} className="deleteQuizBtn">X</span></td>
                 </tr>
             )
         });
