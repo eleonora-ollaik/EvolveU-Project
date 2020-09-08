@@ -4,7 +4,7 @@ import './select-quiz.css';
 import QuizTable from "../QuizTable/QuizTable";
 import QuizTableM from "../QuizTable/QuizTableM";
 
-const SelectQuiz = ({ subHeader, value, handleChange, responseData, selectQuiz, origin }) => (
+const SelectQuiz = ({ subHeader, value, deleteQuiz, handleChange, responseData, selectQuiz, origin }) => (
   <div>
     <div className="subHeader">{subHeader}</div>
     <br />
@@ -18,7 +18,7 @@ const SelectQuiz = ({ subHeader, value, handleChange, responseData, selectQuiz, 
     />
     {responseData ? (
       origin==="TakeQuiz"? <QuizTable quizData={responseData} selectQuiz={selectQuiz}/> : 
-      <QuizTableM quizData={responseData} selectQuiz={selectQuiz}/> 
+      <QuizTableM deleteQuiz={deleteQuiz} quizData={responseData} selectQuiz={selectQuiz}/> 
       
     ) : (
       <div>no data found</div>

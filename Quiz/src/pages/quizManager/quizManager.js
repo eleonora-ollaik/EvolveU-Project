@@ -34,7 +34,6 @@ class QuizManager extends Component {
             quizDefaultTheme: null, 
             addingNewQuestion: false,
             dontCloseQuestionModal: false, 
-      
             value: "",
             selectedQuiz: null,
             responseData: null,
@@ -170,6 +169,30 @@ class QuizManager extends Component {
         // Set questionDeleted state to true 
         this.setState({ questionDeleted: true })
     };
+
+    deleteQuiz = async (quizId) => {
+        // let sel = this.selectQuiz(quizId);
+        console.log('sel', quizId.highlightedQuizID)
+        // let quiz = this.state.selectedQuiz;
+
+        // console.log("quiz", this.state.selectedQuiz)
+        console.log("responseData", this.state.responseData)
+    
+        const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/quiz";  
+        let responsedata = null;
+        let quizToDelete = {"quiz_id": quizId.highlightedQuizID}
+        responsedata = await net.deleteData(url, quizToDelete);
+        console.log('after delete', this.state.responsedata)
+        if (responsedata.status >= 500) {
+            throw (new Error(`${responsedata.status} ${responsedata.message}`));
+        }
+        else {
+        //   this.clearQuizHeader();
+            // this.onClickModalClose();
+            console.log("QUIZ DELETED!");
+        }
+
+    }
 
     handleAddNewQuestion = () => {
         this.setState({ isModalOpen: true, currentEditQuestion: { ...this.state.newQuestionObj } });
@@ -330,7 +353,7 @@ class QuizManager extends Component {
         if (this.state.questionDeleted || this.state.addingNewQuestion) {
             let quizToDelete = 
             {"quiz_id": quiz.quizId}
-            let storedQuizId = quiz.quizId; 
+            // let storedQuizId = quiz.quizId; 
             responsedata = await net.deleteData(url, quizToDelete);
         
             if (responsedata.status >= 500) {
@@ -562,6 +585,7 @@ class QuizManager extends Component {
                             responseData={filteredQuizzes}
                             selectQuiz={this.selectQuiz}
                             origin={"QuizManager"}
+                            deleteQuiz={this.deleteQuiz}
                         />
                     ) : null}
                     {this.state.isModalOpen ? (
