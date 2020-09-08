@@ -34,8 +34,8 @@ export class CreateQuizForm extends Component {
       this.getQAtypeList();
     }    
 
-    if(this.state.qaCategoryList == null) {
-      this.getQACategoryList();
+    if(this.props.qaCategoryList == null) {
+      this.props.getQACategoryList();
     }    
 
     if(this.state.quizThemeList == null) {
@@ -47,7 +47,7 @@ export class CreateQuizForm extends Component {
     
     // qaID = null resets the edit panel display
     // qaType = qaDefaultType resets the edit panel display independent from Preview Edit panel
-    this.setState({quizNav: "Create Quiz", qaID: null, qaType: this.state.qaDefaultType, qaCategory: this.state.qaDefaultCategory});
+    this.setState({quizNav: "Create Quiz", qaID: null, qaType: this.state.qaDefaultType, qaCategory: this.props.qaDefaultCategory});
   };
 
   onClickPreviewHandler = (e) => {
@@ -72,22 +72,22 @@ export class CreateQuizForm extends Component {
     this.setState({qaType: defaultType, qaTypeObj: dictdata, qaTypeList: listdata, qaDefaultType: defaultType});    
   }
 
-  async getQACategoryList () {
+  // async getQACategoryList () {
 
-    const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/questioncategory";
-    let responsedata = await net.getData(url);
+  //   const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/questioncategory";
+  //   let responsedata = await net.getData(url);
 
-    // Convert into dictionary format for generating drop down list by other components (create-quiz)
-    const list = responsedata["payload"];
-    let defaultCategory = list[0]["questioncategory_id"];
-    let listdata = [];
-    for (let i=0; i<list.length; i++) {
+  //   // Convert into dictionary format for generating drop down list by other components (create-quiz)
+  //   const list = responsedata["payload"];
+  //   let defaultCategory = list[0]["questioncategory_id"];
+  //   let listdata = [];
+  //   for (let i=0; i<list.length; i++) {
 
-      listdata.push(<option value={list[i]["questioncategory_id"]} key={i}>{list[i]["questioncategory_name"]}</option>);    
-    }    
-    this.setState({ qaCategoryList: listdata, qaDefaultCategory: defaultCategory});    
-  }
-
+  //     listdata.push(<option value={list[i]["questioncategory_id"]} key={i}>{list[i]["questioncategory_name"]}</option>);    
+  //   }    
+  //   this.setState({ qaCategoryList: listdata, qaDefaultCategory: defaultCategory});    
+  // }
+ 
   async getQuizThemeList () {
     const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/theme";
     let responsedata = await net.getData(url);
@@ -319,7 +319,7 @@ export class CreateQuizForm extends Component {
         qaTypeList={this.state.qaTypeList}
         onClick={this.onClickSubmitQuestion}
         onChange={this.onChangeQuestionType}
-        qaCategoryList={this.state.qaCategoryList}        
+        qaCategoryList={this.props.qaCategoryList}        
       />
     );
 
@@ -344,7 +344,7 @@ export class CreateQuizForm extends Component {
                   qaCategory={this.state.qaCategory}
                   qaTypeObj={this.state.qaTypeObj}
                   qaTypeList={this.state.qaTypeList}
-                  qaCategoryList={this.state.qaCategoryList}
+                  qaCategoryList={this.props.qaCategoryList}
                   onChange={this.onChangeQuestionType}
                   onClickSave={this.onClickSaveModal}     
                 />}

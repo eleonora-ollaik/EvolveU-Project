@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-const QuestionModal = ({currentEditQuestion, questionTypeList, changeQuestionType, handleCurrentQuestionChange, saveToSelectQuiz}) => {
+const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList, changeQuestionType, handleCurrentQuestionChange, saveToSelectQuiz}) => {
     return (
         <div className="modal">
                         <div>
@@ -17,7 +17,12 @@ const QuestionModal = ({currentEditQuestion, questionTypeList, changeQuestionTyp
                                     }
                                 </select>
                             </div>
+                            <div>
+                            <select id="idQuestionCategory" onChange={handleCurrentQuestionChange} value={currentEditQuestion.questioncategory_id}>
+                                {qaCategoryList}
+                            </select>
 
+                            </div>
                             {currentEditQuestion.questiontype_id === 1 ?
                                 // Multiple choice
                                 currentEditQuestion.answers.map((answerObj, idx) => (
