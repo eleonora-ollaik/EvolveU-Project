@@ -1,33 +1,41 @@
 import React, { Component } from 'react';
+import "./QuestionModal.css";
 
 const QuestionModal = ({currentEditQuestion, questionTypeList, changeQuestionType, handleCurrentQuestionChange, saveToSelectQuiz}) => {
     return (
         <div className="modal">
-                        <div>
-                            <input
-                                type="text"
-                                style={{ width:"60vw" }}
-                                name="question_statement"
-                                value={currentEditQuestion.question_statement}
-                                onChange={handleCurrentQuestionChange}
-                            />
-                            <div>
-                                <select onChange={changeQuestionType} value={currentEditQuestion.questiontype_name}>
+            <div className="center">
+                        <div className="quizQuestions">
+                            <div className="label-input-top">
+                                <div style={{marginBottom: "3px"}}>Question</div>
+                                <input
+                                    type="text"
+                                    style={{ width:"600px" }}
+                                    name="question_statement"
+                                    value={currentEditQuestion.question_statement}
+                                    onChange={handleCurrentQuestionChange}
+                                />
+                            </div>
+                            <div className="label-input-top">
+                                <div style={{marginBottom: "3px"}}>Question type</div>
+                                <select onChange={changeQuestionType} value={currentEditQuestion.questiontype_name} style={{width: "200px"}}>
                                     {
                                     questionTypeList.map((questionTypeObj => <option key={questionTypeObj.questiontype_id} value={questionTypeObj.questiontype_name}>{questionTypeObj.questiontype_name}</option>))
                                     }
                                 </select>
                             </div>
+                        </div>
 
                             {currentEditQuestion.questiontype_id === 1 ?
                                 // Multiple choice
                                 currentEditQuestion.answers.map((answerObj, idx) => (
-                                    <div key={idx}>
-                                        <input style={{ width:"35vw", marginRight: "15px" }} type="text" name={idx} value={answerObj.answer_statement} onChange={handleCurrentQuestionChange} />
+                                    <div key={idx} className="quizAnswers">
+                                        <div style={{ marginRight: "15px" }}>Answer {idx+1}</div>
+                                        <input className="inputAnswers" style={{ width:"515px" }} type="text" name={idx} value={answerObj.answer_statement} onChange={handleCurrentQuestionChange} />
 
-                                        <input type="radio" name={idx} value={true} checked={answerObj.answer_is_correct} onChange={handleCurrentQuestionChange} />
-                                        <label htmlFor="true">Correct</label>
-                                        <input type="radio" name={idx} checked={!answerObj.answer_is_correct} readOnly />
+                                        <input type="radio" name={idx} value={true} checked={answerObj.answer_is_correct} onChange={handleCurrentQuestionChange} style={{marginRight: "5px"}}/>
+                                        <label htmlFor="true" style={{marginRight: "15px"}}>Correct</label>
+                                        <input type="radio" name={idx} checked={!answerObj.answer_is_correct} readOnly style={{marginRight: "5px"}}/>
                                         <label htmlFor="false">Incorrect</label>
                                     </div>
                                 )) : currentEditQuestion.questiontype_id === 2 ?
@@ -66,8 +74,8 @@ const QuestionModal = ({currentEditQuestion, questionTypeList, changeQuestionTyp
                                  {qaTypeList.map((questionObj, idx) => <option key={questionObj.questiontype_name + idx}>{questionObj.questiontype_name}</option>)}
                                 </select> */}
                             <button style={{marginTop: "15px", width: "150px"}} onClick={saveToSelectQuiz} className="rowBtnEdit">Save Changes</button>
-                        </div>
-                    </div>
+            </div>
+    </div>
     )
 }
 
