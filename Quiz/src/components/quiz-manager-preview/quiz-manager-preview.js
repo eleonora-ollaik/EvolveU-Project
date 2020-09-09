@@ -44,9 +44,9 @@ class QuizManagerPreview extends Component {
     if (
       this.props.addingNewQuestion ||
       this.props.questionDeleted ||
-      this.props.questionEdited
+      this.props.questionEdited || 
+      this.props.modalInputsModified
     ) {
-      console.log("Are you sure?");
       this.setState({
         noticeMsg:
           "Changes have been made to the current quiz and will be lost if you go back to the Quiz Manager. Are you sure you want to proceed?",
@@ -56,7 +56,6 @@ class QuizManagerPreview extends Component {
         .getElementById("idVerifyGoBackToQM")
         .setAttribute("class", "modalshow");
     } else {
-      console.log("Going back...")
       this.props.handleBackToQM();
     }
   };
@@ -133,36 +132,31 @@ class QuizManagerPreview extends Component {
     return (
       <div>
         <br />
-        <div style={{ color: "red", fontSize: "1.4em" }}>{quiz.name}</div>
-        <br />
-        <hr width={"250px"} color={"red"} />
-
-        <div className="createQuizContainer">
-          <div className="createQuizpage">
-            <div className="createFormContainer tabActive">
+        <div style={{ color: "rgb(43, 57, 104)", fontSize: "1.6em" }}>{quiz.name}</div>
+        <hr width={"250px"} color={"rgb(43, 57, 104)"} style={{marginTop: "15px"}} />
+            <div className="center">
               <div className="quizInfo">
                 <div className="label-input">
-                  <div>Quiz name</div>
+                  <div style={{fontSize: "17px"}}>Quiz name</div>
                   <input
                     value={quiz.name}
                     type="text"
                     name="quizName"
                     placeholder="Quiz name"
                     id="idQuizName"
+                    style={{ width:"400px" }}
                     onChange={handleCurrentQuizChange}
                   />
                 </div>
 
                 <div className="label-input">
-                  <div>Quiz theme</div>
-                  <select value={quiz.theme_id} name="theme" id="idQuizTheme" onChange={handleCurrentQuizChange}>
+                  <div style={{fontSize: "17px"}}>Quiz theme</div>
+                  <select value={quiz.theme_id} name="theme" id="idQuizTheme" style={{ width:"200px" }} onChange={handleCurrentQuizChange}>
                     {this.state.quizThemeList}
                   </select>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
         <div className="previewContainer">
           <table className="center">
