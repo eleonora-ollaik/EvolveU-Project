@@ -285,6 +285,7 @@ class QuizManager extends Component {
     saveToSelectQuiz = () => {
         let tempQuiz = this.state.selectedQuiz
         this.setState({ modalInputsModified: false })
+        this.setState({ questionEdited: true })
 
         console.log("tempQuiz at the beginning of saveToSelectQuiz", tempQuiz)
 

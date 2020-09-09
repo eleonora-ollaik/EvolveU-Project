@@ -185,7 +185,7 @@ class QuizManagerPreview extends Component {
         </div>
 
         <button onClick={handleAddNewQuestion} className="buttonAdd" style={{width: "180px"}}>Add New Question</button>
-        <button onClick={() => submitAllChanges(quiz.name)} className="buttonSubmit" style={{width: "180px"}} disabled={!modalInputsModified}>
+        <button onClick={() => submitAllChanges(quiz.name)} className="buttonSubmit" style={{width: "180px"}} disabled={!this.props.questionEdited}>
           Submit all changes
         </button>
         <br />
