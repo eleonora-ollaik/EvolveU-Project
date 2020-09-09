@@ -569,6 +569,7 @@ class QuizManager extends Component {
         this.setState({ questionDeleted: false })
         this.setState({ questionEdited: false })
         this.setState({ addingNewQuestion: false })
+        this.setState({ modalInputsModified: false })
         this.componentDidMount();
     }
 
