@@ -34,6 +34,7 @@ class QuizManager extends Component {
             quizDefaultTheme: null, 
             addingNewQuestion: false,
             dontCloseQuestionModal: false, 
+            modalInputsModified: false,
             value: "",
             selectedQuiz: null,
             responseData: null,
@@ -197,16 +198,27 @@ class QuizManager extends Component {
     handleAddNewQuestion = () => {
         this.setState({ isModalOpen: true, currentEditQuestion: { ...this.state.newQuestionObj } });
         this.setState({ addingNewQuestion: true })
-        console.log("currentEditQuestion in QM", this.state.currentEditQuestion)
+    }
+
+    handleCurrentQuizChange = (e) => {
+        this.setState({ modalInputsModified: true })
+        let tempQuiz = { ...this.state.selectedQuiz };
+        
+        if (e.target.name === "quizName") {
+            tempQuiz.name = e.target.value;
+        } else {
+            let quizTheme = document.getElementById('idQuizTheme')
+            tempQuiz.theme_id = quizTheme.options[quizTheme.selectedIndex].value;
+            tempQuiz.theme = quizTheme.options[quizTheme.selectedIndex].text;
+        }
+        this.setState({ selectedQuiz: tempQuiz });
     }
 
     handleCurrentQuestionChange = (e) => {
         // some part not updating as expected
+        this.setState({ modalInputsModified: true })
         let tempQuestion = { ...this.state.currentEditQuestion };
        
-        let category = document.getElementById('idQuestionCategory')
-        tempQuestion.questioncategory_id = category.options[category.selectedIndex].value;
-        tempQuestion.question_category = category.options[category.selectedIndex].text;
 
         if (tempQuestion.questiontype_id === 1) {
             if (isNaN(e.target.name)) {
@@ -223,12 +235,16 @@ class QuizManager extends Component {
                 }
             }
         } else if (tempQuestion.questiontype_id === 2) { // True or False
-            if (e.target.value === "true") {
-                tempQuestion.answers[0].answer_is_correct = true;
-                tempQuestion.answers[1].answer_is_correct = false;
+            if (isNaN(e.target.name)) {
+                tempQuestion.question_statement = e.target.value
             } else {
-                tempQuestion.answers[0].answer_is_correct = false;
-                tempQuestion.answers[1].answer_is_correct = true;
+                if (e.target.value === "true") {
+                    tempQuestion.answers[0].answer_is_correct = true;
+                    tempQuestion.answers[1].answer_is_correct = false;
+                } else {
+                    tempQuestion.answers[0].answer_is_correct = false;
+                    tempQuestion.answers[1].answer_is_correct = true;
+                }
             }
         } else {
             if (isNaN(e.target.name)) {
@@ -240,6 +256,7 @@ class QuizManager extends Component {
 
         this.setState({ currentEditQuestion: tempQuestion });
     }
+
     onClickModalClose = (e) => {
         const modal = e.target.parentNode.parentNode;
         modal.setAttribute("class", "modalhide");
@@ -253,20 +270,21 @@ class QuizManager extends Component {
         } 
       };
 
-      hasDuplicates = (array) => {
-          var valuesSoFar = Object.create(null);
-          for (var i = 0; i < array.length; ++i) {
-              var value = array[i].answer_statement;
-              if (value in valuesSoFar) {
-                  return true;
-              }
-              valuesSoFar[value] = true;
-          }
-          return false;
+    hasDuplicates = (array) => {
+        var valuesSoFar = Object.create(null);
+        for (var i = 0; i < array.length; ++i) {
+            var value = array[i].answer_statement;
+            if (value in valuesSoFar) {
+                return true;
+            }
+            valuesSoFar[value] = true;
+        }
+        return false;
       }
 
     saveToSelectQuiz = () => {
         let tempQuiz = this.state.selectedQuiz
+        this.setState({ modalInputsModified: false })
 
         console.log("tempQuiz at the beginning of saveToSelectQuiz", tempQuiz)
 
@@ -315,6 +333,8 @@ class QuizManager extends Component {
 
 
     changeQuestionType = (e) => {
+        this.setState({ modalInputsModified: true })
+
         let tempQuestion = { ...this.state.currentEditQuestion };
         tempQuestion.questiontype_name = e.target.value;
         tempQuestion.questiontype_id = e.target.value === "Multiple Choice" ? 1 : e.target.value === "True or False" ? 2 : 3;
@@ -338,6 +358,16 @@ class QuizManager extends Component {
         // }
         this.setState({ currentEditQuestion: tempQuestion })
     } 
+
+    changeQuestionCategory = (e) => {
+        this.setState({ modalInputsModified: true })
+
+        let tempQuestion = { ...this.state.currentEditQuestion };
+        let category = document.getElementById('idQuestionCategory')
+        tempQuestion.questioncategory_id = category.options[category.selectedIndex].value;
+        tempQuestion.question_category = category.options[category.selectedIndex].text;
+        this.setState({ currentEditQuestion: tempQuestion })
+    }
 
     async updateQuiz (quizname) {
 
@@ -515,9 +545,8 @@ class QuizManager extends Component {
         // Only allow save when there is a quiz name
         try {
             if (quizname.length > 0) {
-            // Save Quiz to the server      
-            // Clear current Quiz controller
-            this.updateQuiz(quizname);            
+            this.setState({ modalInputsModified: false }) // Clear this state
+            this.updateQuiz(quizname); // Save Quiz to the server    
             }
             else {
             this.setState({ noticeMsg: "Please enter a quiz name" });
@@ -570,12 +599,14 @@ class QuizManager extends Component {
                             handleEdit={this.handleEdit}
                             handleRemove={this.handleRemove}
                             handleAddNewQuestion={this.handleAddNewQuestion}
+                            handleCurrentQuizChange={this.handleCurrentQuizChange}
                             submitAllChanges={this.submitAllChanges}
                             quizThemeList={this.state.quizThemeList}
                             addingNewQuestion={this.state.addingNewQuestion}
                             questionEdited={this.state.questionEdited}
                             questionDeleted={this.state.questionDeleted}
                             handleBackToQM={() => this.handleBackToQM()}
+                            modalInputsModified={this.state.modalInputsModified}
                         />
                     ) : filteredQuizzes ? (
                         <SelectQuiz
@@ -599,7 +630,9 @@ class QuizManager extends Component {
                                     questionTypeList={this.state.questionTypeList}
                                     handleCurrentQuestionChange={this.handleCurrentQuestionChange}
                                     changeQuestionType={this.changeQuestionType}
+                                    changeQuestionCategory={this.changeQuestionCategory}
                                     saveToSelectQuiz={this.saveToSelectQuiz}
+                                    modalInputsModified={this.state.modalInputsModified}
                                 />}
                             onClickModalClose={this.onClickModalClose}      
                         />

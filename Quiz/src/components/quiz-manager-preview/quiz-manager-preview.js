@@ -79,6 +79,8 @@ class QuizManagerPreview extends Component {
       handleRemove,
       handleAddNewQuestion,
       submitAllChanges,
+      handleCurrentQuizChange,
+      modalInputsModified,
     } = this.props;
 
     const modal = (
@@ -147,12 +149,13 @@ class QuizManagerPreview extends Component {
                     name="quizName"
                     placeholder="Quiz name"
                     id="idQuizName"
+                    onChange={handleCurrentQuizChange}
                   />
                 </div>
 
                 <div className="label-input">
                   <div>Quiz theme</div>
-                  <select value={quiz.theme_id} name="theme" id="idQuizTheme">
+                  <select value={quiz.theme_id} name="theme" id="idQuizTheme" onChange={handleCurrentQuizChange}>
                     {this.state.quizThemeList}
                   </select>
                 </div>
@@ -188,7 +191,7 @@ class QuizManagerPreview extends Component {
         </div>
 
         <button onClick={handleAddNewQuestion} className="buttonAdd" style={{width: "180px"}}>Add New Question</button>
-        <button onClick={() => submitAllChanges(quiz.name)} className="buttonSubmit" style={{width: "180px"}}>
+        <button onClick={() => submitAllChanges(quiz.name)} className="buttonSubmit" style={{width: "180px"}} disabled={!modalInputsModified}>
           Submit all changes
         </button>
         <br />

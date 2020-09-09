@@ -1,7 +1,10 @@
 import React from 'react';
 import "./QuestionModal.css";
 
-const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList, changeQuestionType, handleCurrentQuestionChange, saveToSelectQuiz}) => {
+
+
+const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList, changeQuestionType, changeQuestionCategory, handleCurrentQuestionChange, saveToSelectQuiz, modalInputsModified }) => {
+
     return (
         <div className="modal">
             <div className="center">
@@ -9,26 +12,28 @@ const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList,
                             <div className="label-input-top">
                                 <div style={{marginBottom: "3px"}}>Question</div>
                                 <input
+                                    className="inputQuestions"
                                     type="text"
-                                    style={{ width:"600px" }}
+                                    style={{ width:"602px" }}
                                     name="question_statement"
                                     value={currentEditQuestion.question_statement}
                                     onChange={handleCurrentQuestionChange}
                                 />
                             </div>
-                            <div className="label-input-top">
+                            <div className="label-input-top" style={{marginRight: "30px"}}>
                                 <div style={{marginBottom: "3px"}}>Question type</div>
-                                <select onChange={changeQuestionType} value={currentEditQuestion.questiontype_name} style={{width: "200px"}}>
+                                <select onChange={changeQuestionType} value={currentEditQuestion.questiontype_name} style={{width: "180px" }}>
                                     {
                                     questionTypeList.map((questionTypeObj => <option key={questionTypeObj.questiontype_id} value={questionTypeObj.questiontype_name}>{questionTypeObj.questiontype_name}</option>))
                                     }
                                 </select>
                             </div>
-                        </div>
-                        <div>
-                            <select id="idQuestionCategory" onChange={handleCurrentQuestionChange} value={currentEditQuestion.questioncategory_id}>
-                                {qaCategoryList}
-                            </select>
+                            <div className="label-input-top">
+                                <div style={{marginBottom: "3px"}}>Question category</div>
+                                <select id="idQuestionCategory" onChange={changeQuestionCategory} value={currentEditQuestion.questioncategory_id} style={{width: "180px" }}>
+                                    {qaCategoryList}
+                                </select>
+                            </div>
                         </div>
                             {currentEditQuestion.questiontype_id === 1 ?
                                 // Multiple choice
@@ -57,27 +62,20 @@ const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList,
                                             </label>
                                     </div>
                                     : (
-                                        // Open Ended
-                                        currentEditQuestion.answers.length < 4 ? (
-                                            <div>
-                                                <input type="text" name='0' value={ currentEditQuestion.answers[0].answer_statement}  onChange={handleCurrentQuestionChange}/>
-                                                <input type="text" name='1' value={ currentEditQuestion.answers[1].answer_statement}  onChange={handleCurrentQuestionChange}/>
-                                                <input type="text" name='2' value=''  onChange={handleCurrentQuestionChange}/>
-                                                <input type="text" name='3' value=''  onChange={handleCurrentQuestionChange}/>
+                                    // Open Ended
+                                        currentEditQuestion.answers.map((answerObj, idx) => (
+                                            <div className="quizAnswers" key={idx}>
+                                                <div style={{ marginRight: "15px" }}>Answer {idx+1}</div>
+                                                <input className="inputAnswers" style={{ width:"515px" }} type="text" name={idx} value={answerObj.answer_statement} onChange={handleCurrentQuestionChange} />
                                             </div>
-                                        ) :
-                                            currentEditQuestion.answers.map((answerObj, idx) => (
-                                                <div key={idx}>
-                                                    <input type="text" name={idx} value={answerObj.answer_statement} onChange={handleCurrentQuestionChange} />
-                                                </div>
-                                            )))
+                                        )))
 
                             }
 
                             {/* <select onChange={}>
                                  {qaTypeList.map((questionObj, idx) => <option key={questionObj.questiontype_name + idx}>{questionObj.questiontype_name}</option>)}
                                 </select> */}
-                            <button style={{marginTop: "15px", width: "150px"}} onClick={saveToSelectQuiz} className="rowBtnEdit">Save Changes</button>
+                            <button style={{marginTop: "15px", width: "150px"}} onClick={saveToSelectQuiz} className="rowBtnEdit" disabled={!modalInputsModified}>Save Changes</button>
             </div>
         </div>
     )
