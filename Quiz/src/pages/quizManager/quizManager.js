@@ -193,10 +193,12 @@ class QuizManager extends Component {
                 let data = convertQuizDetails(responseDataNew.payload[i])
                 newResponse.push(data)
             } 
-            console.log(this.state.isModalOpen)
+            // console.log(this.state.isModalOpen)
             this.setState({responseData: newResponse});
             document.getElementById("idVerifyDeleteQuizModal").setAttribute("class", "modalhide");
-
+            if (this.state.selectedQuiz) {
+                this.setState({selectedQuiz: null})
+            }
         }
 
     }
@@ -614,6 +616,7 @@ class QuizManager extends Component {
                             questionDeleted={this.state.questionDeleted}
                             handleBackToQM={() => this.handleBackToQM()}
                             modalInputsModified={this.state.modalInputsModified}
+                            deleteQuiz={this.deleteQuiz}
                         />
                     ) : filteredQuizzes ? (
                         <SelectQuiz

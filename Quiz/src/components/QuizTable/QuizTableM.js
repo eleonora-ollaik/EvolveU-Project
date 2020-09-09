@@ -13,11 +13,8 @@ class QuizTableM extends Component {
     }
 
     handleDeleteButton = (quizId) => {
-        console.log('quizId:', quizId)
         this.setState({ noticeMsg: "Are you sure you want to delete this quiz?"});
         this.setState({highlightedQuizID: quizId})
-        // console.log('highlighted id from quiztable1:', this.state.highlightedQuizID)
-        // console.log(this.state.noticeMsg)
         // Open verify modal box
         document.getElementById("idVerifyDeleteQuizModal").setAttribute("class", "modalshow");
         
