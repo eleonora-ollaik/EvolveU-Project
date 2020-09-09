@@ -172,25 +172,33 @@ class QuizManager extends Component {
     };
 
     deleteQuiz = async (quizId) => {
-        // let sel = this.selectQuiz(quizId);
         console.log('sel', quizId.highlightedQuizID)
-        // let quiz = this.state.selectedQuiz;
 
-        // console.log("quiz", this.state.selectedQuiz)
         console.log("responseData", this.state.responseData)
     
         const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/quiz";  
         let responsedata = null;
         let quizToDelete = {"quiz_id": quizId.highlightedQuizID}
         responsedata = await net.deleteData(url, quizToDelete);
-        console.log('after delete', this.state.responsedata)
+        let responseDataNew = await net.getData(url)
+        console.log('after delete', responseDataNew)
         if (responsedata.status >= 500) {
             throw (new Error(`${responsedata.status} ${responsedata.message}`));
         }
         else {
         //   this.clearQuizHeader();
-            // this.onClickModalClose();
             console.log("QUIZ DELETED!");
+            let newResponse = []
+            for (let i=0; i<responseDataNew.payload.length; i++) {
+                let data = convertQuizDetails(responseDataNew.payload[i])
+                newResponse.push(data)
+            } 
+            // console.log(this.state.isModalOpen)
+            this.setState({responseData: newResponse});
+            document.getElementById("idVerifyDeleteQuizModal").setAttribute("class", "modalhide");
+            if (this.state.selectedQuiz) {
+                this.setState({selectedQuiz: null})
+            }
         }
 
     }
@@ -609,6 +617,7 @@ class QuizManager extends Component {
                             questionDeleted={this.state.questionDeleted}
                             handleBackToQM={() => this.handleBackToQM()}
                             modalInputsModified={this.state.modalInputsModified}
+                            deleteQuiz={this.deleteQuiz}
                         />
                     ) : filteredQuizzes ? (
                         <SelectQuiz

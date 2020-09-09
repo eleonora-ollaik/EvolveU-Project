@@ -3,7 +3,7 @@ import "./quiz-manager-preview.css";
 import net from "../../business/netcomm";
 import ModalBox from "../modalbox/modalbox";
 import BackToQMConfirmation from '../modalbox/backtoqmconfirmation.js';
-
+import DeleteConfirmationModal from '../modalbox/deleteConfirmationContent.js'
 
 class QuizManagerPreview extends Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class QuizManagerPreview extends Component {
       quizThemeList: null,
       quizDefaultTheme: null,
       noticeMsg: "",
+      deleteNoticeMsg: "",
     };
   }
 
@@ -60,6 +61,14 @@ class QuizManagerPreview extends Component {
     }
   };
 
+  handleDeleteButton = (quizId) => {
+    this.setState({ deleteNoticeMsg: "Are you sure you want to delete this quiz?"});
+    // this.setState({highlightedQuizID: quizId})
+    // Open verify modal box
+    document.getElementById("idVerifyDeleteQuizModal").setAttribute("class", "modalshow");
+    
+}
+
   onClickCloseModal = (e) => {
     console.log("boo"); 
     const modal = e.target.parentNode.parentNode;
@@ -68,7 +77,7 @@ class QuizManagerPreview extends Component {
     // Handle edit modal box
     // this.setState({quizEdit: false});
     // Handle submit modal box
-    this.setState({noticeMsg: ""});    
+    this.setState({noticeMsg: "", deleteNoticeMsg: ""});    
   };
 
   render() {
@@ -80,7 +89,10 @@ class QuizManagerPreview extends Component {
       submitAllChanges,
       handleCurrentQuizChange,
       modalInputsModified,
+      deleteQuiz
     } = this.props;
+
+    const hidemsg = this.state.deleteNoticeMsg ? false : true;
 
     const modal = (
       <ModalBox
@@ -93,11 +105,21 @@ class QuizManagerPreview extends Component {
         hide={this.state.noticeMsg ? false : true}
       />
     );
+    const deleteConfirmationModal =
+    <ModalBox        
+    boxID="idVerifyDeleteQuizModal"        
+    content={<DeleteConfirmationModal highlightedQuizID={quiz.quizId}  deleteQuiz={deleteQuiz} noticeMsg={this.state.deleteNoticeMsg} onClickCancel={this.onClickCloseModal}/>}
+    onClickModalClose={this.onClickCloseModal} 
+    hide={hidemsg}/> 
+
     const quizModal = this.state.noticeMsg ? (
       modal
     ) : (
       <div id="idVerifyGoBackToQM"></div>
     );
+
+    const quizDeleteModal = this.state.deleteNoticeMsg ? deleteConfirmationModal : <div id="idVerifyDeleteQuizModal"></div>;
+
 
     let maxColNum = 0;
     for (let i = 0; i < quiz.questionsAndAnswers.length; i++) {
@@ -133,6 +155,8 @@ class QuizManagerPreview extends Component {
       <div>
         <br />
         <div style={{ color: "rgb(43, 57, 104)", fontSize: "1.6em" }}>{quiz.name}</div>
+        <button className='buttonCancel' style={{cursor: "pointer"}} onClick={() => this.handleDeleteButton(quiz.quizId)}>Delete Quiz</button>
+
         <hr width={"250px"} color={"rgb(43, 57, 104)"} style={{marginTop: "15px"}} />
             <div className="center">
               <div className="quizInfo">
@@ -155,6 +179,7 @@ class QuizManagerPreview extends Component {
                     {this.state.quizThemeList}
                   </select>
                 </div>
+
               </div>
             </div>
 
@@ -193,7 +218,7 @@ class QuizManagerPreview extends Component {
         <br />
 
         {quizModal}
-
+        {quizDeleteModal}
       </div>
     );
   }
