@@ -15,37 +15,34 @@ export class QAentry extends Component {
 
     return (
       <div>
-          <div className="quizInfo">
-          <div className="label-input">
-              <div>Enter question</div>
-              <input type="text" placeholder="Question" id="idQuestion" />
+          <div className="quizInfo" style={{marginBottom: "35px"}}>
+            <div className="label-input">
+              <div style={{marginBottom: "-4px"}}>Enter question</div>
+              <input type="text" placeholder="Question" id="idQuestion" style={{width: "520px"}}/>
             </div>
             <div className="label-input">
-              <div>Select a question type</div>
-              <select name="type" id="idQuestionType" onChange={this.props.onChange}>
+              <div style={{marginBottom: "5px"}}>Select a question type</div>
+              <select name="type" id="idQuestionType" onChange={this.props.onChange} style={{width: "200px", marginLeft: "-80px"}}>
                 {displayOption}
               </select>
             </div>
-            <div className="label-input">
-              <div>Select a category for the question</div>
+            <div className="label-input" style={{marginLeft: "-105px"}}>
+              <div style={{marginBottom: "5px"}} >Select question category</div>
               <select
                 name="type"
                 id="idQuestionCategory"
                 onChange={this.props.onChange}
+                style={{width: "200px", marginLeft: "-105px"}}
               >
                 {categoryList}
               </select>
             </div>
-
           </div>
 
-
-          <div className="answers">
+          <div className="answers" style={{marginLeft: "47px"}}>
             {ansDisplay}
           </div>
-
           <hr/>
-
       </div>
     );
   }

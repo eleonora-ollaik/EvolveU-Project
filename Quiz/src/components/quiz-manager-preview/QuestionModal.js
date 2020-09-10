@@ -3,7 +3,7 @@ import "./QuestionModal.css";
 
 
 
-const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList, changeQuestionType, changeQuestionCategory, handleCurrentQuestionChange, saveToSelectQuiz, modalInputsModified }) => {
+const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList, changeQuestionType, changeQuestionCategory, handleCurrentQuestionChange, saveToSelectQuiz, questionEdited }) => {
 
     return (
         <div className="modal">
@@ -75,7 +75,7 @@ const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList,
                             {/* <select onChange={}>
                                  {qaTypeList.map((questionObj, idx) => <option key={questionObj.questiontype_name + idx}>{questionObj.questiontype_name}</option>)}
                                 </select> */}
-                            <button style={{marginTop: "15px", width: "150px"}} onClick={saveToSelectQuiz} className="rowBtnEdit" disabled={!modalInputsModified}>Save Changes</button>
+                            <button style={{marginTop: "15px", width: "150px"}} onClick={saveToSelectQuiz} className="rowBtnEdit" disabled={!questionEdited}>Save Changes</button>
             </div>
         </div>
     )

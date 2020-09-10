@@ -46,7 +46,7 @@ class QuizManagerPreview extends Component {
       this.props.addingNewQuestion ||
       this.props.questionDeleted ||
       this.props.questionEdited || 
-      this.props.modalInputsModified
+      this.props.quizEdited
     ) {
       this.setState({
         noticeMsg:
@@ -88,7 +88,7 @@ class QuizManagerPreview extends Component {
       handleAddNewQuestion,
       submitAllChanges,
       handleCurrentQuizChange,
-      modalInputsModified,
+      quizEdited,
       deleteQuiz
     } = this.props;
 
@@ -210,7 +210,7 @@ class QuizManagerPreview extends Component {
         </div>
 
         <button onClick={handleAddNewQuestion} className="buttonAdd" style={{width: "180px"}}>Add New Question</button>
-        <button onClick={() => submitAllChanges(quiz.name)} className="buttonSubmit" style={{width: "180px"}} disabled={!this.props.questionEdited}>
+        <button onClick={() => submitAllChanges(quiz.name)} className="buttonSubmit" style={{width: "180px"}} disabled={!quizEdited}>
           Submit all changes
         </button>
         <br />
