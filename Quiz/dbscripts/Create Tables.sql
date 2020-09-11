@@ -39,7 +39,8 @@ CREATE TABLE quiz(
    quiz_name VARCHAR,
    theme_id INT NOT NULL,
    quiz_creation TIMESTAMPTZ,
-   quiz_update TIMESTAMPTZ
+   quiz_update TIMESTAMPTZ,
+   user_id VARCHAR
 );
 
 DROP TABLE IF EXISTS theme;
