@@ -22,7 +22,7 @@ class QuizTable extends Component {
         const list = quizData.map((quiz, i) => {
             return (
                 <tr key={i} onClick={() => this.props.selectQuiz(quiz.quizId)}>
-                    <td className='tableCells'>{quiz.quizId}</td>
+                    <td className='tableCells'>{i+1}</td>
                     <td className='quizTableName tableCells'>{quiz.name}</td>
                     <td className='tableCells'>{quiz.theme}</td>
                     {/* <td>{quiz.creator}</td> */}
