@@ -6,8 +6,8 @@ import BackToQMConfirmation from '../modalbox/backtoqmconfirmation.js';
 import DeleteConfirmationModal from '../modalbox/deleteConfirmationContent.js'
 
 class QuizManagerPreview extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       quizThemeList: null,
       quizDefaultTheme: null,
@@ -210,7 +210,7 @@ class QuizManagerPreview extends Component {
         </div>
 
         <button onClick={handleAddNewQuestion} className="buttonAdd" style={{width: "180px"}}>Add New Question</button>
-        <button onClick={() => submitAllChanges(quiz.name)} className="buttonSubmit" style={{width: "180px"}} disabled={!quizEdited}>
+        <button onClick={() => submitAllChanges(quiz.name)} className="buttonSubmit" disabled={!quizEdited}>
           Submit all changes
         </button>
         <br />

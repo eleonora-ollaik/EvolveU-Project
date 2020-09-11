@@ -37,7 +37,7 @@
 } 
 
 
-select {
+select #idQuestionType {
   height: 37px;
   margin: 0;
   padding: 0;

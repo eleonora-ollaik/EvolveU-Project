@@ -24,16 +24,16 @@
   
 .buttonSubmit {
     background-color: white; 
+    border-radius: 8px;
     border: 2px solid #4CAF50;
     color: black;
-    padding: 8px 8px;
-    margin: 5px 0 0 0;
-    text-align: center;
-    text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    border-radius: 8px;
-    width: 12em;
+    margin: 5px 0 0 0;
+    padding: 8px 8px;
+    text-align: center;
+    text-decoration: none;
+    width: 180px;
 }
     .buttonSubmit:hover {
         background-color: #4CAF50;;

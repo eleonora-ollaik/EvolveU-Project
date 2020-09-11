@@ -9,18 +9,18 @@ export default function Login(props) {
   //   password: ""}
   // )
   // const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [emailOrUsername, setEmailOrUsername] = useState("");
   const [password, setPassword] = useState("");
 
   function validateForm() {
-    return username.length > 0 && password.length > 0 ;
+    return emailOrUsername.length > 0 && password.length > 0 ;
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
     // console.log(event.target.value)
     try {
-      await Auth.signIn(username, password);
+      await Auth.signIn(emailOrUsername, password);
       props.handleLoggedIn();
       // alert("Logged in");
     } catch (e) {
@@ -31,7 +31,7 @@ export default function Login(props) {
 
   return (
       <div>
-        <form className="login-form">
+        <form className="login-form" id="login">
             <h1>Login</h1>
             {/* <div> */}
                 {/* <label htmlFor="login">Username or email</label> */}
@@ -47,10 +47,10 @@ export default function Login(props) {
              <div>
                  <label htmlFor="login">Username or email</label> 
                  <input 
-                    type="text" name="username" placeholder="Username" 
+                    type="text" name="username" placeholder="Username or Email" 
                     autoFocus
-                    value={username}
-                    onChange={e => setUsername(e.target.value)} 
+                    value={emailOrUsername}
+                    onChange={e => setEmailOrUsername(e.target.value)} 
                 />
             </div>  
 
