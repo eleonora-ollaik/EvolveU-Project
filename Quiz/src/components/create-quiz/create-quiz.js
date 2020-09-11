@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import populateAnswers from './create-quiz-util.js';
-import '../../pages/createQuizPage/CreateQuizForm.css';
+import './create-quiz.css';
 
 export class QAentry extends Component {
 
@@ -15,31 +15,31 @@ export class QAentry extends Component {
 
     return (
       <div>
-          <div className="quizInfo" style={{marginBottom: "35px"}}>
-            <div className="label-input">
-              <div style={{marginBottom: "-4px"}}>Enter question</div>
-              <input type="text" placeholder="Question" id="idQuestion" style={{width: "520px"}}/>
+          <div className="create-quizInfo">
+            <div className="create-question-input">
+              <div className="create-question-label">Enter question</div>
+              <input type="text" placeholder="Question" id="idQuestion"/>
             </div>
-            <div className="label-input">
-              <div style={{marginBottom: "5px"}}>Select a question type</div>
-              <select name="type" id="idQuestionType" onChange={this.props.onChange} style={{width: "200px", marginLeft: "-80px"}}>
+            <div className="create-question-input">
+              <div className="create-question-select">Select a question type</div>
+              <select style={{width: "200px"}} name="type" id="idQuestionType" onChange={this.props.onChange}>
                 {displayOption}
               </select>
             </div>
-            <div className="label-input" style={{marginLeft: "-105px"}}>
-              <div style={{marginBottom: "5px"}} >Select question category</div>
+            <div className="create-question-input">
+              <div className="create-question-select">Select question category</div>
               <select
+                style={{width: "200px", border: "1px solid black"}} 
                 name="type"
                 id="idQuestionCategory"
                 onChange={this.props.onChange}
-                style={{width: "200px", marginLeft: "-105px"}}
               >
                 {categoryList}
               </select>
             </div>
           </div>
 
-          <div className="answers" style={{marginLeft: "47px"}}>
+          <div className="create-answers">
             {ansDisplay}
           </div>
           <hr/>
