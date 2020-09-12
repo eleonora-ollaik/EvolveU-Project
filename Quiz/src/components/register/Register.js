@@ -47,10 +47,11 @@ export default function Register() {
 
   return (
       <div>
-        <form className="login-form">
+        <form className="login-form" >
             <h1>Register</h1>
             <div>
                 <input 
+                    autoComplete="new-password"
                     type="text" name="login" placeholder="Email" required
                     value={email}
                     onChange={e => setEmail(e.target.value)} 
@@ -58,6 +59,7 @@ export default function Register() {
             </div>
             <div>
                 <input 
+                    autoComplete="new-password"
                     type="text" name="username" placeholder="Username" required
                     value={username}
                     onChange={e => setUsername(e.target.value)} 
@@ -65,6 +67,7 @@ export default function Register() {
             </div>
             <div>
                 <input 
+                    autoComplete="new-password"
                     type="password" name='password' placeholder="Password" required 
                     value={password}
                     onChange={e => setPassword(e.target.value)}

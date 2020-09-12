@@ -3,8 +3,8 @@ import {Auth} from 'aws-amplify';
 import "./header.css";
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {};
   }
 
@@ -48,12 +48,9 @@ class Header extends Component {
         >
           Quiz Manager
         </button>
-        <div
-          className='logoutTab'
-        >
-          <span>Hello, {this.props.auth.user.username}!</span>
-         
-          <button onClick={() => this.handleSignOut()} className='logoutBtn'>Sign out</button>
+        <div className='logoutTab'>
+          <span className="item">Hello, {this.props.auth.user.username}!</span>
+          <button onClick={() => this.handleSignOut()} className='logoutBtn item'>Sign out</button>
         </div>
 
       </div>

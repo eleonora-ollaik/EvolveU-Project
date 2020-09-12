@@ -40,38 +40,37 @@
     font-weight: bold;
     width: 25%;
   }
-  
+
+  .item {
+    width: min-content;
+    padding: 10px;
+    background-color: rgba(111,41,97,.3);
+    display: inline-block;
+    vertical-align: middle
+  }
+
   .logoutTab {
     background-color: #e46821;
-    color: white;
-    float: right;
     border: none;
-    outline: none;
-    /* height: 100%; */
-    align-items: right;
-    margin-top: 0.5em;
-    /* cursor: pointer; */
-    padding: 16px 16px;
-    font-size: 1.4rem;
+    color: white;
     font-family: 'Acme', sans-serif;
+    font-size: 1.4rem;
     font-weight: bold;
+    margin-top: 0.5em;
+    padding: 16px 16px;
     width: 25%;
   }
 
   .logoutBtn {
-    cursor: pointer;
-    margin-left: 1.5em;
     background-color: white; 
-    color: black; 
-    border: 2px solid #5f5c5c;
-    padding: 6px 3px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 0.8rem;
     border-radius: 0.5rem;
+    border: 2px solid #5f5c5c;
+    color: black; 
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-left: 1.5em;
+    padding: 6px 3px;
     width: 4.8rem;
-
   }
 
   .logoutBtn:hover{

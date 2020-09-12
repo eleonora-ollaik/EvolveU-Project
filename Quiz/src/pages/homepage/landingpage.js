@@ -5,8 +5,8 @@ import './landingpage.css';
 
 
 class LandingPage extends Component {
-    constructor(props){
-        super(props)
+    constructor(){
+        super()
     }
     
     render(){

@@ -13,8 +13,8 @@ import net from "./business/netcomm";
 
 
 class App extends Component {
-  constructor(props){
-    super(props)
+  constructor(){
+    super()
 
     this.state = {
       currentPageNumber: 1,
