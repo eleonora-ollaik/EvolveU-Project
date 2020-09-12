@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import './QuizTable.css'
+import './QuizTableM.css'
 import ModalBox from "../modalbox/modalbox";
 import DeleteConfirmation from '../modalbox/deleteConfirmationContent.js';
+import deleteIcon from "../../assets/delete-24px.svg"; 
 
 class QuizTableM extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             highlightedQuizID: null,
             noticeMsg: "",
@@ -54,7 +55,7 @@ class QuizTableM extends Component {
                     <td className='tableCells'>{i+1}</td>
                     <td className='quizTableName tableCells' onClick={() => this.props.selectQuiz(quiz.quizId)}>{quiz.name}</td>
                     <td className='tableCells'>{quiz.theme}</td>
-                    <td className='tableCells'><span style={{cursor: "pointer"}} onClick={() => this.handleDeleteButton(quiz.quizId)} key={quiz.quizId} className="deleteQuizBtn">X</span></td>
+                    <td className="tableCells deleteQuizBtn"><span onClick={() => this.handleDeleteButton(quiz.quizId)} key={quiz.quizId} ><img src={deleteIcon} alt="Delete"/></span></td>
                 </tr>
             )
         });
