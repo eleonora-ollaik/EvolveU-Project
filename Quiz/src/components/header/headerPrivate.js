@@ -37,6 +37,14 @@ class Header extends Component {
         >
           Quiz Manager
         </button>
+        <div
+          className='logoutTab'
+        >
+          <span>Hello, {this.props.auth.user.username}!</span>
+         
+          <button className='logoutBtn'>Sign out</button>
+        </div>
+
       </div>
     );
   }

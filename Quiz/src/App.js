@@ -19,6 +19,7 @@ class App extends Component {
     this.state = {
       currentPageNumber: 1,
       isLoggedIn: false,
+      user: null,
       alertChangePage: false,
       qaCategoryList: null,
       qaDefaultCategory: null
@@ -30,6 +31,10 @@ class App extends Component {
   handleLoggedIn = () => {
     this.setState({isLoggedIn: true})
     console.log("Are we logged in? ", this.state.isLoggedIn)
+  }
+
+  setUser = user => {
+    this.setState({user: user})
   }
 
   setAlertChangePageToTrue = () => {
@@ -66,11 +71,19 @@ class App extends Component {
   
   
   render() {
+    let authProps = {
+      isLoggedIn: this.state.isLoggedIn,
+      user: this.state.user,
+      handleLoggedIn: this.handleLoggedIn,
+      setUser: this.setUser
+    }
+    console.log('this is user:', this.state.user)
+
     let renderPage;
-    if (this.state.currentPageNumber === 1) { renderPage = <LandingPage handleLoggedIn={() => this.handleLoggedIn()} isLoggedIn={this.state.isLoggedIn}/>} 
-    else if (this.state.currentPageNumber === 2) { renderPage = <CreateQuizForm getQACategoryList={this.getQACategoryList} qaCategoryList={this.state.qaCategoryList} qaDefaultCategory={this.state.qaDefaultCategory}/>} 
+    if (this.state.currentPageNumber === 1) { renderPage = <LandingPage auth={authProps} handleLoggedIn={() => this.handleLoggedIn()} isLoggedIn={this.state.isLoggedIn}/>} 
+    else if (this.state.currentPageNumber === 2) { renderPage = <CreateQuizForm auth ={authProps} getQACategoryList={this.getQACategoryList} qaCategoryList={this.state.qaCategoryList} qaDefaultCategory={this.state.qaDefaultCategory}/>} 
     else if (this.state.currentPageNumber === 3) { renderPage = <TakeQuiz />} 
-    else if (this.state.currentPageNumber === 4) { renderPage = <QuizManager getQACategoryList={this.getQACategoryList} qaCategoryList={this.state.qaCategoryList} qaDefaultCategory={this.state.qaDefaultCategory}/>} 
+    else if (this.state.currentPageNumber === 4) { renderPage = <QuizManager auth ={authProps} getQACategoryList={this.getQACategoryList} qaCategoryList={this.state.qaCategoryList} qaDefaultCategory={this.state.qaDefaultCategory}/>} 
     
     Amplify.configure({
       Auth: {
@@ -84,7 +97,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        {this.state.isLoggedIn? <HeaderPrivate currentPageNumber={this.state.currentPageNumber} handleNavigation={this.handleNavigation}/> : <HeaderPublic currentPageNumber={this.state.currentPageNumber} handleNavigation={this.handleNavigation}/>}
+        {this.state.isLoggedIn? <HeaderPrivate auth={authProps} currentPageNumber={this.state.currentPageNumber} handleNavigation={this.handleNavigation}/> : <HeaderPublic currentPageNumber={this.state.currentPageNumber} handleNavigation={this.handleNavigation}/>}
         {renderPage}
       </div>
     );

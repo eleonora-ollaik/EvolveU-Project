@@ -6,16 +6,10 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // const [confirmEmail, setConfirmEmail] = useState(false);
-  // const [confirmationCode, setConfirmationCode] = useState(null);
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
   }
-
-  // function validateCode() {
-  //   return confirmationCode > 0;
-  // }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -53,7 +47,7 @@ export default function Register() {
 
   return (
       <div>
-        <form className="login-form" id="register" autocomplete="off">
+        <form className="login-form">
             <h1>Register</h1>
             <div>
                 <input 
@@ -71,7 +65,7 @@ export default function Register() {
             </div>
             <div>
                 <input 
-                    autocomplete="new-password" type="password" name='password' placeholder="Password" required 
+                    type="password" name='password' placeholder="Password" required 
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                 /> 

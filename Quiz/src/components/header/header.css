@@ -1,10 +1,10 @@
 @import url(https://fonts.googleapis.com/css2?family=Acme&display=swap>);
 
 .appHeader {
+    background-color: #e46821;
     font-size: 4rem;
     font-family: 'Acme', sans-serif;
     display: flex;
-    background-color: #e46821;
     justify-content: center;
     align-items: center;
     overflow: hidden;
@@ -38,9 +38,48 @@
     font-size: 1.8rem;
     font-family: 'Acme', sans-serif;
     font-weight: bold;
-    width: 33.33%;
+    width: 25%;
   }
   
+  .logoutTab {
+    background-color: #e46821;
+    color: white;
+    float: right;
+    border: none;
+    outline: none;
+    height: 100%;
+    align-items: right;
+    margin-top: 5%;
+    /* cursor: pointer; */
+    padding: 16px 16px;
+    font-size: 1.4rem;
+    font-family: 'Acme', sans-serif;
+    font-weight: bold;
+    width: 25%;
+  }
+
+  .logoutBtn {
+    cursor: pointer;
+    margin-left: 1.5em;
+    background-color: white; 
+    color: black; 
+    border: 2px solid #5f5c5c;
+    padding: 6px 3px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.8rem;
+    border-radius: 0.5rem;
+    width: 4.8rem;
+
+  }
+
+  .logoutBtn:hover{
+    background-color: #5f5c5c;
+    color: white;
+
+}
+
   .tablink:hover {
     background-color: #db8f63;
     color: white;

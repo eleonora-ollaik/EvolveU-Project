@@ -12,7 +12,7 @@ class LandingPage extends Component {
     render(){
         const loginRegister = (!this.props.isLoggedIn? 
             <div className="row">
-                <div className="boxes"><Login handleLoggedIn={()=> this.props.handleLoggedIn()}/></div>
+                <div className="boxes"><Login auth={this.props.auth}handleLoggedIn={()=> this.props.handleLoggedIn()}/></div>
                 <div className="boxes"><Register /></div>
             </div> :
             <div>

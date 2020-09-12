@@ -3,12 +3,6 @@ import "./Login.css";
 import { Auth } from "aws-amplify";
 
 export default function Login(props) {
-  // const [user, setUser] = useState(
-  //   {email: "",
-  //   username: "",
-  //   password: ""}
-  // )
-  // const [email, setEmail] = useState("");
   const [emailOrUsername, setEmailOrUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,11 +12,10 @@ export default function Login(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    // console.log(event.target.value)
     try {
-      await Auth.signIn(emailOrUsername, password);
-      props.handleLoggedIn();
-      // alert("Logged in");
+      const user = await Auth.signIn(emailOrUsername, password);
+      props.auth.setUser(user)
+      props.auth.handleLoggedIn();
     } catch (e) {
       console.log("Catch", event)
       alert(e.message);
@@ -33,17 +26,6 @@ export default function Login(props) {
       <div>
         <form className="login-form" id="login">
             <h1>Login</h1>
-            {/* <div> */}
-                {/* <label htmlFor="login">Username or email</label> */}
-                {/* <input 
-                    type="text" name="login" placeholder="Email or username" 
-                    autoFocus
-                    // value={user.email}
-                    value={email}
-                    // onChange={e => setUser({[e.target.id]:e.target.value})} 
-                    onChange={e => setEmail(e.target.value)} 
-                />
-            </div> */}
              <div>
                  <label htmlFor="login">Username or email</label> 
                  <input 
@@ -55,7 +37,6 @@ export default function Login(props) {
             </div>  
 
             <div>
-                {/* <label htmlFor="password">Password</label> */}
                 <input 
                     type="password" name='password' placeholder="Password" required 
                     value={password}
@@ -65,7 +46,6 @@ export default function Login(props) {
             </div>
             <div>
                 <button type="submit" disabled={!validateForm()} onClick={(e) => handleSubmit(e)}>Continue</button>
-                {/* <button type="submit" onClick={(e) => handleSubmit(e)}>Continue</button> */}
 
             </div>       
         </form>
