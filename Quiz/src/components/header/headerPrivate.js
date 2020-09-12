@@ -1,10 +1,21 @@
 import React, { Component } from "react";
+import {Auth} from 'aws-amplify';
 import "./header.css";
 
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  async handleSignOut() {
+    try{
+      await Auth.signOut();
+      this.props.auth.handleLoggedOut();
+      this.props.handleNavigation(1);
+    } catch(error){
+      console.log('error signing out:', error)
+    }
   }
 
   render() {
@@ -42,7 +53,7 @@ class Header extends Component {
         >
           <span>Hello, {this.props.auth.user.username}!</span>
          
-          <button className='logoutBtn'>Sign out</button>
+          <button onClick={() => this.handleSignOut()} className='logoutBtn'>Sign out</button>
         </div>
 
       </div>

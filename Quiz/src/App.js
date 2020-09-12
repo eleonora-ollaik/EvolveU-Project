@@ -30,7 +30,10 @@ class App extends Component {
 
   handleLoggedIn = () => {
     this.setState({isLoggedIn: true})
-    console.log("Are we logged in? ", this.state.isLoggedIn)
+    // console.log("Are we logged in? ", this.state.isLoggedIn)
+  }
+  handleLoggedOut = () => {
+    this.setState({isLoggedIn:false})
   }
 
   setUser = user => {
@@ -75,6 +78,7 @@ class App extends Component {
       isLoggedIn: this.state.isLoggedIn,
       user: this.state.user,
       handleLoggedIn: this.handleLoggedIn,
+      handleLoggedOut: this.handleLoggedOut,
       setUser: this.setUser
     }
     console.log('this is user:', this.state.user)
