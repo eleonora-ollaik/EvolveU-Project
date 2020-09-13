@@ -32,7 +32,7 @@ export const getData = async (url = "") => {
 // collection is the json file from server.
 export const convertFormat = (serverData) => {
     console.log("serverData from convertFormat", serverData)
-    return serverData.map((quizObj) => ({name: quizObj.quiz_name,  quizId: quizObj.quiz_id, theme: quizObj.theme_name, theme_id: quizObj.theme_id}))
+    return serverData.map((quizObj) => ({name: quizObj.quiz_name,  quizId: quizObj.quiz_id, theme: quizObj.theme_name, theme_id: quizObj.theme_id, user_id: quizObj.user_id}))
 }
 
 export const convertQuizDetails = (serverData) => {

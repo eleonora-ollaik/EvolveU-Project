@@ -6,22 +6,28 @@ client = boto3.client('lambda')
 
 def lambda_handler(event, context):
     try:
-        query =f"SELECT * FROM \
-                    (SELECT * \
-                    FROM quiz \
-                    INNER JOIN theme \
-                    ON quiz.theme_id = theme.theme_id WHERE quiz_id = {event['quiz_id']}) as ct1 \
-                INNER JOIN  \
-                    (SELECT * \
-                    FROM \
+        print("query:",context)
+        if event['quiz_id'] != "": 
+            query =f"SELECT * FROM \
                         (SELECT * \
-                        FROM question \
-                        INNER JOIN answer \
-                        ON question.question_id = answer.question_id) as ct3 \
-                    INNER JOIN questiontype \
-                    ON ct3.questiontype_id = questiontype.questiontype_id) as ct2 \
-                ON ct1.quiz_id = ct2.quiz_id;"
-
+                        FROM quiz \
+                        INNER JOIN theme \
+                        ON quiz.theme_id = theme.theme_id WHERE quiz_id = {event['quiz_id']}) as ct1 \
+                    INNER JOIN  \
+                        (SELECT * \
+                        FROM \
+                            (SELECT * \
+                            FROM question \
+                            INNER JOIN answer \
+                            ON question.question_id = answer.question_id) as ct3 \
+                        INNER JOIN questiontype \
+                        ON ct3.questiontype_id = questiontype.questiontype_id) as ct2 \
+                    ON ct1.quiz_id = ct2.quiz_id;"            
+        else:         
+                query ="SELECT quiz_id, quiz_name, quiz_creation, quiz_update, user_id, quiz.theme_id AS theme_id, theme_name FROM quiz \
+                INNER JOIN theme \
+                    ON quiz.theme_id = theme.theme_id"
+        
         inputParams = {
             "query": query,
             "haspayload": True   
@@ -32,14 +38,17 @@ def lambda_handler(event, context):
             InvocationType = 'RequestResponse',
             Payload = json.dumps(inputParams)
         )
-
+        
         responseFromChild = json.load(response["Payload"])
+        print('child', responseFromChild)
         if responseFromChild['statusCode'] > 200:
             raise
 
         # Repackage the result into Json format accepted by front end
-        payload = repack_payload(json.loads(responseFromChild["payload"]))
-
+        if event['quiz_id'] != "":
+            payload = repack_payload(json.loads(responseFromChild["payload"]))
+        else:
+            payload = json.loads(responseFromChild["payload"])
         return {
             'statusCode': 200,
             'body': "Query Executed Successfully",
@@ -50,12 +59,12 @@ def lambda_handler(event, context):
 
         return {
             'statusCode': 400,
-            'body': json.dumps('An error occurred'),
+            'body': 'An error occurred',
             'payload': {}
         }
 
 def repack_payload(payload):
-        # Initialize all temporary json list elements
+            # Initialize all temporary json list elements
         jsonResult = []
         QList = []
         Alist = []
@@ -64,13 +73,13 @@ def repack_payload(payload):
         prevQuizID = -1
         prevQuestionID = -1
         prevAnsID = -1
-        
+    
         # Loop through all rows in quiz payload result
         for row in payload:
             quizDict={}
             curQuizID = row["quiz_id"]        
             if curQuizID != prevQuizID:
-                quizDict = {"quiz_id": row["quiz_id"], "quiz_name": row["quiz_name"], 
+                quizDict = {"quiz_id": row["quiz_id"], "quiz_name": row["quiz_name"], "user_id": row["user_id"], 
                             "theme_id": row["theme_id"], "theme_name": row["theme_name"]}            
                 jsonResult.append(quizDict)
                 QList = []
@@ -79,6 +88,7 @@ def repack_payload(payload):
             curQuestionID = row["question_id"]
             if curQuestionID != prevQuestionID:
                 QuestionDict = {"question_id": row["question_id"], "question_category": row["question_category"], 
+                                "questioncategory_id": row["questioncategory_id"],
                                 "question_statement": row["question_statement"],
                                 "question_correct_entries": row["question_correct_entries"], 
                                 "question_wrong_entries": row["question_wrong_entries"],                            

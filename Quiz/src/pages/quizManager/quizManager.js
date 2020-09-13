@@ -630,6 +630,7 @@ class QuizManager extends Component {
     }
 
     render() {
+        //This returns quizzes from searchbar
         let filteredQuizzes = this.state.responseData;
         // console.log(this.props.qaCategoryList)
         if (this.state.responseData) {
@@ -674,6 +675,7 @@ class QuizManager extends Component {
                         />
                     ) : filteredQuizzes ? (
                         <SelectQuiz
+                            user={this.props.auth.user}
                             subHeader={"Please select a quiz to edit!"}
                             value={this.state.value}
                             handleChange={this.handleChange}

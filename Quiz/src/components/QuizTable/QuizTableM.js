@@ -35,7 +35,7 @@ class QuizTableM extends Component {
 
     render(){
         const hidemsg = this.state.noticeMsg ? false : true;
-
+        // console.log(this.props.user)
         const modal =
                 <ModalBox         
                 boxID="idVerifyDeleteQuizModal"        
@@ -46,18 +46,20 @@ class QuizTableM extends Component {
         const { quizData } = this.props;
         const quizDataArray = Object.values(quizData) // Turn Quiz Data (responseData) from Object to Array
         const quizModal = this.state.noticeMsg ? modal : <div id="idVerifyDeleteQuizModal"></div>;
-
+        let {user} = this.props;
+        let user_id = user.attributes.sub
         // style={{backgroundColor: this.state.highlightedQuizID === quiz.quizId?'red':'white'}}
     
         const list = quizDataArray.map((quiz, i) => {
-            return (
-                <tr key={i}>
-                    <td className='tableCells'>{i+1}</td>
-                    <td className='quizTableName tableCells' onClick={() => this.props.selectQuiz(quiz.quizId)}>{quiz.name}</td>
-                    <td className='tableCells'>{quiz.theme}</td>
-                    <td className="tableCells deleteQuizBtn"><span onClick={() => this.handleDeleteButton(quiz.quizId)} key={quiz.quizId} ><img src={deleteIcon} alt="Delete"/></span></td>
-                </tr>
-            )
+            if (quiz.user_id === user_id){
+                return (
+                    <tr key={i}>
+                        <td className='tableCells'>{i+1}</td>
+                        <td className='quizTableName tableCells' onClick={() => this.props.selectQuiz(quiz.quizId)}>{quiz.name}</td>
+                        <td className='tableCells'>{quiz.theme}</td>
+                        <td className="tableCells deleteQuizBtn"><span onClick={() => this.handleDeleteButton(quiz.quizId)} key={quiz.quizId} ><img src={deleteIcon} alt="Delete"/></span></td>
+                    </tr>
+            )}
         });
     
         return (
