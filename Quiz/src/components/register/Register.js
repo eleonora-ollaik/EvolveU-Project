@@ -7,6 +7,12 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+
+  // {
+  //   "cognito_id": "123-45a",
+  //   "user_email": "value2@gmail.com",
+  //   "username": "blablabla"
+  // }
   function validateForm() {
     return email.length > 0 && password.length > 0;
   }

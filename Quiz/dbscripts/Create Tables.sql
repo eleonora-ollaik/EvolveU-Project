@@ -62,7 +62,8 @@ CREATE TABLE questioncategory (
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
    user_id serial PRIMARY KEY,
+   cognito_id VARCHAR,
    user_email VARCHAR,
    username VARCHAR,
-   user_creation TIMESTAMPTZ,
+   user_creation TIMESTAMPTZ
 ); 

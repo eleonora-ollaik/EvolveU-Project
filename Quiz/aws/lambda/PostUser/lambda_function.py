@@ -6,8 +6,9 @@ client = boto3.client('lambda')
 
 def lambda_handler(event, context):
     try:
-        query = f"INSERT INTO users (user_id, user_email, username, user_creation) VALUES ('{event['user_id']}', {event['user_email']}, {event['username']}, now() RETURNING *"
-
+        print(event)
+        query = f"INSERT INTO users (cognito_id, user_email, username, user_creation) VALUES ('{event['cognito_id']}', '{event['user_email']}', '{event['username']}', now()) RETURNING *"
+        print(query)
         inputParams = {
             "query": query,
             "haspayload": True   
