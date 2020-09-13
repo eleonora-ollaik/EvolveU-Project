@@ -37,9 +37,10 @@ class QuestionsAndAnswers {
 class Quiz {
     static lastKey = 0;
 
-    constructor(name, theme) {
+    constructor(name, theme, user_id) {
         this.name = name;
         this.theme = theme;
+        this.user_id = user_id;
         this.QuestionsAndAnswers = {};
     }
 

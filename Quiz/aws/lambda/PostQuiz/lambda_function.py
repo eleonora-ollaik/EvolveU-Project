@@ -6,12 +6,15 @@ client = boto3.client('lambda')
 
 def lambda_handler(event, context):
     try:
+        
         ################################################### 
         # Insert record into quiz table
         ###################################################
         quiz_name = event['quiz_name']
         theme_id = event['theme_id']
-        query = f"INSERT INTO quiz (quiz_name, theme_id, quiz_creation, quiz_update) VALUES ('{quiz_name}', {theme_id}, now(), now()) RETURNING *;"  
+        user_id = event['user_id']
+        print('this is event:', event)
+        query = f"INSERT INTO quiz (quiz_name, theme_id, quiz_creation, quiz_update, user_id) VALUES ('{quiz_name}', {theme_id}, now(), now(), '{user_id}') RETURNING *;"  
 
         # Execute the SQL statement
         inputParams = {
@@ -38,14 +41,14 @@ def lambda_handler(event, context):
         ################################################### 
         questions = event['questions']
         questionSQL = "INSERT INTO question (quiz_id, question_category, \
-    				   questiontype_id, question_statement, \
+    				    questioncategory_id, questiontype_id, question_statement, \
     				   question_correct_entries, question_wrong_entries, \
     				   question_creation, question_update) "
         questionValues = "VALUES"
     
         for q in questions:
             questionValues = f"{questionValues} ({quiz_id}, '{q['question_category']}', \
-                               {q['questiontype_id']}, '{q['question_statement']}', \
+                               {q['questioncategory_id']}, {q['questiontype_id']}, '{q['question_statement']}', \
                                {q['question_correct_entries']}, {q['question_wrong_entries']}, \
                                now(), now()),"
     

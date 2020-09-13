@@ -40,7 +40,7 @@ CREATE TABLE quiz(
    theme_id INT NOT NULL,
    quiz_creation TIMESTAMPTZ,
    quiz_update TIMESTAMPTZ,
-   user_id VARCHAR
+   user_id VARCHAR NOT NULL
 );
 
 DROP TABLE IF EXISTS theme;
@@ -57,4 +57,12 @@ CREATE TABLE questioncategory (
    questioncategory_name  VARCHAR,
    questioncategory_creation TIMESTAMPTZ,
    questioncategory_update TIMESTAMPTZ
+); 
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+   user_id serial PRIMARY KEY,
+   user_email VARCHAR,
+   username VARCHAR,
+   user_creation TIMESTAMPTZ,
 ); 

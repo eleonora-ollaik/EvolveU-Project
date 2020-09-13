@@ -144,6 +144,7 @@ export class CreateQuizForm extends Component {
         let webdata = {
           "quiz_name": quiz.name, 
           "theme_id": quiz.theme,
+          "user_id": quiz.user_id, 
           "questions": QAjson
         }    
         console.log("webdata", webdata)
@@ -188,6 +189,10 @@ export class CreateQuizForm extends Component {
 
   onClickSubmitQuestion = (e) => {
     const quizObj = new logic.Quiz();
+    
+    // quizObj.user_id = this.props.auth.attributes.sub
+    quizObj.user_id = this.props.auth.user.attributes.sub
+    // console.log('this is user id:', this.props.auth.user.attributes.sub)
     quizObj.name = document.getElementById("idQuizName").value;
     quizObj.theme = document.getElementById("idQuizTheme").value;
     quizObj.QuestionsAndAnswers = this.state.quizes.QuestionsAndAnswers;
