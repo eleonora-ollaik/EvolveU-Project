@@ -99,7 +99,7 @@ class QuizManager extends Component {
         async function onLoad() {
             try {
                 const user = await loadUser();
-                console.log(user)
+                console.log(user.attributes.sub)
             }catch(e){
                 console.log(e)
             }

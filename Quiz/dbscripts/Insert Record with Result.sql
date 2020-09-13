@@ -30,7 +30,18 @@ VALUES
 ('Open Ended', 'TextAnswerInput', 4, 0, now(), now());
 
 INSERT INTO theme (theme_name, 
-					theme_creation, theme_update) 
+					theme_creation, theme_update)
+VALUES
+('Entertainment', now(), now()),
+('Gaming', now(), now()),
+('Geography', now(), now()),
+('Trivia', now(), now()),
+('History', now(), now()),
+('Science', now(), now()),
+('Arts', now(), now());
+
+INSERT INTO questioncategory (questioncategory_name, 
+					questioncategory_creation, questioncategory_update) 
 VALUES
 ('History', now(), now()),
 ('Sports', now(), now()),

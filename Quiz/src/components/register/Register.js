@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../login/Login.css";
 import { Auth } from "aws-amplify";
+// import net from "../../business/netcomm"
+// import net from "../../fetch-data.util.js"
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -20,36 +22,57 @@ export default function Register() {
   async function handleSubmit(event) {
     event.preventDefault();
     console.log("Works", email, username, password)
+    
     try {
       const newUser = await Auth.signUp({
         username: username,
         password: password,
         attributes: {
           email: email
-
+          
         }
       });
       alert("Your confirmation email is on the way!")
+      
+      // let responseData;
+      // let url ='https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/user'
+      // let user = await Auth.currentUserInfo()
+      // let webdata = {
+      //   "cognito_id": user.attributes.sub,
+      //   "user_email": email,
+      //   "username": username
+      // }
+
+      // console.log('this is user webdata', webdata);
+
+      // responseData = await net.postData(url, webdata);
+
+      // if (responseData.status >= 500) {
+      //   throw (new Error(`${responseData.status} ${responseData.message}`))
+      // }
+      // else {
+      //   console.log('User saved')
+      // }
       // setConfirmEmail(email);
       console.log("newUser from Register", newUser)
     } catch (e) {
       alert("Failed", e)
     }
   }
-  async function handleConfirmCode(event) {
-    event.preventDefault();
+  // async function handleConfirmCode(event) {
+  //   event.preventDefault();
   
-    try {
+  //   try {
 
-      // console.log('this is before')
-      await Auth.confirmSignUp(email);
-      // console.log(username, confirmationCode)
-      // await Auth.signIn(username, password);
-      alert("Your registration has been successfully confirmed!")
-    } catch (e) {
-      alert("Registration failed! ", e);
-    }
-  }
+  //     // console.log('this is before')
+  //     await Auth.confirmSignUp(email);
+  //     // console.log(username, confirmationCode)
+  //     // await Auth.signIn(username, password);
+  //     alert("Your registration has been successfully confirmed!")
+  //   } catch (e) {
+  //     alert("Registration failed! ", e);
+  //   }
+  // }
 
   return (
       <div>
