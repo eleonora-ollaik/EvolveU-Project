@@ -96,22 +96,25 @@
 
 
 .createButtonActive {
-  background-color: rgba(0,212,255,1); 
+  background-color: #C850C0;
+  /* background-color: rgba(0,212,255,1);  */
   color: rgba(2,0,36,1);
   cursor: not-allowed;
   pointer-events: none;
 }
 
 .takeButtonActive {
-  background-color: rgba(197,185,247,1);
+  background-color: #2BD2FF;
+  /* background-color: rgba(197,185,247,1); */
   color: rgba(56,31,111,1);
   cursor: not-allowed;
   pointer-events: none;
 }
 
 .qmButtonActive {
-  background-color: rgba(229,230,189,1); 
-  color: rgba(82,84,12,1);
+  background-color: #2AF598;
+  /* background-color: rgba(229,230,189,1);  */
+  color: rgb(12, 84, 48);
   cursor: not-allowed;
   pointer-events: none;
 }
