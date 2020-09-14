@@ -47,7 +47,7 @@ class QuizTableM extends Component {
         const quizDataArray = Object.values(quizData) // Turn Quiz Data (responseData) from Object to Array
         const quizModal = this.state.noticeMsg ? modal : <div id="idVerifyDeleteQuizModal"></div>;
         let {user} = this.props;
-        let user_id = user.attributes.sub
+        let user_id = user.username
         // style={{backgroundColor: this.state.highlightedQuizID === quiz.quizId?'red':'white'}}
     
         const list = quizDataArray.map((quiz, i) => {
@@ -59,10 +59,10 @@ class QuizTableM extends Component {
                         <td className='tableCells'>{quiz.theme}</td>
                         <td className="tableCells deleteQuizBtn"><span onClick={() => this.handleDeleteButton(quiz.quizId)} key={quiz.quizId} ><img src={deleteIcon} alt="Delete"/></span></td>
                     </tr>
-            )}
+            )} 
         });
-    
         return (
+            (list.length <1 ? <span>Sorry, you have not created any quizzes yet</span> :
             <div>
                 <div className='selectTable'>
                     {/* <h3>Quiz creator: </h3><div>{quizDataArray[0].creator}</div>  */}
@@ -84,8 +84,7 @@ class QuizTableM extends Component {
 
                {quizModal}
             </div>
-        )
-
+        ))
     }
 
 }

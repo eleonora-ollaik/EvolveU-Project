@@ -16,8 +16,9 @@ const SelectQuiz = ({ subHeader, value, user, deleteQuiz, handleChange, response
       placeholder="Search by quiz name"
       onChange={handleChange}
     />
+    <br/>
     {responseData ? (
-      origin==="TakeQuiz"? <QuizTable quizData={responseData} selectQuiz={selectQuiz}/> : 
+      origin==="TakeQuiz"? <QuizTable user={user} quizData={responseData} selectQuiz={selectQuiz}/> : 
       <QuizTableM user={user} deleteQuiz={deleteQuiz} quizData={responseData} selectQuiz={selectQuiz}/> 
       
     ) : (

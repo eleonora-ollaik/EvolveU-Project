@@ -37,7 +37,7 @@ export const convertFormat = (serverData) => {
 
 export const convertQuizDetails = (serverData) => {
   console.log("serverData from convertQuizDetails", serverData)
-  const quizDetails = {name: serverData.quiz_name, quizId: serverData.quiz_id, theme: serverData.theme_name, theme_id: serverData.theme_id, questionsAndAnswers: serverData.questions};
+  const quizDetails = {name: serverData.quiz_name, quizId: serverData.quiz_id, theme: serverData.theme_name, theme_id: serverData.theme_id, user_id: serverData.user_id, questionsAndAnswers: serverData.questions};
   // questionsAndAnswers is now an ARRAY !!!
   return quizDetails;
 }

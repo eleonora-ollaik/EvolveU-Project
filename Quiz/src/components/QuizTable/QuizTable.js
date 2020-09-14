@@ -25,7 +25,7 @@ class QuizTable extends Component {
                     <td className='tableCells'>{i+1}</td>
                     <td className='quizTableName tableCells'>{quiz.name}</td>
                     <td className='tableCells'>{quiz.theme}</td>
-                    {/* <td>{quiz.creator}</td> */}
+                    <td className='tableCells'>{quiz.user_id}</td>
                 </tr>
     
             )
@@ -39,6 +39,8 @@ class QuizTable extends Component {
                             <th>ID</th>
                             <th>Quiz name</th>
                             <th>Theme</th>
+                            <th>Creator</th>
+
                         </tr>
                     </thead>
                     <tbody>

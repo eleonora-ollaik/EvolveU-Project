@@ -191,7 +191,7 @@ export class CreateQuizForm extends Component {
     const quizObj = new logic.Quiz();
     
     // quizObj.user_id = this.props.auth.attributes.sub
-    quizObj.user_id = this.props.auth.user.attributes.sub
+    quizObj.user_id = this.props.auth.user.username
     // console.log('this is user id:', this.props.auth.user.attributes.sub)
     quizObj.name = document.getElementById("idQuizName").value;
     quizObj.theme = document.getElementById("idQuizTheme").value;
