@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 export class deleteConfirmationContent extends Component {
-    constructor(props) {
-        super(props)
+    constructor() {
+        super()
     }
     render() {
         const { onClickCancel, deleteQuiz, highlightedQuizID } = this.props; 
@@ -11,7 +11,7 @@ export class deleteConfirmationContent extends Component {
             <div>
                 {this.props.noticeMsg}
                 <br/>
-                <button onClick={() => deleteQuiz({highlightedQuizID})}> Delete </button>
+                <button onClick={() => deleteQuiz(highlightedQuizID)}> Delete </button>
                 <button onClick={onClickCancel}> Cancel </button>
             </div>
         )

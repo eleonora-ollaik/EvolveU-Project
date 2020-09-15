@@ -4,6 +4,7 @@ import net from "../../business/netcomm";
 import ModalBox from "../modalbox/modalbox";
 import BackToQMConfirmation from '../modalbox/backtoqmconfirmation.js';
 import DeleteConfirmationModal from '../modalbox/deleteConfirmationContent.js'
+import deleteIcon from "../../assets/delete-24px.svg"; 
 
 class QuizManagerPreview extends Component {
   constructor() {
@@ -107,9 +108,13 @@ class QuizManagerPreview extends Component {
     );
     const deleteConfirmationModal =
     <ModalBox        
-    boxID="idVerifyDeleteQuizModal"        
-    content={<DeleteConfirmationModal highlightedQuizID={quiz.quizId}  deleteQuiz={deleteQuiz} noticeMsg={this.state.deleteNoticeMsg} onClickCancel={this.onClickCloseModal}/>}
-    onClickModalClose={this.onClickCloseModal} 
+      boxID="idVerifyDeleteQuizModal"        
+      content={<DeleteConfirmationModal 
+        highlightedQuizID={quiz.quizId}  
+        deleteQuiz={deleteQuiz} 
+        noticeMsg={this.state.deleteNoticeMsg} 
+        onClickCancel={this.onClickCloseModal}/>}
+      onClickModalClose={this.onClickCloseModal} 
     hide={hidemsg}/> 
 
     const quizModal = this.state.noticeMsg ? (
@@ -155,7 +160,7 @@ class QuizManagerPreview extends Component {
       <div>
         <br />
         <div style={{ color: "rgb(43, 57, 104)", fontSize: "1.6em" }}>{quiz.name}</div>
-        <button className='buttonCancel' style={{cursor: "pointer"}} onClick={() => this.handleDeleteButton(quiz.quizId)}>Delete Quiz</button>
+        {/* <button className='buttonCancel' style={{cursor: "pointer"}} onClick={() => this.handleDeleteButton(quiz.quizId)}>Delete Quiz</button> */}
 
         <hr width={"250px"} color={"rgb(43, 57, 104)"} style={{marginTop: "15px"}} />
             <div className="center">
@@ -191,6 +196,8 @@ class QuizManagerPreview extends Component {
                 <th key="thtn">Type</th>
                 <th key="thcn">Category</th>
                 {answerTitle}
+                <th className="cellsButtons"></th>
+                <th className="cellsButtons tooltip"><span onClick={() => this.handleDeleteButton(quiz.quizId)} key={quiz.quizId} ><img className="deleteQuizBtnPreview" src={deleteIcon} alt="Delete"/><span className="tooltiptext">Delete Quiz</span></span></th>
               </tr>
               {entries}
             </tbody>

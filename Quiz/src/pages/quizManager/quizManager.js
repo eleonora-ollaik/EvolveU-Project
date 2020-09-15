@@ -172,14 +172,15 @@ class QuizManager extends Component {
         this.setState({ questionDeleted: true })
     };
 
-    deleteQuiz = async (quizId) => {
-        console.log('sel', quizId.highlightedQuizID)
+    deleteQuiz = async (highlightedQuizID) => {
+        console.log('highlightedQuizID', highlightedQuizID)
 
         console.log("responseData", this.state.responseData)
     
         const url = "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/quiz";  
         let responsedata = null;
-        let quizToDelete = {"quiz_id": quizId.highlightedQuizID}
+        
+        let quizToDelete = {"quiz_id": highlightedQuizID}
         responsedata = await net.deleteData(url, quizToDelete);
         let responseDataNew = await net.getData(url)
         console.log('after delete', responseDataNew)
