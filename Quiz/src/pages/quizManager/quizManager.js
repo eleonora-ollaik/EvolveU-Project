@@ -376,10 +376,10 @@ class QuizManager extends Component {
             tempQuiz.questionsAndAnswers.push(this.state.currentEditQuestion);
             console.log("tempQuiz after push", tempQuiz)
         } 
-        // else {
-        //     tempQuiz.questionsAndAnswers = tempQuiz.questionsAndAnswers.map((questionObj) => questionObj.question_id === this.state.currentEditQuestion.question_id ? this.state.currentEditQuestion : questionObj);
+        else {
+            tempQuiz.questionsAndAnswers = tempQuiz.questionsAndAnswers.map((questionObj) => questionObj.question_id === this.state.currentEditQuestion.question_id ? this.state.currentEditQuestion : questionObj);
 
-        // }
+        }
         
         // else {
         //     let newQuestionArr = tempQuiz.questionsAndAnswers.filter((questionObj) => !questionObj.hasOwnProperty("question_id"))
