@@ -100,12 +100,10 @@ tr {
 .rowBtnEdit:hover{
     background-color: #65d368;
     color: white;
-
 }
 
 .rowBtnDelete:hover{
     background-color: rgb(199, 53, 53);
     color: white;
-
 }
 

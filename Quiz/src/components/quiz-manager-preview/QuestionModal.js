@@ -75,7 +75,7 @@ const QuestionModal = ({ currentEditQuestion,  qaCategoryList, questionTypeList,
                             {/* <select onChange={}>
                                  {qaTypeList.map((questionObj, idx) => <option key={questionObj.questiontype_name + idx}>{questionObj.questiontype_name}</option>)}
                                 </select> */}
-                            <button style={{marginTop: "15px", width: "150px"}} onClick={saveToSelectQuiz} className="rowBtnEdit" disabled={!questionEdited}>Save Changes</button>
+                            <button onClick={saveToSelectQuiz} className={questionEdited ? "saveBtn-active" : "saveBtn-inactive"} disabled={!questionEdited}>Save Changes</button>
             </div>
         </div>
     )
