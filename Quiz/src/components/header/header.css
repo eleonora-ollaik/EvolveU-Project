@@ -96,7 +96,9 @@
 
 
 .createButtonActive {
-  background-color: #C850C0;
+  /* background-color: #C850C0; */
+  background-image: linear-gradient(90deg,rgb(176, 82, 195)0%,rgb(205, 91, 184)100%);
+
   /* background-color: rgba(0,212,255,1);  */
   color: rgba(2,0,36,1);
   cursor: not-allowed;
@@ -105,6 +107,9 @@
 
 .takeButtonActive {
   background-color: #2BD2FF;
+  background-image: linear-gradient(90deg,#2BD2FF 0%,rgb(43, 225, 216)100%);
+
+  
   /* background-color: rgba(197,185,247,1); */
   color: rgba(56,31,111,1);
   cursor: not-allowed;
