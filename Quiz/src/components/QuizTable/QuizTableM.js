@@ -44,14 +44,23 @@ class QuizTableM extends Component {
                 hide={hidemsg}/> 
 
         const { quizData } = this.props;
-        const quizDataArray = Object.values(quizData) // Turn Quiz Data (responseData) from Object to Array
-        const quizModal = this.state.noticeMsg ? modal : <div id="idVerifyDeleteQuizModal"></div>;
+        console.log(quizData)
         let {user} = this.props;
         let user_id = user.username
+
+        const quizDataArray = []
+        for (const QA of Object.values(quizData)) {
+            if (QA.user_id === user_id) {
+                quizDataArray.push(QA)
+            }
+        } 
+        console.log(quizDataArray)
+        //  = Object.values(quizData) // Turn Quiz Data (responseData) from Object to Array
+        const quizModal = this.state.noticeMsg ? modal : <div id="idVerifyDeleteQuizModal"></div>;
         // style={{backgroundColor: this.state.highlightedQuizID === quiz.quizId?'red':'white'}}
     
         const list = quizDataArray.map((quiz, i) => {
-            if (quiz.user_id === user_id){
+            // if (quiz.user_id === user_id){
                 return (
                     <tr key={i}>
                         <td className='tableCells'>{i+1}</td>
@@ -59,8 +68,9 @@ class QuizTableM extends Component {
                         <td className='tableCells'>{quiz.theme}</td>
                         <td className="tableCells deleteQuizBtn"><span onClick={() => this.handleDeleteButton(quiz.quizId)} key={quiz.quizId} ><img src={deleteIcon} alt="Delete"/></span></td>
                     </tr>
-            )} 
+            )
         });
+        console.log(list)
         return (
             (list.length <1 ? <span>Sorry, you have not created any quizzes yet</span> :
             <div>
