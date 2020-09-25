@@ -1,5 +1,6 @@
 .quizManagerContainer {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Raleway', sans-serif;
+    /* font-family: Arial, Helvetica, sans-serif; */
     font-weight: bold;
     color: rgb(78, 62, 62);
     overflow: auto;
