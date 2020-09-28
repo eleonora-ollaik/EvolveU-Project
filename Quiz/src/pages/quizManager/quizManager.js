@@ -375,6 +375,7 @@ class QuizManager extends Component {
                 
             tempQuiz.questionsAndAnswers.push(this.state.currentEditQuestion);
             console.log("tempQuiz after push", tempQuiz)
+            this.setState({ addingNewQuestion: false})
         } 
         else {
             tempQuiz.questionsAndAnswers = tempQuiz.questionsAndAnswers.map((questionObj) => questionObj.question_id === this.state.currentEditQuestion.question_id ? this.state.currentEditQuestion : questionObj);

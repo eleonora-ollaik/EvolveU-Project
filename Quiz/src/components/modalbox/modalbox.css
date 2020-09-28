@@ -88,3 +88,7 @@
 #idEditQAModal .WrongAnswer {
   margin-left: 10px;
 }
+
+#idEditQAModal #idQuestionType {
+  margin-right: 10px;
+}
