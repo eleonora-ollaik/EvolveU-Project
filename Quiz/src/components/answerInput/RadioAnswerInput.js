@@ -40,7 +40,7 @@ export class RadioAnswerInput extends Component {
         }
         
         return (
-            <div>
+            <div className='edit-answers'>
                 {display}
             </div>
         )

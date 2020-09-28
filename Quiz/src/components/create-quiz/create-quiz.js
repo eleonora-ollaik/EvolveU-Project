@@ -22,14 +22,19 @@ export class QAentry extends Component {
             </div>
             <div className="create-question-input">
               <div className="create-question-select">Select a question type</div>
-              <select name="type" id="idQuestionType" onChange={this.props.onChange}>
+              <select 
+                name="type" 
+                id="idQuestionType"
+                style={{ border: "1px solid black"}}  
+                onChange={this.props.onChange}
+              >
                 {displayOption}
               </select>
             </div>
             <div className="create-question-input">
               <div className="create-question-select">Select question category</div>
               <select
-                style={{width: "200px", border: "1px solid black"}} 
+                style={{ border: "1px solid black"}} 
                 name="type"
                 id="idQuestionCategory"
                 onChange={this.props.onChange}

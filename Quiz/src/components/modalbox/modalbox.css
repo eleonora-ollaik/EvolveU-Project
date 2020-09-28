@@ -53,14 +53,14 @@
   cursor: pointer;
 }
 
-#idEditQAModal input[type=text], #idEditQAModal select, #idEditQAModal .CorrectAnswer, #idEditQAModal .WrongAnswer, #idEditQAModal #idQuestion {
+#idEditQAModal input[type=text], #idEditQAModal select,  #idEditQAModal #idQuestion {
   /* Size and position */
   width: 25%;
   /* padding: 12px 25px; */
   /* margin: 8px 8px; */
   padding: 8px 4px 8px 10px;
   margin-bottom: 10px;
-  margin-left: 10;
+  /* margin-left: 10px; */
 
   /* Styles */
   border: 1px solid #4e3043; /* Fallback */
@@ -80,4 +80,11 @@
   font-family: 'Raleway', 'Lato', Arial, sans-serif;
   /* color: #fff; */
   font-size: 18px;
+}
+
+#idEditQAModal .CorrectAnswer {
+  margin-left: 5px;
+}
+#idEditQAModal .WrongAnswer {
+  margin-left: 10px;
 }

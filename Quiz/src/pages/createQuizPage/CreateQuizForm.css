@@ -93,7 +93,7 @@
     width: 12em;
   }
 
-  .label-input input[type=text], select, .CorrectAnswer, .WrongAnswer, #idQuestion  {
+  .label-input input[type=text],  .CorrectAnswer, .WrongAnswer, #idQuestion {
     width: 25%;
     padding: 12px 25px;
     margin: 8px 8px;
@@ -247,7 +247,7 @@
   /* background-color: moccasin; */
 } 
 
-.answers label{
+.create-answers label{
   /* display: inline-block; */
   text-align: left;
   color: rgb(78, 62, 62);
@@ -255,17 +255,20 @@
   font-weight: bold;
   margin-right: 10px;
 }
-.answers input[type=radio] {
+.create-answers input[type=radio], .edit-answers input[type=radio] {
   /* display: inline-block; */
   width: 18px;
   height: 18px;
-  margin: 0 80px 0 0;
+  margin: 0 80px 10px 0;
   /* margin-right: 80px;
   margin-bottom: 0; */
   cursor: pointer;
 }
 
-.answers {
+.edit-answers {
+  margin-bottom: 2em;
+}
+.create-answers {
   text-align: left;
   margin-left: 10px;
 }

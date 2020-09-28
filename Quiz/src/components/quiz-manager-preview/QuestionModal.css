@@ -9,10 +9,11 @@
   }
 
 
-select {
+.label-input-top select {
     height: 37px;
     margin: 0;
     padding: 0;
+    /* width: 25%; */
   }
   
   
@@ -26,14 +27,19 @@ select {
     font-weight: bold;
     color: rgb(32, 108, 128);
 }
-
 .quizAnswers {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 10px;
-    margin-left: 5px;
-  }
+  
+}
+/* .quizAnswers input[type='text']
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* margin-bottom: 10px;
+    margin-left: 5px; */
+  /* } */ 
 
 .inputAnswers {
     height: 19px;
@@ -43,10 +49,12 @@ select {
 .inputQuestions {
     height: 20px;
     padding: 0;
+    margin-right: 33px;
 }
 
-#idEditQAModal input[type=text] {
-    margin: 0 33px 0 0;
+#idEditQAModal .quizAnswers input[type=text] {
+    margin: 0 10 10 0;
+    /* margin: 0 0 10px 10px; */
 }
 
 .label-input-left {

@@ -26,6 +26,13 @@ h1 {
     padding-bottom: 0px;
   }
 
+  .btnForgot{
+    background: none;
+    border: none;
+    color: white;
+    text-decoration: underline;
+  }
+
   .login-form input[type=text],
   .login-form input[type=username],
   .login-form input[type=password] {

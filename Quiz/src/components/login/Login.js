@@ -47,6 +47,9 @@ export default function Login(props) {
             <div>
                 <button type="submit" disabled={!validateForm()} onClick={(e) => handleSubmit(e)}>Continue</button>
 
+            </div>
+            <div>
+              <button className='btnForgot'>Forgot password?</button>
             </div>       
         </form>
       </div>
