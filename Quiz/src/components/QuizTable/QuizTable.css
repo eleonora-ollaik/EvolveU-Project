@@ -3,7 +3,10 @@ table.center {
     margin-right:auto;
     margin-bottom: 3rem;
 }
+table {
+    font-family: 'Raleway', sans-serif;
 
+ }
 th {
     text-align: centre;
     background-color: rgb(74, 166, 192);
