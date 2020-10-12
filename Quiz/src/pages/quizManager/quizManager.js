@@ -611,7 +611,7 @@ class QuizManager extends Component {
         // Only allow save when there is a quiz name
         try {
             if (quizname.length > 0) {
-            // this.setState({ quizEdited: false }) // Clear this state
+            this.setState({ quizEdited: false }) // Clear this state
             this.updateQuiz(quizname); // Save Quiz to the server   
             console.log('this quiz was saved') 
             }
