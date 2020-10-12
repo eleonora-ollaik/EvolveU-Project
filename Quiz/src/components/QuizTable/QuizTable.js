@@ -16,6 +16,7 @@ class QuizTable extends Component {
 
     render(){
         const { quizData } = this.props;
+        console.log("quizData in QuizTable", quizData)
         // console.log(JSON.stringify(quizData, null, 2));
         // style={{backgroundColor: this.state.highlightedQuizID === quiz.quizId?'red':'white'}}
     
@@ -26,6 +27,7 @@ class QuizTable extends Component {
                     <td className='quizTableName tableCells'>{quiz.name}</td>
                     <td className='tableCells'>{quiz.theme}</td>
                     <td className='tableCells'>{quiz.user_id}</td>
+                    <td className='tableCells'>{quiz.dateCreated.substr(0, 10)}</td>
                 </tr>
     
             )
@@ -40,6 +42,7 @@ class QuizTable extends Component {
                             <th>Quiz name</th>
                             <th>Theme</th>
                             <th>Creator</th>
+                            <th>Date created</th>
 
                         </tr>
                     </thead>

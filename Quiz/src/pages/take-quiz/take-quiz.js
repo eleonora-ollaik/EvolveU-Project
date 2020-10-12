@@ -14,8 +14,8 @@ const serverUrl =
   "https://0y0lbvfarc.execute-api.ca-central-1.amazonaws.com/dev/";
 
 class TakeQuiz extends PureComponent {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       value: "",
       selectedQuiz: null,
@@ -44,6 +44,12 @@ class TakeQuiz extends PureComponent {
     this.setState({ value: event.target.value });
   }
 
+  handleBackToTQ = () => {
+    this.setState({ selectedQuiz: null, value: "", responseData: null })
+    this.componentDidMount();
+}
+
+
   render() {
     let filteredQuizzes = this.state.responseData;
     if (this.state.responseData) {
@@ -59,6 +65,7 @@ class TakeQuiz extends PureComponent {
             <PlayQuiz
               selectedQuiz={this.state.selectedQuiz}
               reselectQuiz={() => this.setState({ selectedQuiz: null })}
+              handleBackToTQ={() => this.handleBackToTQ()}
             />
           ) : filteredQuizzes ? (
             <SelectQuiz

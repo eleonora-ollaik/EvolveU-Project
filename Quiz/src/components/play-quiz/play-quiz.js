@@ -1,20 +1,23 @@
 import React, { Component } from "react";
 
 import "./play-quiz.css";
-
 import { randomizeAnswerArray, checkIfAnswerCorrect } from "./util";
 import TestCompleted from "../TestCompleted";
+import ModalBox from "../modalbox/modalbox";
+import BackToTakeQuizConfirmation from '../modalbox/backtotakequizconfirmation.js';
+
 
 let newCurrentQuestion;
 
 class PlayQuiz extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       currentQuestion: 0,
       correctlyAnsweredQuestions: 0,
       isTestOver: false,
       newCurrentQuestion: null,
+      noticeMsg: "",
     };
   }
 
@@ -57,13 +60,60 @@ class PlayQuiz extends Component {
      });
   };
 
+  handleBackToTakeQuiz = () => {
+    console.log("back to Take Quiz")
+    this.setState({
+      noticeMsg:
+        "Are you sure you want to quit the current quiz?",
+    });
+    // Open verify modal box
+    document
+      .getElementById("idVerifyGoBackToTakeQuiz")
+      .setAttribute("class", "modalshow");
+  }
+
+  onClickCloseModal = (e) => {
+    console.log("boo"); 
+    const modal = e.target.parentNode.parentNode;
+    modal.setAttribute("class", "modalhide");
+    e.stopPropagation();
+    // Handle edit modal box
+    // this.setState({quizEdit: false});
+    // Handle submit modal box
+    this.setState({noticeMsg: ""});    
+  };
+
   render() {
     const { name } = this.props.selectedQuiz;
     const { questionsAndAnswers } = this.props.selectedQuiz;
 
+    const modal = (
+      <ModalBox
+        boxID="idVerifyGoBackToTakeQuiz"
+        content={<BackToTakeQuizConfirmation 
+          noticeMsg={this.state.noticeMsg} 
+          onClickCancel={this.onClickCloseModal} 
+          onClickBackToTQ={this.props.handleBackToTQ}/>}
+        onClickModalClose={this.onClickCloseModal}
+        hide={this.state.noticeMsg ? false : true}
+      />
+    );
+
+    const quizModal = this.state.noticeMsg ? (
+      modal
+    ) : (
+      <div id="idVerifyGoBackToTakeQuiz"></div>
+    );
+
+
     return (
       <div className='playQuiz'>
-        <div className="quiz-text">Quiz: <span className="quiz-name">{name}</span></div>
+        <div className="headerLine">
+          <div className="quiz-text on-the-center">Quiz: <span className="quiz-name">{name}</span></div>
+          <div className="on-the-right">
+            <button className="quitButton" onClick={this.handleBackToTakeQuiz}>Quit</button>
+          </div>
+        </div>
         <br/>
         <hr/>
         {this.state.currentQuestion ? null : (
@@ -102,6 +152,9 @@ class PlayQuiz extends Component {
         ) : 
           null
         }
+        
+        {quizModal}
+
       </div>
     );
   }
@@ -151,6 +204,7 @@ class QandA extends Component {
 
   render() {
     const { currentQuestion, questionsAndAnswers } = this.props;
+
     return (
       <div className='questionContainer'>
         <div className="question-number">Question <span style={{color: "rgb(245, 27, 27)"}}>{currentQuestion}</span></div>
