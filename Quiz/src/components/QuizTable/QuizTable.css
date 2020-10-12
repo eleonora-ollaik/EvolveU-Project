@@ -5,12 +5,12 @@ table.center {
 }
 table {
     font-family: 'Raleway', sans-serif;
-
  }
+ 
 th {
     text-align: centre;
     background-color: rgb(74, 166, 192);
-    padding: 5px 10px;
+    padding: 5px 10px 5px 10px;
     font-size: 1.1rem;
     color: aliceblue;
 }
@@ -20,9 +20,18 @@ tr {
     border-width: 0 0 20px 0;
 }
 
+td {
+    padding: 5px 10px 5px 10px;
+}
+
 .tableCells {
     background-color: rgba(255,255,255,0.2);
     cursor: pointer;
+    min-width: 10rem;
+}
+
+.idColumn {
+    min-width: 2rem;
 }
 
 
@@ -41,6 +50,4 @@ tr {
 
 .quizTableName {
     text-align: left;
-    padding: 0 0 0 5px;
-
 }

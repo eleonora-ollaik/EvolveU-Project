@@ -8,7 +8,8 @@ body, html {
 .App {
   overflow: hidden;
   text-align: center;
-  font-family: 'Acme', sans-serif;
+  font-family: 'Raleway', sans-serif;
+  /* font-family: 'Acme', sans-serif; */
 }
 
 .App-logo {

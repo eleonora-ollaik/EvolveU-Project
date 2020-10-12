@@ -21,6 +21,12 @@ class Header extends Component {
   render() {
     const { currentPageNumber, handleNavigation } = this.props;
 
+    // Capitalize user name FUNCTION 
+    const capitalizeUserName = (string) => {
+      return string.charAt(0).toUpperCase() + string.slice(1); 
+    }
+  
+
     return (
       <div className="appHeader">
         <button className="Q-logo" onClick={() => handleNavigation(1)}>Q</button>
@@ -49,7 +55,7 @@ class Header extends Component {
           Quiz Manager
         </button>
         <div className='logoutTab'>
-          <span className="item">Hello, {this.props.auth.user.username}!</span>
+          <span className="item">Hello {capitalizeUserName(this.props.auth.user.username)}!</span>
           <button onClick={() => this.handleSignOut()} className='logoutBtn item'>Sign out</button>
         </div>
 

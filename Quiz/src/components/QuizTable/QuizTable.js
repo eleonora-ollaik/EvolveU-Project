@@ -2,31 +2,28 @@ import React, {Component} from 'react';
 import './QuizTable.css'
 
 class QuizTable extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             highlightedQuizID: null
         }
     }
 
-    // handleClick = (quizId) => {
-    //     this.setState({highlightedQuizID: quizId});
-        
-    // }
-
     render(){
         const { quizData } = this.props;
-        console.log("quizData in QuizTable", quizData)
-        // console.log(JSON.stringify(quizData, null, 2));
-        // style={{backgroundColor: this.state.highlightedQuizID === quiz.quizId?'red':'white'}}
+
+        // Capitalize user name FUNCTION 
+        const capitalizeUserName = (string) => {
+            return string.charAt(0).toUpperCase() + string.slice(1); 
+        }
     
         const list = quizData.map((quiz, i) => {
             return (
                 <tr key={i} onClick={() => this.props.selectQuiz(quiz.quizId)}>
-                    <td className='tableCells'>{i+1}</td>
-                    <td className='quizTableName tableCells'>{quiz.name}</td>
+                    <td className='tableCells idColumn'>{i+1}</td>
+                    <td className='tableCells quizTableName'>{quiz.name}</td>
                     <td className='tableCells'>{quiz.theme}</td>
-                    <td className='tableCells'>{quiz.user_id}</td>
+                    <td className='tableCells'>{capitalizeUserName(quiz.user_id)}</td>
                     <td className='tableCells'>{quiz.dateCreated.substr(0, 10)}</td>
                 </tr>
     

@@ -1,9 +1,10 @@
-@import url(https://fonts.googleapis.com/css2?family=Acme&display=swap>);
+/* @import url(https://fonts.googleapis.com/css2?family=Acme&display=swap>); */
 
 .appHeader {
     background-color: #e46821;
     font-size: 4rem;
-    font-family: 'Acme', sans-serif;
+    font-family: 'Raleway', sans-serif;
+    /* font-family: 'Acme', sans-serif; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,7 +18,8 @@
   border: none;
   outline: none;
   width: 10%;
-  font-family: 'Acme', sans-serif;
+  font-family: 'Raleway', sans-serif;
+  /* font-family: 'Acme', sans-serif; */
 
   font-size: 4rem;
   font-weight: bold;
@@ -36,7 +38,8 @@
     cursor: pointer;
     padding: 14px 16px;
     font-size: 1.8rem;
-    font-family: 'Acme', sans-serif;
+    font-family: 'Raleway', sans-serif;
+    /* font-family: 'Acme', sans-serif; */
     font-weight: bold;
     width: 25%;
   }
@@ -53,7 +56,8 @@
     background-color: #e46821;
     border: none;
     color: white;
-    font-family: 'Acme', sans-serif;
+    font-family: 'Raleway', sans-serif;
+    /* font-family: 'Acme', sans-serif; */
     font-size: 1.4rem;
     font-weight: bold;
     margin-top: 0.5em;
