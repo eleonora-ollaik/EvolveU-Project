@@ -375,7 +375,7 @@ class QuizManager extends Component {
                 
             tempQuiz.questionsAndAnswers.push(this.state.currentEditQuestion);
             console.log("tempQuiz after push", tempQuiz)
-            this.setState({ addingNewQuestion: false})
+            // this.setState({ addingNewQuestion: false})
         } 
         else {
             tempQuiz.questionsAndAnswers = tempQuiz.questionsAndAnswers.map((questionObj) => questionObj.question_id === this.state.currentEditQuestion.question_id ? this.state.currentEditQuestion : questionObj);
@@ -567,12 +567,14 @@ class QuizManager extends Component {
               "quiz_id": quiz.quizId,
               "theme_id": quiz.theme_id,
               "theme_name": quiz.theme,
+              "user_id": quiz.user_id,
               "questions": QAjson
             }     
             console.log("webdata!", webdata)
     
             if (this.state.questionDeleted || this.state.addingNewQuestion) {
                 responsedata = await net.postData(url, webdata);
+                console.log('hi from posting new question', webdata)
             } else {
                 responsedata = await net.putData(url, webdata);
             }
@@ -609,8 +611,9 @@ class QuizManager extends Component {
         // Only allow save when there is a quiz name
         try {
             if (quizname.length > 0) {
-            this.setState({ quizEdited: false }) // Clear this state
-            this.updateQuiz(quizname); // Save Quiz to the server    
+            // this.setState({ quizEdited: false }) // Clear this state
+            this.updateQuiz(quizname); // Save Quiz to the server   
+            console.log('this quiz was saved') 
             }
             else {
             this.setState({ noticeMsg: "Please enter a quiz name" });
